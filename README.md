@@ -1,6 +1,10 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 [![Deploy Production](https://github.com/Golden7design/my_portfolio/actions/workflows/deploy-prod.yml/badge.svg)](https://github.com/Golden7design/my_portfolio/actions/workflows/deploy-prod.yml)
+[![Deploy Preview](https://github.com/Golden7design/my_portfolio/actions/workflows/preview-prod.yml/badge.svg)](https://github.com/Golden7design/my_portfolio/actions/workflows/preview-prod.yml)
+
+Portfolio build with Next.JS + TypeScript + Tailwind CSS
+CI/CD With Github Action & Vercel
 
 ## Getting Started
 
