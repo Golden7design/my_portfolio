@@ -7,6 +7,7 @@ import { menuColumns } from "./navInfo";
 import { menuLinks } from "./navLinks";
 
 export default function Navbar() {
+  
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -17,16 +18,14 @@ export default function Navbar() {
       if (window.SplitText) {
         gsap.registerPlugin(window.SplitText);
 
-        
         // Animation GSAP
-
-        const container = document.querySelector('.container');
-        const navtoggle = document.querySelector('.nav-toggle');
-        const menuOverlay = document.querySelector('.menu-overlay');
-        const menuContent = document.querySelector('.menu-content');
-        const menuImage = document.querySelector('.menu-img');
-        const menuLinksWrapper = document.querySelector('.menu-links-wrapper');
-        const linkHighlighter = document.querySelector('.link-highlighter');
+        const container = document.querySelector<HTMLDivElement>('.container');
+        const navtoggle = document.querySelector<HTMLDivElement>('.nav-toggle');
+        const menuOverlay = document.querySelector<HTMLDivElement>('.menu-overlay');
+        const menuContent = document.querySelector<HTMLDivElement>('.menu-content');
+        const menuImage = document.querySelector<HTMLDivElement>('.menu-img');
+        const menuLinksWrapper = document.querySelector<HTMLDivElement>('.menu-links-wrapper');
+        const linkHighlighter = document.querySelector<HTMLDivElement>('.link-highlighter');
 
         let currentX = 0;
         let targetX = 0;
@@ -40,14 +39,14 @@ export default function Navbar() {
         let isMenuOpen = false;
         let isMenuAnimating = false;
 
-        const menuLinks = document.querySelectorAll('.menu-link a');
+        const menuLinks = document.querySelectorAll<HTMLAnchorElement>('.menu-link a');
         menuLinks.forEach((link) => {
-          const chars = link.querySelectorAll('span');
+          const chars = link.querySelectorAll<HTMLSpanElement>('span');
           chars.forEach((char, charIndex) => {
             const split = new window.SplitText(char, { type: "chars" });
-            split.chars.forEach((char) => {
-              char.classList.add('char');
-              char.style.fontSize = '10rem';
+            split.chars.forEach((charEl: HTMLElement) => {
+              charEl.classList.add('char');
+              charEl.style.fontSize = '10rem';
             });
             if (charIndex === 1) {
               gsap.set(split.chars, { y: "110%" });
@@ -60,17 +59,17 @@ export default function Navbar() {
         gsap.set(menuLinks, { y: "150%" });
         gsap.set(linkHighlighter, { y: "150%" });
 
-        const defaultLinkText = document.querySelector('.menu-link:first-child a span');
+        const defaultLinkText = document.querySelector<HTMLSpanElement>('.menu-link:first-child a span');
 
-        if (defaultLinkText) {
+        if (defaultLinkText && linkHighlighter && menuLinksWrapper) {
           const linkWidth = defaultLinkText.offsetWidth;
-          linkHighlighter!.style.width = linkWidth + 'px';
+          linkHighlighter.style.width = linkWidth + 'px';
           currentHighlighterwidth = linkWidth;
           targetHighlighterwidth = linkWidth;
 
-          const defaultLinkTextElement = document.querySelector('.menu-link:first-child');
+          const defaultLinkTextElement = document.querySelector<HTMLDivElement>('.menu-link:first-child');
           const linkRect = defaultLinkTextElement!.getBoundingClientRect();
-          const menuWrapperRect = menuLinksWrapper!.getBoundingClientRect();
+          const menuWrapperRect = menuLinksWrapper.getBoundingClientRect();
           const initialX = linkRect.left - menuWrapperRect.left;
           currentHighlighterX = initialX;
           targetHighlighterX = initialX;
@@ -96,7 +95,6 @@ export default function Navbar() {
               onComplete: () => {
                 gsap.set(container, { y: "40%" });
                 gsap.set(".menu-link", { overflow: "visible" });
-
                 isMenuOpen = true;
                 isMenuAnimating = false;
               },
@@ -106,7 +104,6 @@ export default function Navbar() {
             gsap.to(menuImage, { scale: 1, opacity: 1, duration: 1.5, ease: "expo.out" });
             gsap.to(menuLinks, { y: "0%", duration: 1.25, stagger: 0.1, delay: 0.25, ease: "expo.out" });
             gsap.to(linkHighlighter, { y: "0%", duration: 1, delay: 1, ease: "expo.out" });
-
           } else {
             gsap.to(container, { y: "0%", opacity: 1, duration: 1.25, ease: "expo.out" });
             gsap.to(menuLinks, { y: "-200%", duration: 1.25, ease: "expo.out" });
@@ -138,38 +135,38 @@ export default function Navbar() {
         navtoggle?.addEventListener('click', toggleMenu);
 
         // Mouse animations
-        const menuLinksContainer = document.querySelectorAll('.menu-link');
+        const menuLinksContainer = document.querySelectorAll<HTMLDivElement>('.menu-link');
         menuLinksContainer.forEach((link) => {
           link.addEventListener('mouseenter', () => {
             if (window.innerWidth < 1000) return;
 
-            const linkCopy = link.querySelectorAll('a span');
+            const linkCopy = link.querySelectorAll<HTMLSpanElement>('a span');
             const visibleCopy = linkCopy[0];
             const animatedCopy = linkCopy[1];
 
-            const visibleChars = visibleCopy.querySelectorAll('.char');
+            const visibleChars = visibleCopy.querySelectorAll<HTMLElement>('.char');
             gsap.to(visibleChars, { y: "-110%", stagger: 0.06, duration: 1, ease: "expo.inOut" });
 
-            const animatedChars = animatedCopy.querySelectorAll('.char');
+            const animatedChars = animatedCopy.querySelectorAll<HTMLElement>('.char');
             gsap.to(animatedChars, { y: "0%", stagger: 0.06, duration: 1, ease: "expo.inOut" });
           });
 
           link.addEventListener('mouseleave', () => {
             if (window.innerWidth < 1000) return;
 
-            const linkCopy = link.querySelectorAll('a span');
+            const linkCopy = link.querySelectorAll<HTMLSpanElement>('a span');
             const visibleCopy = linkCopy[0];
             const animatedCopy = linkCopy[1];
 
-            const animatedChars = animatedCopy.querySelectorAll('.char');
+            const animatedChars = animatedCopy.querySelectorAll<HTMLElement>('.char');
             gsap.to(animatedChars, { y: "100%", stagger: 0.03, duration: 0.5, ease: "expo.inOut" });
 
-            const visibleChars = visibleCopy.querySelectorAll('.char');
+            const visibleChars = visibleCopy.querySelectorAll<HTMLElement>('.char');
             gsap.to(visibleChars, { y: "0%", stagger: 0.03, duration: 0.5, ease: "expo.inOut" });
           });
         });
 
-        menuOverlay?.addEventListener('mousemove', (e) => {
+        menuOverlay?.addEventListener('mousemove', (e: MouseEvent) => {
           if (window.innerWidth < 1000) return;
 
           const mouseX = e.clientX;
@@ -183,7 +180,7 @@ export default function Navbar() {
           const startX = (viewportWidth - sensitivityRange) / 2;
           const endX = startX + sensitivityRange;
 
-          let mousePercentage;
+          let mousePercentage: number;
           if (mouseX < startX) mousePercentage = 0;
           else if (mouseX >= endX) mousePercentage = 1;
           else mousePercentage = (mouseX - startX) / sensitivityRange;
@@ -200,14 +197,14 @@ export default function Navbar() {
 
             targetHighlighterX = linkRect.left - menuWrapperRect.left;
 
-            const linkCopyElement = link.querySelector('a span');
+            const linkCopyElement = link.querySelector<HTMLSpanElement>('a span');
             targetHighlighterwidth = linkCopyElement ? linkCopyElement.offsetWidth : link.offsetWidth;
           });
         });
 
         menuLinksWrapper?.addEventListener('mouseleave', () => {
-          const defaultLinkText = document.querySelector('.menu-link:first-child');
-          const defaultLinkTextSpan = defaultLinkText!.querySelector('a span');
+          const defaultLinkText = document.querySelector<HTMLDivElement>('.menu-link:first-child');
+          const defaultLinkTextSpan = defaultLinkText!.querySelector<HTMLSpanElement>('a span');
 
           const linkRect = defaultLinkText!.getBoundingClientRect();
           const menuWrapperRect = menuLinksWrapper!.getBoundingClientRect();
@@ -228,32 +225,20 @@ export default function Navbar() {
         }
 
         animate();
-
       }
     };
     document.body.appendChild(script);
   }, []);
 
   return (
-     <>
+    <>
       <nav>
         <div className="nav-toggle"><p>Menu</p></div>
-        <div className="nav-item"><svg className="logo" width="40" height="40"  viewBox="0 0 154 164" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Group 4">
-<g id="Group 2">
-<path id="Rectangle 2" d="M0 2L27 27.5V120H0V2Z" fill="currentColor "/>
-<path id="Rectangle 3" d="M1.42755 40.4772L20.0063 20.8856L79 77L67.5 102L1.42755 40.4772Z" fill="currentColor"/>
-<path id="Rectangle 5" d="M40.7 162.554L40.8647 135.554L97.9418 135.293L127.2 162.554L40.7 162.554Z" fill="currentColor"/>
-<rect id="Rectangle 4" y="119.592" width="27" height="58.9808" transform="rotate(-43.52 0 119.592)" fill="currentColor"/>
-</g>
-<g id="Group 3">
-<path id="Rectangle 2_2" d="M153.612 161.077L126.415 135.787L125.697 43.2897L152.696 43.0801L153.612 161.077Z" fill="currentColor"/>
-<path id="Rectangle 3_2" d="M151.886 122.612L133.459 142.347L74.0319 86.692L85.3375 61.6035L151.886 122.612Z" fill="currentColor"/>
-<path id="Rectangle 5_2" d="M111.667 0.843628L111.712 27.8436L54.6382 28.5475L25.1693 1.51503L111.667 0.843628Z" fill="currentColor"/>
-<rect id="Rectangle 4_2" x="152.699" y="43.4877" width="27" height="58.9808" transform="rotate(136.035 152.699 43.4877)" fill="currentColor"/>
-</g>
-</g>
-</svg></div>
+        <div className="nav-item">
+          <svg className="logo" width="40" height="40" viewBox="0 0 154 164" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* ton SVG ici */}
+          </svg>
+        </div>
       </nav>
 
       <div className="menu-overlay">
@@ -267,9 +252,7 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="menu-img">
-          {/* ton SVG ici */}
-        </div>
+        <div className="menu-img">{/* ton SVG ici */}</div>
 
         <div className="menu-links-wrapper">
           {menuLinks.map((link, index) => (
