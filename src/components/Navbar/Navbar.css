@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+:root{
+    --dark: #1e1e1e;
+    --light: #fefff8;
+    --accent: #fca311;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color: #000;
+    font-family: sans-serif;
+}
+
+img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+h1{
+    font-family: var(--font-clash-display);
+    text-transform: uppercase;
+    font-size: 10rem;
+    font-weight: 500;
+    letter-spacing: -0.1rem;
+    line-height: 0.9;
+}
+
+p, a{
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1;
+    user-select: none;
+}
+.container{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    will-change: transform, opacity;
+    z-index: 0;
+}
+
+section{
+    position: relative;
+    width: 100vw;
+    height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: var(--light);
+    color: var(--dark);
+    padding: 2rem;
+}
+.hero h1{
+    width: 70%;
+}
+nav{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    padding: 1rem 1.5rem;
+    color: var(--light);
+    display: flex;
+    justify-content: space-between;
+    mix-blend-mode: difference;
+    z-index: 2;
+}
+
+nav p{
+    padding: 1rem;
+    cursor: pointer;
+
+}
+
+.menu-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100svh;
+    overflow: hidden;
+    background-color: var(--dark);
+    color: var(--light);
+    z-index: 1;
+    will-change: clip-path;
+}
+
+.menu-content{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    will-change: transform, opacity;
+    font-family: var(--font-generale-sans);
+    
+}
+
+.menu-col:nth-child(2){
+    text-align: right;
+
+}
+
+.menu-img{
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    will-change: transform, opacity;
+}
+
+.menu-links-wrapper{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: max-content;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    will-change: transform;
+
+}
+.menu-link{
+    position: relative;
+    will-change: transform;
+    overflow: hidden;
+
+}
+
+.menu-link a{
+    position: relative;
+    color: var(--light);
+    font-family: var(--font-clash-display);
+    font-size: 10rem;
+    font-weight: 500;
+    letter-spacing: -0.02rem;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.menu-link a span:nth-child(2){
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.link-highlighter{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 400px;
+    height: 0.75rem;
+    background-color: var(--accent);
+    will-change: transform, width;
+}
+
+.menu-overlay{
+    clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+}
+
+.char{
+    position: relative; 
+    display: flex;
+    will-change: transform;
+}
+
+@media (max-width: 1000px) {
+    .hero h1{
+        width: 100%;
+        font-size: 4rem;
+
+    }
+    .menu-content{
+        top: 25%;
+    }
+    .menu-img, .link-highlighter{
+        display: none;
+    }
+    .menu-links-wrapper{
+        flex-direction: column;
+        gap: 0;
+    }
+    .menu-link a{
+        font-size: 4rem;
+        letter-spacing: 0;
+    }
+}
