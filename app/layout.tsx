@@ -20,18 +20,6 @@ const clashDisplay = localFont({
   display: "swap",
 });
 
-const jetbrains = localFont({
-  src: [
-    {
-        path: "./fonts/jetBrains_Mono/JetBrainsMono-VariableFont_wght.ttf",
-        weight: "500",
-        style: "normal",
-    }
-  ],
-  variable: "--font-jetbrains",
-  display: "swap",
-});
-
 const gambarino = localFont({
   src: [
     {
@@ -82,9 +70,6 @@ const Aeonik = localFont({
 });
 
 
-
-
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -93,7 +78,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body
-        className={`${clashDisplay.variable} ${Aeonik.variable} ${Generale_Sans.variable} ${jetbrains.variable} ${gambarino.variable} antialiased h-full `}
+        className={`${clashDisplay.variable} ${Aeonik.variable} ${Generale_Sans.variable} ${gambarino.variable} antialiased h-full `}
       >
         {children}
       </body>
