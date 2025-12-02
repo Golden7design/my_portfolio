@@ -61,24 +61,86 @@ section{
 .hero h1{
     width: 70%;
 }
-nav{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    padding: 1rem 1.5rem;
-    color: var(--light);
-    display: flex;
-    justify-content: space-between;
-    mix-blend-mode: difference;
-    z-index: 2;
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  padding: 1rem 1.5rem;
+  color: var(--light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  mix-blend-mode: difference;
+  z-index: 2;
+  box-sizing: border-box;
 }
 
-nav p{
-    padding: 1rem;
-    cursor: pointer;
-
+/* Empêche le débordement */
+nav > div {
+  flex-shrink: 0;
 }
+
+/* Centrage absolu du logo */
+.nav-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+/* Assure que les côtés ne prennent pas trop de place */
+.nav-left,
+.nav-right {
+  min-width: 0;
+}
+
+/* Style existant pour le toggle */
+nav p {
+  padding: 1rem;
+  cursor: pointer;
+  margin: 0;
+}
+
+/* Ton style TimeDisplay reste inchangé */
+.time-container {
+  display: flex;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  line-height: 1;
+}
+
+.digit {
+  width: 0.85em;
+  text-align: center;
+  position: relative;
+  height: 1.2em;
+  overflow: hidden;
+}
+
+.digit-inner {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: translateY(0);
+}
+
+.digit.animate .digit-inner {
+  transform: translateY(-100%);
+}
+
+
+
 
 .menu-overlay{
     position: fixed;
@@ -105,6 +167,11 @@ nav p{
     will-change: transform, opacity;
     font-family: var(--font-generale-sans);
     
+}
+.menu-col{
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
 }
 
 .menu-col:nth-child(2){
@@ -150,6 +217,10 @@ nav p{
     display: inline-block;
     overflow: hidden;
 }
+.menu-link a span {
+  font-size: inherit !important;
+  display: inline-block;
+}
 
 .menu-link a span:nth-child(2){
     position: absolute;
@@ -173,7 +244,7 @@ nav p{
 
 .char{
     position: relative; 
-    display: flex;
+    display: inline-block;
     will-change: transform;
 }
 
@@ -193,8 +264,28 @@ nav p{
         flex-direction: column;
         gap: 0;
     }
-    .menu-link a{
-        font-size: 4rem;
-        letter-spacing: 0;
+      .menu-link a,
+  .menu-link a span {
+    font-size: 4rem !important;
+    letter-spacing: 0 !important;
+    line-height: 1 !important;
+  }
+    .nav-item svg{
+        width: 32px;
+        height: 32px;
     }
+}
+
+@media (max-width: 768px) {
+  .menu-link a,
+  .menu-link a span {
+    font-size: 3rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu-link a,
+  .menu-link a span {
+    font-size: 2.25rem !important;
+  }
 }

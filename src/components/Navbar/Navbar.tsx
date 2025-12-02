@@ -3,8 +3,9 @@
 import { useEffect } from "react";
 import gsap from "gsap";
 import "./Navbar.css"; // CSS file
-import { menuColumns } from "./navInfo";
-import { menuLinks } from "./navLinks";
+import { menuColumns } from "./navInfo";//Info
+import { menuLinks } from "./navLinks";//Links
+import { TimeDisplay } from "../Time/TimeDisplay";
 
 export default function Navbar() {
   
@@ -46,7 +47,6 @@ export default function Navbar() {
             const split = new window.SplitText(char, { type: "chars" });
             split.chars.forEach((charEl: HTMLElement) => {
               charEl.classList.add('char');
-              charEl.style.fontSize = '10rem';
             });
             if (charIndex === 1) {
               gsap.set(split.chars, { y: "110%" });
@@ -233,23 +233,40 @@ export default function Navbar() {
   return (
     <>
       <nav>
-        <div className="nav-toggle"><p>Menu</p></div>
-        <div className="nav-item"><svg className="logo" width="40" height="40"  viewBox="0 0 154 164" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Contenu à gauche */}
+        <div className="nav-left">
+          <div className="nav-toggle"><p>Menu</p></div>
+        </div>
+  {/* Logo centré ABSOLUMENT */}
+  <div className="nav-center">
+    <div className="nav-item">
+      <svg className="logo" width="40" height="40" viewBox="0 0 154 164" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg  viewBox="0 0 154 164" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="Group 4">
 <g id="Group 2">
-<path id="Rectangle 2" d="M0 2L27 27.5V120H0V2Z" fill="currentColor "/>
-<path id="Rectangle 3" d="M1.42755 40.4772L20.0063 20.8856L79 77L67.5 102L1.42755 40.4772Z" fill="currentColor"/>
-<path id="Rectangle 5" d="M40.7 162.554L40.8647 135.554L97.9418 135.293L127.2 162.554L40.7 162.554Z" fill="currentColor"/>
-<rect id="Rectangle 4" y="119.592" width="27" height="58.9808" transform="rotate(-43.52 0 119.592)" fill="currentColor"/>
+<path id="Rectangle 2" d="M0 2L27 27.5V120H0V2Z" fill="white"/>
+<path id="Rectangle 3" d="M1.42755 40.4772L20.0063 20.8856L79 77L67.5 102L1.42755 40.4772Z" fill="white"/>
+<path id="Rectangle 5" d="M40.7 162.554L40.8647 135.554L97.9418 135.293L127.2 162.554L40.7 162.554Z" fill="white"/>
+<rect id="Rectangle 4" y="119.592" width="27" height="58.9808" transform="rotate(-43.52 0 119.592)" fill="white"/>
 </g>
 <g id="Group 3">
-<path id="Rectangle 2_2" d="M153.612 161.077L126.415 135.787L125.697 43.2897L152.696 43.0801L153.612 161.077Z" fill="currentColor"/>
-<path id="Rectangle 3_2" d="M151.886 122.612L133.459 142.347L74.0319 86.692L85.3375 61.6035L151.886 122.612Z" fill="currentColor"/>
-<path id="Rectangle 5_2" d="M111.667 0.843628L111.712 27.8436L54.6382 28.5475L25.1693 1.51503L111.667 0.843628Z" fill="currentColor"/>
-<rect id="Rectangle 4_2" x="152.699" y="43.4877" width="27" height="58.9808" transform="rotate(136.035 152.699 43.4877)" fill="currentColor"/>
+<path id="Rectangle 2_2" d="M153.612 161.077L126.415 135.787L125.697 43.2897L152.696 43.0801L153.612 161.077Z" fill="white"/>
+<path id="Rectangle 3_2" d="M151.886 122.612L133.459 142.347L74.0319 86.692L85.3375 61.6035L151.886 122.612Z" fill="white"/>
+<path id="Rectangle 5_2" d="M111.667 0.843628L111.712 27.8436L54.6382 28.5475L25.1693 1.51503L111.667 0.843628Z" fill="white"/>
+<rect id="Rectangle 4_2" x="152.699" y="43.4877" width="27" height="58.9808" transform="rotate(136.035 152.699 43.4877)" fill="white"/>
 </g>
 </g>
-</svg></div>
+</svg>
+      </svg>
+    </div>
+  </div>
+
+          {/* Contenu à droite */}
+            <div className="nav-right">
+              <TimeDisplay />
+            </div>
+
+    
       </nav>
 
       <div className="menu-overlay">

@@ -1,25 +1,36 @@
-// lib/useCurrentHour.ts
-import { useState, useEffect } from 'react';
+// useCurrentTime.ts
+import { useState, useEffect, useRef } from 'react';
 
-export const useCurrentHour = () => {
-  const [hour, setHour] = useState<string>('--:--');
+export const useCurrentTime = () => {
+  const [timeChars, setTimeChars] = useState<string[]>('--:--:--'.split(''));
+  const prevTimeRef = useRef<string>('');
 
   useEffect(() => {
-    const updateHour = () => {
+    const updateTime = () => {
       const now = new Date();
       const options: Intl.DateTimeFormatOptions = {
         hour: '2-digit',
         minute: '2-digit',
+        second: '2-digit',
         hour12: false,
       };
-      setHour(now.toLocaleTimeString([], options));
+      const newTime = now.toLocaleTimeString([], options);
+
+      // Comparer caractère par caractère
+      const prevTime = prevTimeRef.current;
+      const newChars = newTime.split('');
+      
+      // Met à jour la référence
+      prevTimeRef.current = newTime;
+
+      // On force le re-render avec les nouveaux caractères
+      setTimeChars(newChars);
     };
 
-    updateHour();
-    const interval = setInterval(updateHour, 60000); // mise à jour chaque minute
-
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  return hour;
+  return { timeChars, prevTime: prevTimeRef.current };
 };
