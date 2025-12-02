@@ -6,6 +6,7 @@ import "./Navbar.css";
 import { menuColumns } from "./navInfo";
 import { menuLinks } from "./navLinks";
 import { TimeDisplay } from "../Time/TimeDisplay";
+import AnimatedWords from "./AnimatedWords/AnimatedWords";
 
 export default function Navbar() {
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
@@ -79,7 +80,7 @@ export default function Navbar() {
 
           const newOpenState = !menuOpenRef.current;
           menuOpenRef.current = newOpenState;
-          setIsBurgerOpen(newOpenState); // synchronise l’UI du burger
+          setIsBurgerOpen(newOpenState); // synchronise l'UI du burger
 
           if (newOpenState) {
             gsap.to(container, {
@@ -133,7 +134,6 @@ export default function Navbar() {
 
         navtoggle?.addEventListener("click", toggleMenu);
 
-        // ==== Reste de ton code GSAP (mouse, parallax, etc.) ====
         const menuLinksContainer = document.querySelectorAll<HTMLDivElement>(".menu-link");
         menuLinksContainer.forEach((link) => {
           link.addEventListener("mouseenter", () => {
@@ -215,6 +215,9 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Nouveau composant AnimatedWords - EN PREMIER */}
+      <AnimatedWords isMenuOpen={isBurgerOpen} />
+
       <nav>
         <div className="nav-left">
           <div className="nav-toggle" aria-label={isBurgerOpen ? "Close menu" : "Open menu"}>

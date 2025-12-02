@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 
 :root{
-    --dark: #1e1e1e;
-    --light: #fefff8;
-    --accent: #ffffff;
+    --light: #f3f3f3;
+    --dark: #141414;
+    --accent: #333333;
 }
 
 *{
@@ -28,6 +28,7 @@ h1{
     font-weight: 500;
     letter-spacing: -0.1rem;
     line-height: 0.9;
+    pointer-events: none;
 }
 
 p, a{
@@ -54,8 +55,8 @@ section{
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-color: var(--light);
-    color: var(--dark);
+    background-color: var(--dark);
+    color: var(--light);
     padding: 2rem;
 }
 .hero h1{
@@ -66,8 +67,8 @@ nav {
   top: 0;
   left: 0;
   width: 100vw;
-  padding: 1rem 1.5rem;
-  color: var(--light);
+  padding: 1.5rem 1.5rem;
+  color: var(--dark);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -146,6 +147,7 @@ nav p {
   backdrop-filter: blur(4px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   line-height: 1;
+  color: var(--light);
 }
 
 .digit {
@@ -180,8 +182,8 @@ nav p {
     width: 100vw;
     height: 100svh;
     overflow: hidden;
-    background-color: var(--dark);
-    color: var(--light);
+    background-color: var(--light);
+    color: var(--dark);
     z-index: 1;
     will-change: clip-path;
 }
@@ -240,7 +242,7 @@ nav p {
 
 .menu-link a{
     position: relative;
-    color: var(--light);
+    color: var(--dark);
     font-family: var(--font-clash-display);
     font-size: 10rem;
     font-weight: 500;
@@ -261,7 +263,7 @@ nav p {
 
 .link-highlighter{
     position: absolute;
-    bottom: 5%;
+    bottom: 12%;
     left: 0;
     width: 400px;
     height: 0.75rem;

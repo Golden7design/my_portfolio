@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local"
 import "./globals.css";
+import CursorBubble from "@/src/components/CursorBubble/CursorBubble";
 
 export const metadata: Metadata = {
   title: "Nassir's Portfolio",
-  description: "Freelance Developer & DevOps Junior",
+  description: "Freelance Developer & DevOps",
   icons: "/nash_white.svg"
 };
 
@@ -81,6 +82,7 @@ export default function RootLayout({
         className={`${clashDisplay.variable} ${Aeonik.variable} ${Generale_Sans.variable} ${gambarino.variable} antialiased h-full `}
       >
         {children}
+        <CursorBubble />
       </body>
     </html>
   );
