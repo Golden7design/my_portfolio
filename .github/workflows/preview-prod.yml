@@ -10,7 +10,7 @@ on:
       - main
 
 jobs:
-  deploy-Production:
+  deploy-Preview:
     runs-on: ubuntu-latest
 
     steps:

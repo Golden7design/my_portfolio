@@ -13,11 +13,11 @@ export default function AnimatedWords({ isMenuOpen }: AnimatedWordsProps) {
   const [currentWord, setCurrentWord] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
   const wordRef = useRef<HTMLDivElement>(null);
-
+  
   // Pour l'inertie de la souris
   const mousePos = useRef({ x: 0, y: 0 });
   const wordPos = useRef({ x: 0, y: 0 });
-  const animationFrameId = useRef<number | null>(null); // ✅ Correction ici
+  const animationFrameId = useRef<number | null>(null);
 
   // Changer le mot à chaque ouverture du menu
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function AnimatedWords({ isMenuOpen }: AnimatedWordsProps) {
       const newWord = getRandomWord(currentWord);
       setCurrentWord(newWord);
     }
-  }, [isMenuOpen, currentWord]);
+  }, [isMenuOpen]);
 
   // Animation GSAP + Inertie souris
   useEffect(() => {
@@ -68,23 +68,25 @@ export default function AnimatedWords({ isMenuOpen }: AnimatedWordsProps) {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isMenuOpen || !word) return;
 
-      const rect = container.getBoundingClientRect();
+      const rect = container!.getBoundingClientRect();
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
       // Calcul du déplacement relatif (limité à ±50px)
-      mousePos.current.x = ((e.clientX - rect.left - centerX) / centerX) * 50;
-      mousePos.current.y = ((e.clientY - rect.top - centerY) / centerY) * 50;
+      mousePos.current.x = ((e.clientX - centerX) / centerX) * 50;
+      mousePos.current.y = ((e.clientY - centerY) / centerY) * 50;
     };
 
     // Animation en boucle pour l'inertie
     const animate = () => {
       if (!word || !isMenuOpen) return;
 
+      // Lerp (interpolation linéaire) pour l'inertie
       const lerpFactor = 0.08;
       wordPos.current.x += (mousePos.current.x - wordPos.current.x) * lerpFactor;
       wordPos.current.y += (mousePos.current.y - wordPos.current.y) * lerpFactor;
 
+      // Utilise transform pour ne pas écraser le translate(-50%, -50%) du CSS
       word.style.transform = `translate(calc(-50% + ${wordPos.current.x}px), calc(-50% + ${wordPos.current.y}px))`;
 
       animationFrameId.current = requestAnimationFrame(animate);
@@ -112,11 +114,15 @@ export default function AnimatedWords({ isMenuOpen }: AnimatedWordsProps) {
   }
 
   return (
-    <div
+    <div 
       ref={containerRef}
       className={`animated-words-container ${isMenuOpen ? "active" : ""}`}
     >
-      <div ref={wordRef} className="giant-word" data-word={currentWord}>
+      <div 
+        ref={wordRef}
+        className="giant-word"
+        data-word={currentWord}
+      >
         {currentWord}
       </div>
     </div>
