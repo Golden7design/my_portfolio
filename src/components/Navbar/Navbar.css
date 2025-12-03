@@ -305,6 +305,9 @@ nav p {
         width: 28px;
         height: 28px;
     }
+    .time-container{
+      font-size: 0.4rem;
+    }
 }
 /* === BURGER MENU ANIMATION === */
 .burger {

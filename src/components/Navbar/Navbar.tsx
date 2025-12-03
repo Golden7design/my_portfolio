@@ -221,9 +221,6 @@ export default function Navbar() {
     <div className="navbar-wrapper" >
       {/* Nouveau composant AnimatedWords - EN PREMIER */}
       <AnimatedWords isMenuOpen={isBurgerOpen} />
-
-
-
       <nav>
         <div className="nav-left">
           <div className="nav-toggle" aria-label={isBurgerOpen ? "Close menu" : "Open menu"}>

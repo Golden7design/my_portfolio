@@ -9,13 +9,15 @@ export default function NavAreaClickSound() {
     const navbarWrapper = document.querySelector(".navbar-wrapper");
     if (!navbarWrapper) return;
 
-    // Volume bas, safe
     if (audioRef.current) {
       audioRef.current.volume = 0.2;
     }
 
     const play = () => {
       if (!audioRef.current) return;
+
+      // ⛔ Désactive le son si largeur < 1000px
+      if (window.innerWidth < 1000) return;
 
       audioRef.current.currentTime = 0;
       audioRef.current.play().catch(() => {});
@@ -28,5 +30,11 @@ export default function NavAreaClickSound() {
     };
   }, []);
 
-  return <audio ref={audioRef} src="/sounds/click.mp3" preload="auto" />;
+  return (
+    <audio
+      ref={audioRef}
+      src="/sounds/click.mp3"
+      preload="auto"
+    />
+  );
 }
