@@ -7,6 +7,8 @@ import { menuColumns } from "./navInfo";
 import { menuLinks } from "./navLinks";
 import { TimeDisplay } from "../Time/TimeDisplay";
 import AnimatedWords from "./AnimatedWords/AnimatedWords";
+import NavAreaClickSound from "../NavAreaClickSound";
+import Hero from "../Hero/Hero";
 
 export default function Navbar() {
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
@@ -215,8 +217,12 @@ export default function Navbar() {
 
   return (
     <>
+    <NavAreaClickSound/>
+    <div className="navbar-wrapper" >
       {/* Nouveau composant AnimatedWords - EN PREMIER */}
       <AnimatedWords isMenuOpen={isBurgerOpen} />
+
+
 
       <nav>
         <div className="nav-left">
@@ -230,7 +236,7 @@ export default function Navbar() {
 
         <div className="nav-center ">
           <div className="nav-item">
-            <svg className="logo" width="40" height="40" viewBox="0 0 154 164" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className="logo" viewBox="0 0 154 164" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g id="Group-4" className="logo-groups">
                 <g id="Group-2" className="logo-part left-part">
                   <path d="M0 2L27 27.5V120H0V2Z" fill="white"/>
@@ -279,11 +285,10 @@ export default function Navbar() {
           <div className="link-highlighter"></div>
         </div>
       </div>
+  </div>
 
       <div className="container">
-        <section className="hero">
-          <h1>Welcome to My Portfolio</h1>
-        </section>
+        <Hero/>
       </div>
     </>
   );

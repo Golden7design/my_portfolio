@@ -25,7 +25,7 @@ const gambarino = localFont({
   src: [
     {
         path: "./fonts/Gambarino/Gambarino-Regular.otf",
-        weight: "400",
+        
         style: "normal",
     }
   ],

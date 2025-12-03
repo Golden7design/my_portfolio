@@ -3,7 +3,7 @@
 :root{
     --light: #f3f3f3;
     --dark: #141414;
-    --accent: #333333;
+    --accent: rgba(128, 74, 74, 0.8);
 }
 
 *{
@@ -21,17 +21,9 @@ img{
     height: 100%;
     object-fit: cover;
 }
-h1{
-    font-family: var(--font-clash-display);
-    text-transform: uppercase;
-    font-size: 10rem;
-    font-weight: 500;
-    letter-spacing: -0.1rem;
-    line-height: 0.9;
-    pointer-events: none;
-}
 
-p, a{
+
+.navbar-wrapper p, a{
     text-decoration: none;
     text-transform: uppercase;
     font-size: 0.8rem;
@@ -47,21 +39,7 @@ p, a{
     z-index: 0;
 }
 
-section{
-    position: relative;
-    width: 100vw;
-    height: 100svh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: var(--dark);
-    color: var(--light);
-    padding: 2rem;
-}
-.hero h1{
-    width: 70%;
-}
+
 nav {
   position: fixed;
   top: 0;
@@ -88,6 +66,8 @@ nav > div {
   transform-origin: center;
   transition: transform 0.2s ease;
   overflow: visible;
+  width: 40px;
+  height: 40px;
 }
 
 /* Groupe global du SVG */
@@ -98,20 +78,28 @@ nav > div {
 
 /* Rotation au hover */
 .logo:hover .logo-groups {
-  transform: rotate(8deg); /* tu peux tester : -5deg, 10deg, etc. */
+  transform: rotate(12deg); /* tu peux tester : -5deg, 10deg, etc. */
 }
 
 
 /* Groupe gauche : va vers la gauche */
 .logo:hover .left-part {
-  transform: translateX(-8px);
+  transform: translateX(-30px);
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Groupe droit : va vers la droite */
 .logo:hover .right-part {
-  transform: translateX(8px);
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateX(30px);
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.logo .left-part {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Groupe droit : va vers la droite */
+.logo .right-part {
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Centrage absolu du logo */
@@ -282,11 +270,7 @@ nav p {
 }
 
 @media (max-width: 1000px) {
-    .hero h1{
-        width: 100%;
-        font-size: 4rem;
 
-    }
     .menu-content{
         top: 25%;
     }
@@ -303,7 +287,7 @@ nav p {
     letter-spacing: 0 !important;
     line-height: 1 !important;
   }
-    .nav-item svg{
+    .nav-item .logo{
         width: 32px;
         height: 32px;
     }
@@ -317,20 +301,11 @@ nav p {
   .menu-link a span {
     font-size: 3rem !important;
   }
-}
-
-@media (max-width: 480px) {
-  .menu-link a,
-  .menu-link a span {
-    font-size: 2.25rem !important;
-  }
-      .hero h1{
-        width: 100%;
-        font-size: 3rem;
-
+      .nav-item .logo{
+        width: 28px;
+        height: 28px;
     }
 }
-
 /* === BURGER MENU ANIMATION === */
 .burger {
   display: flex;
@@ -362,3 +337,21 @@ nav p {
 .burger.open span:last-child {
   transform: rotate(-45deg) translate(4px, -4px);
 }
+
+@media (max-width: 480px) {
+  .menu-link a,
+  .menu-link a span {
+    font-size: 2.25rem !important;
+  }
+        .nav-item .logo{
+        width: 20px;
+        height: 20px;
+    }
+    .burger{
+      width: 32px;
+    }
+  .burger span {
+    height: 3px;
+  }
+}
+
