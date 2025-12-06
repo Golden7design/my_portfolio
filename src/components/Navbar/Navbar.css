@@ -1,0 +1,360 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+:root{
+    --light: #f3f3f3;
+    --dark: #141414;
+    --accent: rgba(128, 74, 74, 0.8);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color: #000;
+    font-family: sans-serif;
+}
+
+img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.navbar-wrapper p, a{
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1;
+    user-select: none;
+}
+.container{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    will-change: transform, opacity;
+    z-index: 0;
+}
+
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  padding: 1.5rem 1.5rem;
+  color: var(--dark);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  mix-blend-mode: difference;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+/* Empêche le débordement */
+nav > div {
+  flex-shrink: 0;
+}
+
+/* === LOGO ANIMATION — ÉCART AU HOVER === */
+.logo {
+  cursor: pointer;
+  transform-origin: center;
+  transition: transform 0.2s ease;
+  overflow: visible;
+  width: 40px;
+  height: 40px;
+}
+
+/* Groupe global du SVG */
+.logo-groups {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center;
+}
+
+/* Rotation au hover */
+.logo:hover .logo-groups {
+  transform: rotate(12deg); /* tu peux tester : -5deg, 10deg, etc. */
+}
+
+
+/* Groupe gauche : va vers la gauche */
+.logo:hover .left-part {
+  transform: translateX(-30px);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Groupe droit : va vers la droite */
+.logo:hover .right-part {
+  transform: translateX(30px);
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.logo .left-part {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Groupe droit : va vers la droite */
+.logo .right-part {
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Centrage absolu du logo */
+.nav-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+/* Assure que les côtés ne prennent pas trop de place */
+.nav-left,
+.nav-right {
+  min-width: 0;
+}
+
+/* Style existant pour le toggle */
+nav p {
+  padding: 1rem;
+  cursor: pointer;
+  margin: 0;
+}
+
+/* Ton style TimeDisplay reste inchangé */
+.time-container {
+  display: flex;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  line-height: 1;
+  color: var(--light);
+}
+
+.digit {
+  width: 0.85em;
+  text-align: center;
+  position: relative;
+  height: 1.2em;
+  overflow: hidden;
+}
+
+.digit-inner {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: translateY(0);
+}
+
+.digit.animate .digit-inner {
+  transform: translateY(-100%);
+}
+
+
+
+
+.menu-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100svh;
+    overflow: hidden;
+    background-color: var(--light);
+    color: var(--dark);
+    z-index: 1;
+    will-change: clip-path;
+}
+
+.menu-content{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    will-change: transform, opacity;
+    font-family: var(--font-generale-sans);
+    
+}
+.menu-col{
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-col:nth-child(2){
+    text-align: right;
+
+}
+
+.menu-img{
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    will-change: transform, opacity;
+}
+
+.menu-links-wrapper{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: max-content;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    will-change: transform;
+
+}
+.menu-link{
+    position: relative;
+    will-change: transform;
+    overflow: hidden;
+
+}
+
+.menu-link a{
+    position: relative;
+    color: var(--dark);
+    font-family: var(--font-clash-display);
+    font-size: 10rem;
+    font-weight: 500;
+    letter-spacing: -0.02rem;
+    display: inline-block;
+    overflow: hidden;
+}
+.menu-link a span {
+  font-size: inherit !important;
+  display: inline-block;
+}
+
+.menu-link a span:nth-child(2){
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.link-highlighter{
+    position: absolute;
+    bottom: 12%;
+    left: 0;
+    width: 400px;
+    height: 0.75rem;
+    background-color: var(--accent);
+    will-change: transform, width;
+}
+
+.menu-overlay{
+    clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+}
+
+.char{
+    position: relative; 
+    display: inline-block;
+    will-change: transform;
+}
+
+@media (max-width: 1000px) {
+
+    .menu-content{
+        top: 25%;
+    }
+    .menu-img, .link-highlighter{
+        display: none;
+    }
+    .menu-links-wrapper{
+        flex-direction: column;
+        gap: 0;
+    }
+      .menu-link a,
+  .menu-link a span {
+    font-size: 4rem !important;
+    letter-spacing: 0 !important;
+    line-height: 1 !important;
+  }
+    .nav-item .logo{
+        width: 32px;
+        height: 32px;
+    }
+    .menu-overlay{
+        height: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+  .menu-link a,
+  .menu-link a span {
+    font-size: 3rem !important;
+  }
+      .nav-item .logo{
+        width: 28px;
+        height: 28px;
+    }
+    .time-container{
+      font-size: 0.4rem;
+    }
+}
+/* === BURGER MENU ANIMATION === */
+.burger {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 42px;
+  height: 18px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.burger span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: var(--light);
+  border-radius: 2px;
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+              opacity 0.3s ease;
+  transform-origin: center;
+}
+
+.burger.open span:first-child {
+  transform: rotate(45deg) translate(4px, 4px);
+}
+
+.burger.open span:last-child {
+  transform: rotate(-45deg) translate(4px, -4px);
+}
+
+@media (max-width: 480px) {
+  .menu-link a,
+  .menu-link a span {
+    font-size: 2.25rem !important;
+  }
+        .nav-item .logo{
+        width: 20px;
+        height: 20px;
+    }
+    .burger{
+      width: 32px;
+    }
+  .burger span {
+    height: 3px;
+  }
+}
+

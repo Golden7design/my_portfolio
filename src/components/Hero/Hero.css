@@ -1,0 +1,90 @@
+:root{
+    --light: #f3f3f3;
+    --dark: #000000;
+}
+
+.hero{
+    position: relative;
+    width: 100vw;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--dark);
+    color: var(--light);
+    padding: 3.8rem 2rem;
+}
+.hero h1{
+    font-family: var(--font-clash-display);
+    text-transform: uppercase;
+    font-size: 11rem;
+    font-weight: 500;
+    letter-spacing: -0.1rem;
+    line-height: 0.9;
+    pointer-events: none;
+    width: 70%;
+}
+.hero .job{
+    font-family: var(--font-generale-sans);
+    text-align: center;
+    opacity: 70%;
+    font-size: 1.5rem;
+    padding-top: 2rem;
+}
+.hero .message{
+    font-family: var(--font-aeonik);
+    text-align: center;
+    opacity: 60%;
+    font-size: 1.1rem;
+    padding-top: 4rem;
+}
+
+@media (max-width: 1000px) {
+    .hero{
+        width: 100vw;
+    }
+    .hero h1{
+        width: 100%;
+        font-size: 4rem;
+        text-align: center;
+    }
+    .hero .job{
+        font-size: 1.3rem;
+        padding-top: 24rem;
+    }
+    .hero .message{
+        font-size: 0.9rem;
+        padding-top: 1rem;
+    }
+
+}
+
+@media (max-width: 480px) {
+      .hero h1{
+        width: 100%;
+        font-size: 3rem;
+
+    }
+        .hero .job{
+        font-size: 0.9rem;
+        padding-top: 22rem;
+    }
+    .hero .message{
+        font-size: 0.6rem;
+        padding-top: 1rem;
+    }
+}
+@media (max-width: 350px) {
+      .hero h1{
+        width: 100%;
+        font-size: 3rem;
+
+    }
+        .hero .job{
+        font-size: 0.9rem;
+        padding-top: 15rem;
+    }
+    .hero .message{
+        font-size: 0.6rem;
+        padding-top: 1rem;
+    }
+}
