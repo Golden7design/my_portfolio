@@ -172,7 +172,7 @@
 @media (max-width: 480px) {
     .hero-content{
         flex-direction: column;
-        gap: 3rem;
+        gap: 8rem;
     }
     .hero .bar-content{
         display: none;
