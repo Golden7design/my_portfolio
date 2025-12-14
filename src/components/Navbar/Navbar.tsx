@@ -217,6 +217,65 @@ export default function Navbar() {
     };
   }, []);
 
+  useEffect(() => {
+  if (typeof window === "undefined") return;
+
+  const nav = document.querySelector("nav");
+  if (!nav) return;
+
+  let lastScroll = window.scrollY;
+  let isHidden = false;
+
+  const showNav = () => {
+    if (!isHidden) return;
+    gsap.to(nav, {
+      y: 0,
+      duration: 0.35,
+      ease: "power3.out",
+    });
+    isHidden = false;
+  };
+
+  const hideNav = () => {
+    if (isHidden) return;
+    gsap.to(nav, {
+      y: "-120%",
+      duration: 0.35,
+      ease: "power3.out",
+    });
+    isHidden = true;
+  };
+
+  const onScroll = () => {
+    // 🔒 si le menu est ouvert → on bloque
+    if (menuOpenRef.current) return;
+
+    const current = window.scrollY;
+
+    // seuil anti-jitter
+    if (current < 80) {
+      showNav();
+      lastScroll = current;
+      return;
+    }
+
+    if (current > lastScroll) {
+      hideNav(); // scroll down
+    } else {
+      showNav(); // scroll up
+    }
+
+    lastScroll = current;
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  return () => {
+    window.removeEventListener("scroll", onScroll);
+  };
+}, []);
+
+
   return (
     <>
     <NavAreaClickSound/>

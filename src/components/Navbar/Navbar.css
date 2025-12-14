@@ -64,6 +64,7 @@ nav {
   mix-blend-mode: difference;
   z-index: 2;
   box-sizing: border-box;
+  will-change: transform;
 }
 
 /* Empêche le débordement */
