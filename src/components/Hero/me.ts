@@ -5,7 +5,7 @@ export interface me {
 }
 
 export const me: me = {
-  name: "Nassir GOUOMBA",
+  name: "Nassir",
   job: "Freelance FullStack Developer & DevOps",
   message: "Crafting digital experiences that matter."
 };

@@ -1,0 +1,186 @@
+/* Works.css - version fluide & sans tremblement */
+/* ========= 1. structure générale ========= */
+.works-container {
+  display: flex;
+  height: 80vh;
+  gap: 16px;
+  padding-bottom: 10px;
+  transform: translate3d(0, 0, 0); /* GPU layer */
+  backface-visibility: hidden;
+  will-change: transform; /* GPU layer sur tout le conteneur */
+}
+
+.works {
+  padding-top: calc(4rem - 1px);
+  min-height: 100vh;
+}
+
+.works h1 {
+  text-align: center;
+  font-family: var(--font-clash-display);
+  font-size: 4rem;
+  min-height: 30px;
+}
+
+/* ========= 2. colonne gauche ========= */
+.works-left {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-left: 5px;
+}
+
+.desc {
+  height: 100%;
+  background-color: #eeeeee;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bande {
+  background-color: black;
+  height: 10%;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.desc h1 {
+  text-align: left;
+  padding-top: 8px;
+  padding-left: 32px;
+  height: 75px;
+}
+
+.desc .subtitle {
+  text-align: left;
+  padding-left: 48px;
+  padding-bottom: 16px;
+  padding-top: 16px;
+  font-family: var(--font-generale-sans);
+  font-size: 1.4rem;
+}
+
+.desc .desc-content {
+  width: 80%;
+  padding-left: 56px;
+  font-family: var(--font-aeonik);
+}
+
+/* ========= 3. techno & status ========= */
+.techlogos {
+  margin-top: 24px;
+  height: 20%;
+  width: 75%;
+  margin-left: 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 64px;
+}
+
+.techlogos .logos {
+  display: flex;
+  gap: 24px;
+  margin-left: 32px;
+}
+
+.techlogos .logos svg {
+  height: 30px;
+  width: 30px;
+}
+
+.techlogos .dev {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.techlogos .point {
+  height: 7px;
+  width: 7px;
+  background-color: black;
+  border-radius: 50%;
+}
+
+.techlogos .dev p {
+  font-family: var(--font-generale-sans);
+}
+
+.works-left .status {
+  margin-left: 56px;
+}
+
+.works-left .status p {
+  font-size: 0.9rem;
+  font-family: var(--font-aeonik);
+}
+
+/* ========= 4. colonne droite (images) ========= */
+.works-right {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  gap: 16px;
+  margin-right: 5px;
+  overflow: hidden;
+  position: relative;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform; /* GPU layer */
+}
+
+/* images fixes visibles */
+.img1,
+.img2,
+.img3 {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.img1 {
+  height: 50%;
+  background-color: blueviolet;
+}
+
+.img2 {
+  height: 25%;
+  background-color: beige;
+}
+
+.img3 {
+  height: 25%;
+  background-color: aqua;
+}
+
+/* images animées (superposées) */
+.img4,
+.img5,
+.img6 {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-radius: 8px;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform, opacity; /* seules props animées */
+}
+
+.img4 {
+  top: 0;
+  height: calc(50% - 8px);
+  background-color: #7d6b9d;
+}
+
+.img5 {
+  top: 50%;
+  height: calc(25% - 8px);
+  background-color: #0a0a0a;
+}
+
+.img6 {
+  bottom: 0;
+  height: calc(25% - 8px);
+  background-color: #d4874f;
+}
