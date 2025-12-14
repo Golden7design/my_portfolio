@@ -3,7 +3,6 @@ export const wordsList = [
   "CREATE",
   "DESIGN",
   "DEVELOP",
-  "INNOVATE",
   "EXPLORE",
   "IMAGINE",
   "BUILD",
@@ -12,14 +11,14 @@ export const wordsList = [
   "DREAM",
   "INSPIRE",
   "SHAPE",
-  "TRANSFORM",
   "VISION",
   "FUTURE",
   "DIGITAL",
   "PASSION",
   "GENIUS",
   "ARTISTRY",
-  "MASTERY"
+  "MASTERY",
+  "DEVOPS"
 ];
 
 // Fonction pour obtenir un mot aléatoire différent du précédent
