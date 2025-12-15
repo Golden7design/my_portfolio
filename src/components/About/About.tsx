@@ -38,12 +38,13 @@ const About = () => {
 
     // TIMELINE
     const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: svgRef.current,
-        start: "top 60%",
-        toggleActions: "play none none none",
-      },
-    });
+  scrollTrigger: {
+    trigger: svgRef.current,
+    start: "top 80%",
+    end: "bottom 35%", // optionnel : étend la zone de scrub
+    scrub: true,       // ← c’est ce qui active le scrub
+  },
+});
 
     // 1️⃣ écriture de la ligne
     tl.to(path, {
@@ -138,7 +139,7 @@ useEffect(() => {
 
   return (
     <div className="about-container">
-        <h1 className='about-title' >About Me</h1>
+        <h1 className='about-title' id="About">About Me</h1>
 
         <div className="about-content1">
             <div className="about-me-description">
