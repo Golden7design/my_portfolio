@@ -49,7 +49,13 @@ const InversionLens: React.FC<InversionLensProps> = ({ src, className }) => {
     const setupScene = (texture: THREE.Texture) => {
       if (!containerRef.current || !isMounted) return;
 
-      const imageAspect = texture.image ? texture.image.width / texture.image.height : 1;
+      if (
+        texture.image &&
+        texture.image instanceof HTMLImageElement
+      ) {
+        imageAspect = texture.image.width / texture.image.height;
+      }
+
 
       texture.minFilter = THREE.LinearMipMapLinearFilter;
       texture.magFilter = THREE.LinearFilter;
