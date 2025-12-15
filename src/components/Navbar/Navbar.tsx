@@ -347,8 +347,6 @@ export default function Navbar() {
 
       <div className="container">
         <Hero/>
-        {/* <Works/> */}
-        {/* <Skills/> */}
         <About/>
       </div>
     </>

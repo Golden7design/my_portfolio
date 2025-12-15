@@ -6,8 +6,17 @@
     --light: #f3f3f3;
     --dark: #141414;
     --accent: rgba(128, 74, 74, 0.8);
+    --accent1: rgb(173, 108, 108);
 }
-
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+    scrollbar-shadow-color: #141414;
+}
 
 @theme inline {
   --color-background: var(--background);

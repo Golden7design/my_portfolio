@@ -67,9 +67,13 @@ const About = () => {
 
   }, []);
 
-  useEffect(() => {
+useEffect(() => {
   const btn = buttonRef.current;
   if (!btn) return;
+
+  // Vérifie si on est sur mobile
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile) return; // désactive l'effet sur mobile
 
   const strength = 0.4; // force d'attraction
   const radius = 120;   // distance d'activation (px)
@@ -108,12 +112,27 @@ const About = () => {
   };
 }, []);
 
+
 useEffect(() => {
-  const chars = document.querySelectorAll(".fill-btn .char");
-  chars.forEach((char, i) => {
-    (char as HTMLElement).style.setProperty("--i", i.toString());
+  const aboutEl = document.querySelector(".about-container");
+  const texts = aboutEl?.querySelectorAll(".about-title, .about-me-description p");
+
+  if (!aboutEl || !texts) return;
+
+  ScrollTrigger.create({
+    trigger: aboutEl,
+    start: "top 50%", // quand le top de la section atteint 20% du viewport
+    onEnter: () => {
+      gsap.to(aboutEl, { backgroundColor: "var(--dark)", duration: 0.6 });
+      gsap.to(texts, { color: "white", duration: 0.6 });
+    },
+    onLeaveBack: () => {
+      gsap.to(aboutEl, { backgroundColor: "var(--light)", duration: 0.6 });
+      gsap.to(texts, { color: "black", duration: 0.6 });
+    },
   });
 }, []);
+
 
 
 
@@ -123,8 +142,8 @@ useEffect(() => {
 
         <div className="about-content1">
             <div className="about-me-description">
-                <p>I am a FullStack Developer & DevOps enthusiast, passionate about creating efficient and elegant projects. With over 4 years of experience working on my own projects, I am proficient in Node.js, Next.js, and Three.js. I operate in a DevOps environment, combining design, pipeline, and development to deliver projects ready for deployment at any moment.</p>
-                <p>I prioritize clean UI/UX, security, and effective team collaboration. Curious, open-minded, and thoughtful, I enjoy taking on bold challenges while exploring creative and experimental solutions. My goal: to take on freelance missions, join internationally recognized companies, and leave a visible mark on every project I work on.</p>
+                <p>I am a <span>FullStack Developer</span>  & <span>DevOps</span>  enthusiast, currently in my 3rd year of Computer Engineering, passionate about creating efficient and elegant projects. With over 4 years of experience working on my own projects, I am proficient in <span>Node.js, Next.js,</span>  and <span>Three.js</span>. I operate in a <span>DevOps</span> environment, combining design, pipeline, and development to deliver projects ready for deployment at any moment.</p>
+                <p>I prioritize clean <span>UI/UX</span>, <span>security</span>, and effective <span>team collaboration</span>. Curious, open-minded, and thoughtful, I enjoy taking on bold challenges while exploring creative and experimental solutions. My goal: to take on freelance missions, join internationally recognized companies, and leave a visible mark on every project I work on.</p>
                 <button ref={buttonRef} className="magnetic-btn fill-btn">
                   <span className="fill-bg"></span>
                   <span className="text">
