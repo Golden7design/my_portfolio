@@ -10,7 +10,7 @@ import AnimatedWords from "./AnimatedWords/AnimatedWords";
 import NavAreaClickSound from "../NavAreaClickSound";
 import Hero from "../Hero/Hero";
 import Skills from "../Skills/Skills";
-import Works from "../Works/Works";
+import About from "../About/About";
 
 export default function Navbar() {
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
@@ -348,7 +348,8 @@ export default function Navbar() {
       <div className="container">
         <Hero/>
         {/* <Works/> */}
-        <Skills/>
+        {/* <Skills/> */}
+        <About/>
       </div>
     </>
   );

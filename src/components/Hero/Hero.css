@@ -93,13 +93,14 @@
 .hero .bar-content .dot{
     height: 5px;
     width: 5px;
-    background-color: var(--dark);
+    background-color: var(--accent);
     border-radius: 50%;
+    position: relative;
 }
 .hero .bar-content .bar{
     height: 200px;
     width: 2px;
-    background-color: var(--dark);
+    background-color: var(--accent);
     border-radius: 4px;
 }
 
@@ -108,17 +109,19 @@
     width: 24px;
     transition: fill 0.3s;
     cursor: pointer;
-
-
 }
 .hero .links{
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
 }
+.hero .links svg{
+    transition: transform 0.3s;
+}
 
 .hero .links svg:hover{
     transform: scale(1.1);
+    transition: transform 0.3s;
 }
 
 .hero .scroll{

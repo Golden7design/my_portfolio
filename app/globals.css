@@ -2,9 +2,10 @@
 @import "tailwindcss";
 
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+:root{
+    --light: #f3f3f3;
+    --dark: #141414;
+    --accent: rgba(128, 74, 74, 0.8);
 }
 
 
