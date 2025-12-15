@@ -48,6 +48,7 @@ const InversionLens: React.FC<InversionLensProps> = ({ src, className }) => {
 
     const setupScene = (texture: THREE.Texture) => {
       if (!containerRef.current || !isMounted) return;
+      let imageAspect = 1;
 
       if (
         texture.image &&
