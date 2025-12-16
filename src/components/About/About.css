@@ -14,20 +14,26 @@ img{
     height: 100%;
     object-fit: cover;
 }
-
-.about-title,
-.about-me-description p,
-.fill-btn .char {
-    transition: color 0.6s ease;
-    color: black; /* couleur initiale */
+.word {
+  white-space: nowrap;
 }
 
+.char {
+  will-change: color;
+}
 
 .about-container .about-title{
     font-family: var(--font-clash-display);
     font-size: clamp(2.5rem, 5vw, 6rem);
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 1.3rem;
+}
+.about-container .service-title{
+    font-family: var(--font-clash-display);
+    font-size: clamp(2.5rem, 5vw, 3.0rem);
+    text-align: left;
+    margin: 1.5rem 3rem;
+    color: var(--accent1);
 }
 
 .about-content1{
@@ -38,6 +44,7 @@ img{
     justify-content: space-between;
     align-items: center;
     padding: 0 8rem;
+    margin-bottom: 3rem;
 }
 .about-me-description{
     display: flex;
@@ -51,7 +58,6 @@ img{
 }
 .about-me-description p span{
     font-weight: 600;
-    color: var(--accent1);
 }
 .fill-btn {
     position: relative;
@@ -63,7 +69,7 @@ img{
     border: none;
     border-radius: 1em;
 
-    background: white;
+    background: var(--dark);
     cursor: pointer;
 
     font-family: var(--font-aeonik);
@@ -77,12 +83,13 @@ img{
     position: absolute;
     inset: 0;
 
-    background: var(--accent);
+    background: var(--accent1);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.6s cubic-bezier(.65,0,.35,1);
 
     z-index: 0;
+    pointer-events: auto !important; /* Force l'interaction */
 }
 
 /* TEXTE */
@@ -101,6 +108,7 @@ img{
 .fill-btn .char {
     transition: color 0.25s linear;
     mix-blend-mode: multiply;
+    color: white;
 }
 
 /* HOVER : remplissage */
@@ -110,7 +118,7 @@ img{
 
 /* HOVER : lettres deviennent blanches progressivement */
 .fill-btn:hover .char {
-    color: white;
+    color: black;
 }
 
 /* DÉCALAGE LETTRE PAR LETTRE */
@@ -137,6 +145,8 @@ img{
 }
 .magnetic-btn {
     will-change: transform;
+    pointer-events: auto !important; /* Force l'interaction */
+    cursor: pointer;
 }
 .magnetic-btn:hover {
     transform: scale(1.05);

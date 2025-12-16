@@ -5,13 +5,13 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import InversionLens from "./InversionLens/InversionLens";
 import "./About.css";
+import AnimatedCopy from "./AnimatedCopy";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
   const svgRef = useRef<SVGSVGElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-
 
   useEffect(() => {
     if (!svgRef.current) return;
@@ -38,13 +38,13 @@ const About = () => {
 
     // TIMELINE
     const tl = gsap.timeline({
-  scrollTrigger: {
-    trigger: svgRef.current,
-    start: "top 80%",
-    end: "bottom 35%", // optionnel : étend la zone de scrub
-    scrub: true,       // ← c’est ce qui active le scrub
-  },
-});
+      scrollTrigger: {
+        trigger: svgRef.current,
+        start: "top 80%",
+        end: "bottom 35%",
+        scrub: true,
+      },
+    });
 
     // 1️⃣ écriture de la ligne
     tl.to(path, {
@@ -65,102 +65,105 @@ const About = () => {
       },
       "+=0.1"
     );
-
   }, []);
 
-useEffect(() => {
-  const btn = buttonRef.current;
-  if (!btn) return;
+  useEffect(() => {
+    const btn = buttonRef.current;
+    if (!btn) return;
 
-  // Vérifie si on est sur mobile
-  const isMobile = window.innerWidth <= 768;
-  if (isMobile) return; // désactive l'effet sur mobile
+    // Vérifie si on est sur mobile
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) return; // désactive l'effet sur mobile
 
-  const strength = 0.4; // force d'attraction
-  const radius = 120;   // distance d'activation (px)
+    const strength = 0.4; // force d'attraction
+    const radius = 120;   // distance d'activation (px)
 
-  const onMouseMove = (e: MouseEvent) => {
-    const rect = btn.getBoundingClientRect();
-    const btnX = rect.left + rect.width / 2;
-    const btnY = rect.top + rect.height / 2;
+    const onMouseMove = (e: MouseEvent) => {
+      const rect = btn.getBoundingClientRect();
+      const btnX = rect.left + rect.width / 2;
+      const btnY = rect.top + rect.height / 2;
 
-    const distX = e.clientX - btnX;
-    const distY = e.clientY - btnY;
+      const distX = e.clientX - btnX;
+      const distY = e.clientY - btnY;
 
-    const distance = Math.sqrt(distX ** 2 + distY ** 2);
+      const distance = Math.sqrt(distX ** 2 + distY ** 2);
 
-    if (distance < radius) {
-      gsap.to(btn, {
-        x: distX * strength,
-        y: distY * strength,
-        duration: 0.3,
-        ease: "power3.out",
-      });
-    } else {
-      gsap.to(btn, {
-        x: 0,
-        y: 0,
-        duration: 0.6,
-        ease: "elastic.out(1, 0.4)",
-      });
-    }
-  };
+      if (distance < radius) {
+        gsap.to(btn, {
+          x: distX * strength,
+          y: distY * strength,
+          duration: 0.3,
+          ease: "power3.out",
+        });
+      } else {
+        gsap.to(btn, {
+          x: 0,
+          y: 0,
+          duration: 0.6,
+          ease: "elastic.out(1, 0.4)",
+        });
+      }
+    };
 
-  window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mousemove", onMouseMove);
 
-  return () => {
-    window.removeEventListener("mousemove", onMouseMove);
-  };
-}, []);
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+    };
+  }, []);
 
+  const handleContactClick = () => {
+  const email = "gouombanassir@gmail.com";
+  const subject = "Demande de collaboration";
+  const body = `Bonjour,
 
-useEffect(() => {
-  const aboutEl = document.querySelector(".about-container");
-  const texts = aboutEl?.querySelectorAll(".about-title, .about-me-description p");
+Je vous contacte suite à la consultation de votre portfolio.
 
-  if (!aboutEl || !texts) return;
+J'aimerais discuter d'un projet/collaboration avec vous.
 
-  ScrollTrigger.create({
-    trigger: aboutEl,
-    start: "top 50%", // quand le top de la section atteint 20% du viewport
-    onEnter: () => {
-      gsap.to(aboutEl, { backgroundColor: "var(--dark)", duration: 0.6 });
-      gsap.to(texts, { color: "white", duration: 0.6 });
-    },
-    onLeaveBack: () => {
-      gsap.to(aboutEl, { backgroundColor: "var(--light)", duration: 0.6 });
-      gsap.to(texts, { color: "black", duration: 0.6 });
-    },
-  });
-}, []);
+Cordialement,
+[Votre Nom]`;
 
-
-
+  // Gmail web compose
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  
+  window.open(gmailUrl, '_blank');
+};
 
   return (
     <div className="about-container">
-        <h1 className='about-title' id="About">About Me</h1>
+      <h1 className='about-title' id="About">About Me</h1>
 
-        <div className="about-content1">
-            <div className="about-me-description">
-                <p>I am a <span>FullStack Developer</span>  & <span>DevOps</span>  enthusiast, currently in my 3rd year of Computer Engineering, passionate about creating efficient and elegant projects. With over 4 years of experience working on my own projects, I am proficient in <span>Node.js, Next.js,</span>  and <span>Three.js</span>. I operate in a <span>DevOps</span> environment, combining design, pipeline, and development to deliver projects ready for deployment at any moment.</p>
-                <p>I prioritize clean <span>UI/UX</span>, <span>security</span>, and effective <span>team collaboration</span>. Curious, open-minded, and thoughtful, I enjoy taking on bold challenges while exploring creative and experimental solutions. My goal: to take on freelance missions, join internationally recognized companies, and leave a visible mark on every project I work on.</p>
-                <button ref={buttonRef} className="magnetic-btn fill-btn">
-                  <span className="fill-bg"></span>
-                  <span className="text">
-                    {"Contact Me".split("").map((char, i) => (
-                      <span key={i} className="char">
-                        {char === " " ? "\u00A0" : char}
-                      </span>
-                    ))}
-                  </span>
-                </button>
-
-
-            </div>
-            <div className="img_inversed">
-                <svg
-                className="sign"
+      <div className="about-content1">
+        <div className="about-me-description">
+          <AnimatedCopy>
+            <p>I am a <span>FullStack Developer</span> & <span>DevOps</span> enthusiast, currently in my 3rd year of Computer Engineering, passionate about creating efficient and elegant projects. With over 4 years of experience working on my own projects, I am proficient in <span>Node.js, Next.js,</span> and <span>Three.js</span>. I operate in a <span>DevOps</span> environment, combining design, pipeline, and development to deliver projects ready for deployment at any moment.</p>
+          </AnimatedCopy>
+          
+          <AnimatedCopy>
+            <p>I prioritize clean <span>UI/UX</span>, <span>security</span>, and effective <span>team collaboration</span>. Curious, open-minded, and thoughtful, I enjoy taking on bold challenges while exploring creative and experimental solutions. <span>My goal:</span> to take on freelance missions, join internationally recognized companies, and leave a visible mark on every project I work on.</p>
+          </AnimatedCopy>
+          
+          <button 
+            ref={buttonRef} 
+            className="magnetic-btn fill-btn"
+            onClick={handleContactClick}
+            aria-label="Contact me by email"
+          >
+            <span className="fill-bg"></span>
+            <span className="text">
+              {"Contact Me".split("").map((char, i) => (
+                <span key={i} className="char">
+                  {char === " " ? "\u00A0" : char}
+                </span>
+              ))}
+            </span>
+          </button>
+        </div>
+        
+        <div className="img_inversed">
+          <svg
+            className="sign"
             ref={svgRef}
             width="297"
             height="145"
@@ -180,14 +183,13 @@ useEffect(() => {
             <circle cx="263" cy="15.0203" r="2.5" fill="#804A4A" />
           </svg>
 
-                <InversionLens src="/nassir_img.png" className="inversion-lens"/>
-            </div>
-
+          <InversionLens src="/nassir_img.png" className="inversion-lens"/>
         </div>
+      </div>
 
-        
+      <h2 className="service-title">My services</h2>
     </div>
-  )
-}
+  );
+};
 
-export default About
+export default About;
