@@ -8,9 +8,6 @@ import { menuLinks } from "./navLinks";
 import { TimeDisplay } from "../Time/TimeDisplay";
 import AnimatedWords from "./AnimatedWords/AnimatedWords";
 import NavAreaClickSound from "../NavAreaClickSound";
-import Hero from "../Hero/Hero";
-import Skills from "../Skills/Skills";
-import About from "../About/About";
 
 export default function Navbar() {
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
@@ -25,7 +22,6 @@ export default function Navbar() {
       if (window.SplitText) {
         gsap.registerPlugin(window.SplitText);
 
-        const container = document.querySelector<HTMLDivElement>(".container");
         const navtoggle = document.querySelector<HTMLDivElement>(".nav-toggle");
         const menuOverlay = document.querySelector<HTMLDivElement>(".menu-overlay");
         const menuContent = document.querySelector<HTMLDivElement>(".menu-content");
@@ -87,19 +83,11 @@ export default function Navbar() {
           setIsBurgerOpen(newOpenState); // synchronise l'UI du burger
 
           if (newOpenState) {
-            gsap.to(container, {
-              y: "-40%",
-              opacity: 0.25,
-              duration: 1.25,
-              ease: "expo.out",
-            });
-
             gsap.to(menuOverlay, {
               clipPath: "polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%)",
               duration: 1.25,
               ease: "expo.out",
               onComplete: () => {
-                gsap.set(container, { y: "40%" });
                 gsap.set(".menu-link", { overflow: "visible" });
                 isMenuAnimating = false;
               },
@@ -110,7 +98,6 @@ export default function Navbar() {
             gsap.to(menuLinksEls, { y: "0%", duration: 1.25, stagger: 0.1, delay: 0.25, ease: "expo.out" });
             gsap.to(linkHighlighter, { y: "0%", duration: 1, delay: 1, ease: "expo.out" });
           } else {
-            gsap.to(container, { y: "0%", opacity: 1, duration: 1.25, ease: "expo.out" });
             gsap.to(menuLinksEls, { y: "-200%", duration: 1.25, ease: "expo.out" });
             gsap.to(menuContent, { y: "-100%", duration: 1.25, ease: "expo.out" });
             gsap.to(menuImage, { y: "-100%", duration: 1.25, ease: "expo.out" });
@@ -344,11 +331,6 @@ export default function Navbar() {
         </div>
       </div>
   </div>
-
-      <div className="container">
-        <Hero/>
-        <About/>
-      </div>
     </>
   );
 }

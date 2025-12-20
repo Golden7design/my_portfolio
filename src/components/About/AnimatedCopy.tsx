@@ -24,7 +24,7 @@ export default function AnimatedCopy({
   children,
   colorInitial = "#dddddd",
   colorAccent = "#f0a1a1",
-  colorFinal = "#000000" 
+  colorFinal = "#404040" 
 }: AnimatedCopyProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const splitRefs = useRef<SplitRef[]>([]);

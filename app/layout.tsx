@@ -26,8 +26,16 @@ const Generale_Sans = localFont({
     { path: "./fonts/Generale_Sans/GeneralSans-Regular.otf", weight: "400" },
     { path: "./fonts/Generale_Sans/GeneralSans-Bold.otf", weight: "700" },
     { path: "./fonts/Generale_Sans/GeneralSans-BoldItalic.otf", weight: "700", style: "italic" },
+    { path: "./fonts/Generale_Sans/GeneralSans-Light.otf", weight: "200"},
   ],
   variable: "--font-generale-sans",
+  display: "swap",
+});
+const Generale_Sans_light = localFont({
+  src: [
+    { path: "./fonts/Generale_Sans/GeneralSans-Light.otf", weight: "100"},
+  ],
+  variable: "--font-generale-sans-light",
   display: "swap",
 });
 
@@ -49,6 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           ${Aeonik.variable}
           ${Generale_Sans.variable}
           ${gambarino.variable}
+          ${Generale_Sans_light.variable}
           antialiased h-full
         `}
       >

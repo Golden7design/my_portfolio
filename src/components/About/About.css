@@ -54,7 +54,7 @@ img{
 }
 .about-me-description p{
     font-family: var(--font-aeonik);
-    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-size: clamp(1rem, 2vw, 1.3rem);
 }
 .about-me-description p span{
     font-weight: 600;
@@ -98,7 +98,7 @@ img{
     z-index: 1;
     display: inline-flex;
     transition: transform 0.4s ease;
-    font-size: clamp(0.6rem, 2vw, 0.88rem);
+    font-size: clamp(0.6rem, 3.3vw, 0.88rem);
 }
 .fill-btn:hover .text {
     transform: translateX(2px);

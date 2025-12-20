@@ -1,0 +1,213 @@
+.sercives{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    background-color: var(--light);
+}
+.sercives .services-desc{
+    font-family: var(--font-generale-sans);
+    font-size: clamp(1.1rem, 2.2vw, 2rem);
+    width: 50%;
+    margin-left: 10rem;
+}
+.cards-container{
+    position: relative;
+    display: flex;
+    margin-left: 6rem;
+    width: 250vw;
+    min-height: 100%;
+}
+.cards-pin {
+  height: 100vh;           /* 🔴 indispensable */
+  width: 100vw;   
+  overflow: hidden;  /* cache le scroll horizontal */
+  position: relative;
+}
+
+.cards-container .card{
+    position: relative;
+    padding: 0.6rem;
+    width: 480px;
+    height: 480px;
+}
+.card1{
+    border: 1px solid rgba(128, 128, 128, 0.63);
+}
+.card-head{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2.6rem;
+    padding: 0rem 1rem;
+}
+.card-head .card-svg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+.card-head .card-number{
+    font-family: var(--font-generale-sans-light);
+    font-size: 1.6rem;
+    opacity: 0.5;
+}
+.card-desc {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.8rem;
+  min-height: 42%;
+}
+
+.card-title {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-family: var(--font-clash-display);
+  min-height: 1rem; /* ou 3.2rem */
+  margin: 0 0.7rem;
+  color: #404040;
+}
+
+.card-body {
+  margin: 0 auto;
+  padding-top: 1.8rem;
+  width: 95%;
+  font-family: var(--font-aeonik);
+  opacity: 0.5;
+  font-size: clamp(1rem, 2vw, 1.2rem)
+
+}
+.card hr{
+    color: gray;
+    margin-bottom: 0.6rem;
+    opacity: 0.7;
+}
+.card2, .card3, .card4, .card5{
+    border: 1px solid rgba(128, 128, 128, 0.63);
+    border-left: none;
+}
+
+
+@media (max-width: 1000px) {
+    .card-title{
+        font-size: 1.2rem;
+    }
+    .sercives{
+    gap: 1rem;
+}
+.card-head{
+    margin-bottom: 1rem;
+    padding: 0rem 0.8rem;
+}
+    .card-image{
+        width: 80px;
+        height: 60px;
+    }
+    .cards-container{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        row-gap: 1rem;
+    margin: 0 0.2rem;
+    width: 100vw;
+    min-height: 100%;
+    margin-bottom: 5rem;
+}
+
+    .cards-container .card{
+        padding: 0.6rem;
+        width: 90%;
+        height: 340px;
+        margin: auto;
+    }
+    .card hr{
+        margin-bottom: 1.1rem;
+}
+.card-body {
+  margin: 0 auto;
+  padding-top: 0.5rem;
+  width: 95%;
+  font-family: var(--font-aeonik);
+  opacity: 0.5;
+  font-size: clamp(1rem, 2vw, 1.2rem)
+
+}
+.card2, .card3, .card4, .card5{
+    border-left: 1px solid rgba(128, 128, 128, 0.63);
+}
+.cards-pin {
+  height: 100%;           /* 🔴 indispensable */
+  width: 100vw;
+  overflow: hidden;       /* cache le scroll horizontal */
+  position: relative;
+}
+.sercives .services-desc{
+    font-family: var(--font-generale-sans);
+    font-size: 1.6rem;
+    margin-left: 2.2rem;
+    margin-bottom: 1rem;
+    width: 80%;
+}
+}
+@media (max-width: 450px) {
+    .sercives{
+    gap: 1rem;
+}
+.card-head{
+    margin-bottom: 1rem;
+    padding: 0rem 0.8rem;
+}
+    .card-image{
+        width: 80px;
+        height: 60px;
+    }
+    .cards-container{
+        display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 0.2rem;
+    width: 100vw;
+    min-height: 100%;
+        margin-bottom: 5rem;
+}
+.card-head .card-number{
+    font-size: 1rem;
+}
+    .cards-container .card{
+        padding: 0.6rem;
+        width: 90%;
+        height: 355px;
+        margin: auto;
+    }
+    .card hr{
+    margin-bottom: 0.8rem;
+}
+.card-body {
+  margin: 0 auto;
+  padding-top: 0.2rem;
+  width: 95%;
+  font-family: var(--font-aeonik);
+  opacity: 0.5;
+  font-size: clamp(1rem, 2vw, 1.2rem)
+
+}
+.card2, .card3, .card4, .card5{
+    border-left: 1px solid rgba(128, 128, 128, 0.63);
+}
+.cards-pin {
+  height: 100%;           /* 🔴 indispensable */
+  width: 100vw;      /* cache le scroll horizontal */
+  position: relative;
+}
+.sercives .services-desc{
+    font-family: var(--font-generale-sans);
+    font-size: clamp(1.1rem, 2.2vw, 2rem);
+    width: 70%;
+    margin-left: 2.2rem;
+}
+}
+/* .svg-anime{
+    position: absolute;
+    width: 100%;
+    height: auto;
+    bottom: 8rem;
+    z-index: 100;
+} */

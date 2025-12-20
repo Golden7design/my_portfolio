@@ -3,7 +3,7 @@
 
 
 :root{
-    --light: #f3f3f3;
+    --light: #e0e0e0;
     --dark: #141414;
     --accent: rgba(128, 74, 74, 0.8);
     --accent1: rgb(173, 108, 108);
@@ -36,3 +36,21 @@
   }
 
 
+#scroll-root {
+  position: relative;
+  z-index: 0;
+}
+
+#visual-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.visual-dim {
+  position: absolute;
+  inset: 0;
+  background: black;
+  opacity: 0;          /* état normal */
+}

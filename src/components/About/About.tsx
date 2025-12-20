@@ -186,8 +186,6 @@ Cordialement,
           <InversionLens src="/nassir_img.png" className="inversion-lens"/>
         </div>
       </div>
-
-      <h2 className="service-title">My services</h2>
     </div>
   );
 };
