@@ -8,7 +8,7 @@ const Hero = () => {
   return (
       <section className='hero'>
         <ParticlesCanvas/>
-        
+
         <div className='hero-content'>
           <div className="textes">
           <h1><span>Hey, I'm </span> {me.name}</h1> 

@@ -15,21 +15,6 @@
     scroll-behavior: smooth;
     scrollbar-width: thin;
     scrollbar-color: var(--accent) transparent;
-    scrollbar-shadow-color: #141414;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
   html {
     scroll-behavior: smooth;
@@ -40,17 +25,6 @@
   position: relative;
   z-index: 0;
 }
-
-#visual-shell {
-  position: fixed;
-  inset: 0;
-  z-index: 5;
-  pointer-events: none;
-}
-
-.visual-dim {
-  position: absolute;
-  inset: 0;
-  background: black;
-  opacity: 0;          /* état normal */
+body{
+  background-color: var(--light);
 }

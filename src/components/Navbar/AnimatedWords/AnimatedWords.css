@@ -5,7 +5,7 @@
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 2; /* Au-dessus pour tester */
+  z-index: 2;
   opacity: 0;
   overflow: hidden;
 }
@@ -25,7 +25,7 @@
   white-space: nowrap;
   user-select: none;
   will-change: transform;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-clash-display);
   letter-spacing: -0.02em;
   line-height: 1;
 }
