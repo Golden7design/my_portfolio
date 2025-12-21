@@ -22,7 +22,7 @@ interface SplitRef {
 
 export default function AnimatedCopy({ 
   children,
-  colorInitial = "#dddddd",
+  colorInitial = "#404040",
   colorAccent = "#f0a1a1",
   colorFinal = "#404040" 
 }: AnimatedCopyProps) {

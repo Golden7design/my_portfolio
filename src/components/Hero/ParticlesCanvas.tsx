@@ -34,7 +34,7 @@ const config = {
     logoPath: "./nash_white.svg",
     logoSize: 400,
     logoColor: "#252525",
-    canvasBg: "#f3f3f3",
+    canvasBg: "#f8f8f8",
     distortionRadius: 3000,
     forceStrength: 0.0035,
     maxDisplacement: 100,
