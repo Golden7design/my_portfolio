@@ -1,22 +1,9 @@
 
 
-/* Transition globale sur le body */
-body {
-  transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-              color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* État actif quand Works est visible */
-body.works-active {
-  background-color: var(--dark);
-  color: #f5f5f5;
-}
-
 .works {
   position: relative;
   width: 100%;
   min-height: 100svh;
-  --title-opacity: 0;
 }
 
 .works h1 {
@@ -24,9 +11,9 @@ body.works-active {
   font-size: clamp(2.5rem, 5vw, 6rem);
   text-align: center;
   margin-bottom: 1.3rem;
-  opacity: var(--title-opacity);
   transform: translateY(calc((1 - var(--title-opacity)) * 20px));
   transition: opacity 0.6s ease, transform 0.6s ease;
+  text-transform: uppercase;
 }
 
 .works .container-works {
@@ -98,11 +85,6 @@ body.works-active {
   font-family: var(--font-generale-sans);
   font-size: clamp(1.1rem, 2.2vw, 2.5rem);
   transition: color 0.8s ease;
-}
-
-/* Adaptation du texte en mode clair */
-body.works-active .work-desc p {
-  color: #f5f5f5;
 }
 
 .work-desc .learn-more {

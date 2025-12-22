@@ -30,10 +30,16 @@ interface Work {
   results: string[]
 }
 
-// Définir les font-family spécifiques par projet
-const worksFontFamily: Record<string, string> = {
-  'nashfood': '"Dancing Script", cursive', // Ou la font que vous voulez
-  'Portfolio': 'var(--font-clash-display)',
+// Configuration complète par projet (font + couleur)
+const worksConfig: Record<string, { fontFamily: string; color: string }> = {
+  'nashfood': {
+    fontFamily: '"Dancing Script", cursive',
+    color: '#FF6B35'
+  },
+  'Portfolio': {
+    fontFamily: 'var(--font-clash-display)',
+    color: '#D7FB61'
+  },
   // Ajoutez vos projets ici
 }
 
@@ -74,8 +80,11 @@ const WorkDetail = () => {
   const slug = params?.slug as string
   const work = worksData[slug]
   
-  // Récupérer la font-family pour ce projet (fallback sur clash-display)
-  const titleFontFamily = worksFontFamily[slug] || '"Dancing Script", cursive'
+  // Récupérer la config pour ce projet (fallback sur config par défaut)
+  const config = worksConfig[slug] || {
+    fontFamily: '"Dancing Script", cursive',
+    color: '#ffffff'
+  }
 
   if (!work) {
     return (
@@ -92,7 +101,13 @@ const WorkDetail = () => {
       <section className="hero-work-section">
         <div className="hero-work-content">
           <span className="work-year">{work.year}</span>
-          <h1 className="work-title" style={{ fontFamily: titleFontFamily }}>
+          <h1 
+            className="work-title" 
+            style={{ 
+              fontFamily: config.fontFamily,
+              color: config.color 
+            }}
+          >
             {work.title}
           </h1>
           <p className="work-subtitle">{work.subtitle}</p>

@@ -9,46 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 const Works = () => {
-  const worksRef = useRef<HTMLDivElement>(null)
   const link1Ref = useRef<HTMLDivElement>(null)
   const link2Ref = useRef<HTMLDivElement>(null)
-
-  // Gestion du changement de background
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!worksRef.current) return
-
-      const rect = worksRef.current.getBoundingClientRect()
-      const windowHeight = window.innerHeight
-
-      let progress = 0
-      
-      if (rect.top <= 0) {
-        progress = 1
-      } else if (rect.top < windowHeight) {
-        progress = 1 - (rect.top / windowHeight)
-      }
-
-      if (progress > 0.3) {
-        document.body.classList.add('works-active')
-      } else {
-        document.body.classList.remove('works-active')
-      }
-
-      if (worksRef.current) {
-        const titleOpacity = Math.min(progress * 2, 1)
-        worksRef.current.style.setProperty('--title-opacity', titleOpacity.toString())
-      }
-    }
-
-    handleScroll()
-    window.addEventListener('scroll', handleScroll, { passive: true })
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      document.body.classList.remove('works-active')
-    }
-  }, [])
 
   // Animation GSAP pour les boutons
   useEffect(() => {
@@ -101,7 +63,7 @@ const Works = () => {
 
   return (
     <ReactLenis>
-      <div className='works' ref={worksRef}>
+      <div className='works'>
         <h1 id='works' >Works</h1>
         <div className="container-works">
           

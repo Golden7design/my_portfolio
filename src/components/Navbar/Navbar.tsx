@@ -11,7 +11,8 @@ import NavAreaClickSound from "../NavAreaClickSound";
 
 export default function Navbar() {
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
-  const menuOpenRef = useRef(false); // pour GSAP
+  const menuOpenRef = useRef(false);
+  const toggleMenuRef = useRef<(() => void) | null>(null); // Référence pour la fonction toggleMenu
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -80,7 +81,7 @@ export default function Navbar() {
 
           const newOpenState = !menuOpenRef.current;
           menuOpenRef.current = newOpenState;
-          setIsBurgerOpen(newOpenState); // synchronise l'UI du burger
+          setIsBurgerOpen(newOpenState);
 
           if (newOpenState) {
             gsap.to(menuOverlay, {
@@ -96,7 +97,7 @@ export default function Navbar() {
             gsap.to(menuContent, { y: "0%", opacity: 1, duration: 1.5, ease: "expo.out" });
             gsap.to(menuImage, { scale: 1, opacity: 1, duration: 1.5, ease: "expo.out" });
             gsap.to(menuLinksEls, { y: "0%", duration: 1.25, stagger: 0.1, delay: 0.25, ease: "expo.out" });
-            gsap.to(linkHighlighter, { y: "0%", duration: 1, delay: 1, ease: "expo.out" });
+            gsap.to(linkHighlighter, { y: "0%", duration: 0.5,delay: 1, ease: "expo.out" });
           } else {
             gsap.to(menuLinksEls, { y: "-200%", duration: 1.25, ease: "expo.out" });
             gsap.to(menuContent, { y: "-100%", duration: 1.25, ease: "expo.out" });
@@ -123,7 +124,20 @@ export default function Navbar() {
           }
         }
 
+        // Stocker la fonction toggleMenu pour pouvoir l'appeler depuis les liens
+        toggleMenuRef.current = toggleMenu;
+
         navtoggle?.addEventListener("click", toggleMenu);
+
+        // 🆕 Ajouter l'événement de fermeture sur les liens
+        menuLinksEls.forEach((linkEl) => {
+          linkEl.addEventListener("click", (e) => {
+            // Fermer le menu uniquement s'il est ouvert
+            if (menuOpenRef.current) {
+              toggleMenu();
+            }
+          });
+        });
 
         const menuLinksContainer = document.querySelectorAll<HTMLDivElement>(".menu-link");
         menuLinksContainer.forEach((link) => {
@@ -205,132 +219,128 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-  if (typeof window === "undefined") return;
+    if (typeof window === "undefined") return;
 
-  const nav = document.querySelector("nav");
-  if (!nav) return;
+    const nav = document.querySelector("nav");
+    if (!nav) return;
 
-  let lastScroll = window.scrollY;
-  let isHidden = false;
+    let lastScroll = window.scrollY;
+    let isHidden = false;
 
-  const showNav = () => {
-    if (!isHidden) return;
-    gsap.to(nav, {
-      y: 0,
-      duration: 0.35,
-      ease: "power3.out",
-    });
-    isHidden = false;
-  };
+    const showNav = () => {
+      if (!isHidden) return;
+      gsap.to(nav, {
+        y: 0,
+        duration: 0.35,
+        ease: "power3.out",
+      });
+      isHidden = false;
+    };
 
-  const hideNav = () => {
-    if (isHidden) return;
-    gsap.to(nav, {
-      y: "-120%",
-      duration: 0.35,
-      ease: "power3.out",
-    });
-    isHidden = true;
-  };
+    const hideNav = () => {
+      if (isHidden) return;
+      gsap.to(nav, {
+        y: "-120%",
+        duration: 0.35,
+        ease: "power3.out",
+      });
+      isHidden = true;
+    };
 
-  const onScroll = () => {
-    // 🔒 si le menu est ouvert → on bloque
-    if (menuOpenRef.current) return;
+    const onScroll = () => {
+      if (menuOpenRef.current) return;
 
-    const current = window.scrollY;
+      const current = window.scrollY;
 
-    // seuil anti-jitter
-    if (current < 80) {
-      showNav();
+      if (current < 80) {
+        showNav();
+        lastScroll = current;
+        return;
+      }
+
+      if (current > lastScroll) {
+        hideNav();
+      } else {
+        showNav();
+      }
+
       lastScroll = current;
-      return;
-    }
+    };
 
-    if (current > lastScroll) {
-      hideNav(); // scroll down
-    } else {
-      showNav(); // scroll up
-    }
+    window.addEventListener("scroll", onScroll, { passive: true });
 
-    lastScroll = current;
-  };
-
-  window.addEventListener("scroll", onScroll, { passive: true });
-
-  return () => {
-    window.removeEventListener("scroll", onScroll);
-  };
-}, []);
-
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
 
   return (
     <>
-    <NavAreaClickSound/>
-    <div className="navbar-wrapper" >
-      {/* Nouveau composant AnimatedWords - EN PREMIER */}
-      <AnimatedWords isMenuOpen={isBurgerOpen} />
-      <nav>
-        <div className="nav-left">
-          <div className="nav-toggle" aria-label={isBurgerOpen ? "Close menu" : "Open menu"}>
-            <div className={`burger ${isBurgerOpen ? "open" : ""}`}>
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
+      <NavAreaClickSound />
+      <div className="navbar-wrapper">
+        <AnimatedWords isMenuOpen={isBurgerOpen} />
+        <nav>
+          <div className="nav-left">
+            <div className="nav-toggle" aria-label={isBurgerOpen ? "Close menu" : "Open menu"}>
+              <div className={`burger ${isBurgerOpen ? "open" : ""}`}>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="nav-center ">
-          <div className="nav-item">
-            <svg className="logo" viewBox="0 0 154 164" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <g id="Group-4" className="logo-groups">
-                <g id="Group-2" className="logo-part left-part">
-                  <path d="M0 2L27 27.5V120H0V2Z" fill="white"/>
-                  <path d="M1.42755 40.4772L20.0063 20.8856L79 77L67.5 102L1.42755 40.4772Z" fill="white"/>
-                  <path d="M40.7 162.554L40.8647 135.554L97.9418 135.293L127.2 162.554L40.7 162.554Z" fill="white"/>
-                  <rect y="119.592" width="27" height="58.9808" transform="rotate(-43.52 0 119.592)" fill="white"/>
+          <div className="nav-center ">
+            <div className="nav-item">
+              <svg className="logo" viewBox="0 0 154 164" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="Group-4" className="logo-groups">
+                  <g id="Group-2" className="logo-part left-part">
+                    <path d="M0 2L27 27.5V120H0V2Z" fill="white" />
+                    <path d="M1.42755 40.4772L20.0063 20.8856L79 77L67.5 102L1.42755 40.4772Z" fill="white" />
+                    <path d="M40.7 162.554L40.8647 135.554L97.9418 135.293L127.2 162.554L40.7 162.554Z" fill="white" />
+                    <rect y="119.592" width="27" height="58.9808" transform="rotate(-43.52 0 119.592)" fill="white" />
+                  </g>
+                  <g id="Group-3" className="logo-part right-part">
+                    <path d="M153.612 161.077L126.415 135.787L125.697 43.2897L152.696 43.0801L153.612 161.077Z" fill="white" />
+                    <path d="M151.886 122.612L133.459 142.347L74.0319 86.692L85.3375 61.6035L151.886 122.612Z" fill="white" />
+                    <path d="M111.667 0.843628L111.712 27.8436L54.6382 28.5475L25.1693 1.51503L111.667 0.843628Z" fill="white" />
+                    <rect x="152.699" y="43.4877" width="27" height="58.9808" transform="rotate(136.035 152.699 43.4877)" fill="white" />
+                  </g>
                 </g>
-                <g id="Group-3" className="logo-part right-part">
-                  <path d="M153.612 161.077L126.415 135.787L125.697 43.2897L152.696 43.0801L153.612 161.077Z" fill="white"/>
-                  <path d="M151.886 122.612L133.459 142.347L74.0319 86.692L85.3375 61.6035L151.886 122.612Z" fill="white"/>
-                  <path d="M111.667 0.843628L111.712 27.8436L54.6382 28.5475L25.1693 1.51503L111.667 0.843628Z" fill="white"/>
-                  <rect x="152.699" y="43.4877" width="27" height="58.9808" transform="rotate(136.035 152.699 43.4877)" fill="white"/>
-                </g>
-              </g>
-          </svg>
-          </div>
-        </div>
-
-        <div className="nav-right">
-          <TimeDisplay />
-        </div>
-      </nav>
-
-      <div className="menu-overlay">
-        <div className="menu-content">
-          {menuColumns.map((col, colIndex) => (
-            <div className="menu-col" key={colIndex}>
-              {col.items.map((item, index) => (
-                <p key={index}>{item}</p>
-              ))}
+              </svg>
             </div>
-          ))}
-        </div>
+          </div>
 
-        <div className="menu-img" />
+          <div className="nav-right">
+            <TimeDisplay />
+          </div>
+        </nav>
 
-        <div className="menu-links-wrapper">
-          {menuLinks.map((link, index) => (
-  <div className="menu-link" key={index}>
-    <a href={link.href} className={link.label === "Say Hello!" ? "hello-font" : ""}>
-      <span>{link.label}</span>
-      <span>{link.label}</span>
-    </a>
-  </div>
-))}
-          <div className="link-highlighter"></div>
+        <div className="menu-overlay">
+          <div className="menu-content">
+            {menuColumns.map((col, colIndex) => (
+              <div className="menu-col" key={colIndex}>
+                {col.items.map((item, index) => (
+                  <p key={index}>{item}</p>
+                ))}
+              </div>
+            ))}
+          </div>
+
+          <div className="menu-img" />
+
+          <div className="menu-links-wrapper">
+            {menuLinks.map((link, index) => (
+              <div className="menu-link" key={index}>
+                <a href={link.href} className={link.label === "Say Hello!" ? "hello-font" : ""}>
+                  <span>{link.label}</span>
+                  <span>{link.label}</span>
+                </a>
+              </div>
+            ))}
+            <div className="link-highlighter"></div>
+          </div>
         </div>
       </div>
-  </div>
     </>
   );
 }

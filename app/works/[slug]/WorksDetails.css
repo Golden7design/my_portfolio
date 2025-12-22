@@ -166,14 +166,15 @@
 }
 
 .btn-primary {
-  background: #1a1a1a;
+  background: var(--dark);
   color: #fff;
 }
 
 .btn-primary:hover {
-  background: #333;
+  background: var(--accent);
   transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  color: var(--dark);
 }
 
 .btn-secondary {
@@ -260,12 +261,13 @@
 .result-number {
   font-family: var(--font-clash-display);
   font-size: 3rem;
-  opacity: 0.3;
+  color: var(--accent);
 }
 
 .result-item p {
   font-size: 1.2rem;
   line-height: 1.6;
+  font-family: var(--font-aeonik);
 }
 
 /* Navigation */

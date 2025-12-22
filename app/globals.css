@@ -4,10 +4,11 @@
 
 
 :root{
-    --ligh: #f8f8f8;
+    --light: #f8f8f8;
     --dark: #141414;
-    --accent: rgba(128, 74, 74, 0.8);
-    --accent1: rgb(173, 108, 108);
+    --accent: #e1ff01ad;
+    --accent1: #E1FF01;
+    --accent2: #d7fb61;
 }
 *{
     margin: 0;
@@ -27,5 +28,5 @@
   z-index: 0;
 }
 body{
-  background-color: var(--ligh);
+  background-color: var(--light);
 }
