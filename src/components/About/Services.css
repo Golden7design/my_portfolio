@@ -70,8 +70,7 @@ body.works-active {
 }
 .card-number {
   font-variant-numeric: oldstyle-nums proportional-nums;
-  /* ou simplement */
-  font-family: "Times New Roman", serif;
+  font-family: var(--font-gambarino);
   letter-spacing: 0.05em;
 }
 
@@ -134,9 +133,9 @@ body.works-active {
     padding: 0rem 0.8rem;
   }
 
-  .card-image svg {
-    width: 80px;
-    height: 60px;
+  .card-svg svg {
+    width: 120px;
+    height: 120px;
   }
 
   .cards-container {
@@ -202,9 +201,9 @@ body.works-active {
     padding: 0rem 0.8rem;
   }
 
-  .card-image svg{
-    width: 80px;
-    height: 60px;
+  .card-svg svg{
+    width: 115px;
+    height: 115px;
   }
 
   .cards-container {
@@ -224,7 +223,7 @@ body.works-active {
   .cards-container .card {
     padding: 0.6rem;
     width: 90%;
-    height: 355px;
+    height: 335px;
     margin: auto;
   }
 

@@ -71,11 +71,10 @@ img{
     background: var(--dark);
     cursor: pointer;
 
-    font-family: var(--font-clash-display);
+    font-family: var(--font-general-sans);
     font-size: 1rem;
 
     will-change: transform;
-    text-transform: uppercase;
 }
 
 /* BACKGROUND QUI REMPLIT */
@@ -98,7 +97,7 @@ img{
     z-index: 1;
     display: inline-flex;
     transition: transform 0.4s ease;
-    font-size: clamp(0.6rem, 3.3vw, 0.88rem);
+    font-size: clamp(0.6rem, 2.3vw, 0.88rem);
 }
 .fill-btn:hover .text {
     transform: translateX(2px);

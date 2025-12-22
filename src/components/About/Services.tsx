@@ -2,23 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import './Services.css';
-import AnimatedCopy from './AnimatedCopy';
 import { SvgService } from './SvgService';
-
-// 🔢 Chiffres romains
-const toRoman = (num: number): string => {
-  if (num < 1 || num > 3999) return String(num);
-  const values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
-  const symbols = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'];
-  let roman = '';
-  for (let i = 0; i < values.length; i++) {
-    while (num >= values[i]) {
-      roman += symbols[i];
-      num -= values[i];
-    }
-  }
-  return roman;
-};
 
 const Services = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -177,7 +161,7 @@ const Services = () => {
               <div className="card-svg" ref={devSvgRef}>
                 {SvgService.dev()}
               </div>
-              <div className="card-number">{toRoman(1)}</div>
+              <div className="card-number">01</div>
             </div>
             <div className="card-desc">
               <h2 className="card-title">Development of tailor-made web applications</h2>
@@ -197,7 +181,7 @@ const Services = () => {
               <div className="card-svg" ref={moderneSvgRef}>
                 {SvgService.moderne()}
               </div>
-              <div className="card-number">{toRoman(2)}</div>
+              <div className="card-number">02</div>
             </div>
             <div className="card-desc">
               <h2 className="card-title">
@@ -219,7 +203,7 @@ const Services = () => {
               <div className="card-svg" ref={secureSvgRef}>
                 {SvgService.secure()}
               </div>
-              <div className="card-number">{toRoman(3)}</div>
+              <div className="card-number">03</div>
             </div>
             <div className="card-desc">
               <h2 className="card-title">
@@ -242,7 +226,7 @@ const Services = () => {
               <div className="card-svg" ref={devopsSvgRef}>
                 {SvgService.devops()}
               </div>
-              <div className="card-number">{toRoman(4)}</div>
+              <div className="card-number">04</div>
             </div>
             <div className="card-desc">
               <h2 className="card-title">
@@ -265,7 +249,7 @@ const Services = () => {
               <div className="card-svg" ref={performanceSvgRef}>
                 {SvgService.performance()}
               </div>
-              <div className="card-number">{toRoman(5)}</div>
+              <div className="card-number">05</div>
             </div>
             <div className="card-desc">
               <h2 className="card-title">

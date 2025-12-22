@@ -95,15 +95,29 @@
   cursor: pointer;
   transition: opacity 0.3s ease;
   position: relative;
+  mix-blend-mode: difference;
+}
+.work-desc p{
+  font-size: clamp(0.8rem, 2.2vw, 1.5rem);
 }
 
-.work-desc p span {
+.work-desc p .nash-name {
   color: tomato;
   font-family: "Dancing Script", cursive;
   font-optical-sizing: auto;
   font-size: clamp(2.1rem, 3.2vw, 3.5rem);
 }
+.work-desc p .port-name {
+  color: var(--light);
+  font-family: var(--font-clash-display);
+  font-optical-sizing: auto;
+  font-size: clamp(2rem, 3vw, 3rem);
+}
 
+.work-desc .portfolio, .nashfood{
+  display: flex;
+  flex-direction: column;
+}
 .link{
   position: relative;
   display: flex;
@@ -125,6 +139,7 @@
   position: relative;
   left: 0.18em;
   top: 0.08em;
+  mix-blend-mode: difference;
 }
 .button-arrow{
   margin-left: 0.5em;

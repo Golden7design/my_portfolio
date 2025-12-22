@@ -79,7 +79,7 @@ const Works = () => {
               </div>
               
               <div className="work-desc">
-                <p><span>Nash. </span>is a food ordering website</p>
+                <p className='nashfood' ><span className='nash-name' >Nash. </span><span>Full-stack food ordering platform.</span></p>
                 <Link href="/works/nashfood">
                   <div className="link" ref={link1Ref}>
                     <div className="pink1"></div>
@@ -103,6 +103,15 @@ const Works = () => {
 
           {/* Work 2 */}
           <div className="works1">
+
+            <div className="works1-right">
+              <ParallaxImage 
+                src='/assets/NashfoodPhones.jpg'
+                alt='NashFood'
+                speed={0.2}
+              />            
+            </div>
+
             <div className="works1-left">
               <div className="img-left">
                 <ParallaxImage 
@@ -113,8 +122,8 @@ const Works = () => {
               </div>
               
               <div className="work-desc">
-                <p><span>Nash. </span>is a food ordering website</p>
-                <Link href="/works/nashfood">
+                <p className='portfolio'><span className='port-name' >Nassir's Portfolio </span> <span>My personal showcase.</span></p>
+                <Link href="/works/portfolio">
                   <div className="link" ref={link2Ref}>
                     <div className="pink1"></div>
                     <span className="learn-more">learn more</span>
@@ -126,13 +135,7 @@ const Works = () => {
               </div>
             </div>
             
-            <div className="works1-right">
-              <ParallaxImage 
-                src='/assets/NashfoodPhones.jpg'
-                alt='NashFood'
-                speed={0.2}
-              />            
-            </div>
+
           </div>
 
         </div>

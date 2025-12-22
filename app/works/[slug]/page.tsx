@@ -7,6 +7,7 @@ import ParallaxImage from '@/src/components/Works/ParallaxImage'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import Navbar from '@/src/components/Navbar/Navbar'
 
 // Types
 interface Work {
@@ -54,9 +55,9 @@ const worksData: Record<string, Work> = {
     role: 'Full-Stack Developer & UI/UX Designer',
     technologies: ['React.js', 'Firebase', 'Express', 'CSS', 'Node.js', 'MongoDB'],
     images: {
-      hero: '/assets/NashFoodDesk.png',
-      desktop: '/assets/NashFoodDesk.png',
-      mobile: '/assets/NashfoodPhones.jpg',
+      hero: '/assets/nashfood-det1.png',
+      desktop: '/assets/nashfood-det3.jpg',
+      mobile: '/assets/nashfood-det2.jpg',
       details: [
         '/assets/NashFoodDesk.png',
         '/assets/NashfoodPhones.jpg',
@@ -65,7 +66,7 @@ const worksData: Record<string, Work> = {
     link: 'https://nashfood.com',
     github: 'https://github.com/yourusername/nashfood',
     challenge: 'Creating an intuitive food ordering experience that works seamlessly across all devices while maintaining fast load times and real-time updates.',
-    solution: 'Implemented a progressive web app with optimistic UI updates, server-side rendering for SEO, and WebSocket connections for real-time order tracking.',
+    solution: 'I designed a progressive web application (PWA) in Node.js and Express, combining server-side rendering for optimal SEO, optimistic interface updates for a smooth user experience, and enhanced security via middleware on each sensitive endpoint.',
     results: [
       '40% increase in conversion rate',
       '2.5s average page load time',
@@ -85,6 +86,11 @@ const WorkDetail = () => {
     fontFamily: '"Dancing Script", cursive',
     color: '#ffffff'
   }
+    const configLinks = {
+    fontFamily: 'var(--font-general-sans)',
+    color: '#ffffff'
+  }
+
 
   if (!work) {
     return (
@@ -143,7 +149,7 @@ const WorkDetail = () => {
             <div className="project-links">
               {work.link && (
                 <a href={work.link} target="_blank" rel="noopener noreferrer" className="btn-primary">
-                   <span>Visit Websites</span> <span> <FontAwesomeIcon icon={faArrowRight}/> </span>
+                   <span>Visit Websites</span> <span className='arrow-visite' > <FontAwesomeIcon icon={faArrowRight}/> </span>
                 </a>
               )}
               {work.github && (

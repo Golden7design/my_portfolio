@@ -4,6 +4,7 @@
   width: 100%;
   background-color: #fafafa;
   color: #1a1a1a;
+  font-family: var(--font-generale-sans);
 }
 /* Fix pour l'alignement vertical */
 .hero-work-section,
@@ -175,6 +176,21 @@
   transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   color: var(--dark);
+}
+
+@keyframes go {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(10px);
+  }
+  60% {
+    transform: translateX(5px);
+  }
+}
+.btn-primary:hover .arrow-visite{
+  animation: go 0.8s infinite;
 }
 
 .btn-secondary {

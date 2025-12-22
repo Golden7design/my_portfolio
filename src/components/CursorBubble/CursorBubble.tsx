@@ -19,7 +19,7 @@ export default function CursorBubble() {
         x: x,
         y: y,
         duration: 0.6,
-        ease: "back.out(8, 5)", // Effet élastique
+        ease: "back.out(1, 5)", // Effet élastique
       });
     };
 
@@ -33,8 +33,8 @@ export default function CursorBubble() {
       className="cursor-bubble"
       style={{
         position: 'fixed',
-        width: '10px',
-        height: '10px',
+        width: '15px',
+        height: '15px',
         borderRadius: '50%',
         pointerEvents: 'none',
         backgroundColor: 'white',

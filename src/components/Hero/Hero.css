@@ -133,8 +133,29 @@
     font-size: 1.1rem;
     opacity: 60%;
     text-align: center;
+    justify-content: space-between;
     z-index: 2;
+    display: flex;
+    width: 8%;
 }
+/* Animation de rebond (bounce) */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+    color: var(--accent1);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+.scroll-arrow {
+  animation: bounce 2s infinite;
+  /* Optionnel : ajoute une transition douce si tu veux aussi hover effects */
+}
+
 
 @media (max-width: 1000px) {
     .hero{
