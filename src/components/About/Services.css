@@ -3,7 +3,6 @@
     display: flex;
     flex-direction: column;
     gap: 3rem;
-    background-color: var(--ligh);
 }
 .sercives .services-desc{
     font-family: var(--font-generale-sans);

@@ -10,6 +10,7 @@ import Services from "@/src/components/About/Services";
 import Hero from "@/src/components/Hero/Hero";
 import About from "@/src/components/About/About";
 import Skills from "@/src/components/Skills/Skills";
+import Works from "@/src/components/Works/Works";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -50,6 +51,7 @@ export default function Home() {
     <Hero />
     <About />
     <Services />
+    <Works/>
     <Skills />
   </main>
 
