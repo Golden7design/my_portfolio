@@ -1,28 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
 @import "tailwindcss";
 
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+:root{
+    --light: #f8f8f8;
+    --dark: #141414;
+    --accent: #e1ff01ad;
+    --accent1: #E1FF01;
+    --accent2: #d7fb61;
 }
-
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
 }
   html {
     scroll-behavior: smooth;
   }
 
 
+#scroll-root {
+  position: relative;
+  z-index: 0;
+}
+body{
+  background-color: var(--light);
+}

@@ -34,13 +34,13 @@ const config = {
     logoPath: "./nash_white.svg",
     logoSize: 400,
     logoColor: "#252525",
-    canvasBg: "#f3f3f3",
+    canvasBg: "#f8f8f8",
     distortionRadius: 3000,
     forceStrength: 0.0035,
     maxDisplacement: 100,
     returnForce: 0.025,
     pointSize: 3.5,
-    logoOffsetX: 310, // Décalage du logo vers la droite
+    logoOffsetX: 310,
 };
 
 // ============ TYPES ============
@@ -83,7 +83,6 @@ export default function ParticlesCanvas() {
 
     // Détection de la taille d'écran
     useEffect(() => {
-        // Initialisation
         const checkDesktop = () => window.innerWidth >= 1000;
         setIsDesktop(checkDesktop());
         
@@ -123,7 +122,6 @@ export default function ParticlesCanvas() {
 
     // ============ MAIN LOGIC ============
     useEffect(() => {
-        // Ne pas initialiser le canvas si on est en mobile
         if (!isDesktop) return;
 
         const canvas = canvasRef.current;
@@ -149,6 +147,12 @@ export default function ParticlesCanvas() {
             premultipliedAlpha: false,
         });
         if (!gl) throw new Error("WebGL not supported");
+        
+        // ✅ FIX: Définir la couleur de fond immédiatement
+        const bgColor = hexToRgb(config.canvasBg);
+        gl.clearColor(bgColor.r, bgColor.g, bgColor.b, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
@@ -204,7 +208,6 @@ export default function ParticlesCanvas() {
 
             const imageData = ctx.getImageData(0, 0, config.logoSize, config.logoSize);
             const data = imageData.data;
-            // Position du logo décalée vers la droite
             const centerX = canvas.width / 2 + config.logoOffsetX * dpr;
             const centerY = canvas.height / 2;
             const positions: number[] = [];
@@ -245,7 +248,6 @@ export default function ParticlesCanvas() {
             state.positionArray = new Float32Array(positions);
             state.colorArray = new Float32Array(colors);
 
-            // Create buffers
             state.positionBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, state.positionBuffer);
             gl.bufferData(gl.ARRAY_BUFFER, state.positionArray, gl.DYNAMIC_DRAW);
@@ -254,7 +256,6 @@ export default function ParticlesCanvas() {
             gl.bindBuffer(gl.ARRAY_BUFFER, state.colorBuffer);
             gl.bufferData(gl.ARRAY_BUFFER, state.colorArray, gl.STATIC_DRAW);
 
-            // Start animation
             animate();
         };
         image.src = config.logoPath;
@@ -265,7 +266,6 @@ export default function ParticlesCanvas() {
             const { gl, program, particles, positionArray, positionBuffer, mouse, animationCount } = state;
             if (!gl || !program || particles.length === 0) return;
 
-            // Update physics
             if (animationCount > 0) {
                 state.animationCount--;
                 const radiusSquared = config.distortionRadius ** 2;
@@ -319,7 +319,6 @@ export default function ParticlesCanvas() {
                 gl.bufferSubData(gl.ARRAY_BUFFER, 0, positionArray);
             }
 
-            // Render
             const bgColor = hexToRgb(config.canvasBg);
             gl.viewport(0, 0, canvas.width, canvas.height);
             gl.clearColor(bgColor.r, bgColor.g, bgColor.b, 1.0);
@@ -327,14 +326,12 @@ export default function ParticlesCanvas() {
 
             gl.useProgram(program);
             
-            // Set uniforms
             const resLoc = gl.getUniformLocation(program, "u_resolution");
             gl.uniform2f(resLoc!, canvas.width, canvas.height);
             
             const pointSizeLoc = gl.getUniformLocation(program, "u_pointSize");
             gl.uniform1f(pointSizeLoc!, config.pointSize);
 
-            // Set attributes
             gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
             const posLoc = gl.getAttribLocation(program, "a_position");
             gl.enableVertexAttribArray(posLoc);
@@ -350,7 +347,6 @@ export default function ParticlesCanvas() {
             state.animationFrameId = requestAnimationFrame(animate);
         };
 
-        // Cleanup
         return () => {
             window.removeEventListener("mousemove", handleMouseMove);
             window.removeEventListener("resize", handleResize);
@@ -358,7 +354,6 @@ export default function ParticlesCanvas() {
         };
     }, [isDesktop]);
 
-    // Ne pas afficher le canvas sur mobile
     if (!isDesktop) {
         return null;
     }
