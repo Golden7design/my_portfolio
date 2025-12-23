@@ -106,7 +106,7 @@ const Works = () => {
 
             <div className="works1-right">
               <ParallaxImage 
-                src='/assets/NashfoodPhones.jpg'
+                src='/assets/PortPhones.jpg'
                 alt='NashFood'
                 speed={0.2}
               />            
@@ -115,7 +115,7 @@ const Works = () => {
             <div className="works1-left">
               <div className="img-left">
                 <ParallaxImage 
-                  src='/assets/NashFoodDesk.png'
+                  src='/assets/PortDesk.jpg'
                   alt='NashFood'
                   speed={0.2}
                 />

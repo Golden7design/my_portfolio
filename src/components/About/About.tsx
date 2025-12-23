@@ -136,10 +136,13 @@ Cordialement,
 
       <div className="about-content1">
         <div className="about-me-description">
+          <AnimatedCopy>
             <p>I am a <span>FullStack Developer</span> & <span>DevOps</span> enthusiast, currently in my 3rd year of Computer Engineering, passionate about creating efficient and elegant projects. With over 4 years of experience working on my own projects, I am proficient in <span>Node.js, Next.js,</span> and <span>Three.js</span>. I operate in a <span>DevOps</span> environment, combining design, pipeline, and development to deliver projects ready for deployment at any moment.</p>
-
-            <p>I prioritize clean <span>UI/UX</span>, <span>security</span>, and effective <span>team collaboration</span>. Curious, open-minded, and thoughtful, I enjoy taking on bold challenges while exploring creative and experimental solutions. <span>My goal:</span> to take on freelance missions, join internationally recognized companies, and leave a visible mark on every project I work on.</p>
+          </AnimatedCopy>
           
+          <AnimatedCopy>
+            <p>I prioritize clean <span>UI/UX</span>, <span>security</span>, and effective <span>team collaboration</span>. Curious, open-minded, and thoughtful, I enjoy taking on bold challenges while exploring creative and experimental solutions. <span>My goal:</span> to take on freelance missions, join internationally recognized companies, and leave a visible mark on every project I work on.</p>
+          </AnimatedCopy>
           
           <button 
             ref={buttonRef} 
