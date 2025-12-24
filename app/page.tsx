@@ -1,7 +1,7 @@
 // app/page.tsx
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ReactLenis from "lenis/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,10 +11,20 @@ import Hero from "@/src/components/Hero/Hero";
 import About from "@/src/components/About/About";
 import Skills from "@/src/components/Skills/Skills";
 import Works from "@/src/components/Works/Works";
+import { usePathname } from "next/navigation";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
+  const pathname = usePathname();
+  // ✅ Force le remontage des composants lors du retour sur la page
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    // ✅ Incrémenter la key à chaque changement de pathname
+    setKey(prev => prev + 1);
+  }, [pathname]);
+
   useEffect(() => {
     // Synchroniser Lenis avec ScrollTrigger
     const lenis = (window as any).lenis;
@@ -33,7 +43,7 @@ export default function Home() {
         lenis.off('scroll');
       }
     };
-  }, []);
+  }, [key]); // ✅ Recharger quand la key change
 
   return (
     <ReactLenis root options={{ 
@@ -44,19 +54,18 @@ export default function Home() {
       touchMultiplier: 2,
     }}>
       <>
-  <Navbar />
+        {/* ✅ Ajouter une key pour forcer le remontage */}
+        <Navbar key={`navbar-${key}`} />
 
-  {/* SCROLL RÉEL */}
-  <main id="scroll-root">
-    <Hero />
-    <About />
-    <Services />
-    <Works/>
-    <Skills />
-  </main>
-
-</>
-
+        {/* SCROLL RÉEL */}
+        <main id="scroll-root">
+          <Hero key={`hero-${key}`} />
+          <About />
+          <Services />
+          <Works/>
+          <Skills />
+        </main>
+      </>
     </ReactLenis>
   );
 }

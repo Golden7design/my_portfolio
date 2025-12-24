@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { TransitionLink } from '@/src/components/TransitionLink/TransitionLink'
+import Navbar from '@/src/components/Navbar/Navbar'
 
 // Types
 interface Work {
@@ -86,141 +87,147 @@ const WorkDetail = () => {
     fontFamily: '"Dancing Script", cursive',
     color: '#ffffff'
   }
-    const configLinks = {
-    fontFamily: 'var(--font-general-sans)',
-    color: '#ffffff'
-  }
-
 
   if (!work) {
     return (
-      <div className="work-not-found">
-        <h1>Project not found</h1>
-        <a href="/#works"><span><FontAwesomeIcon icon={faArrowLeft}/> </span> <span>Back to works</span></a>
-      </div>
+      <>
+        <Navbar />
+        <div className="work-not-found">
+          <h1>Project not found</h1>
+          <TransitionLink href="/#works">
+            <span><FontAwesomeIcon icon={faArrowLeft}/> </span>
+            <span>Back to works</span>
+          </TransitionLink>
+        </div>
+      </>
     )
   }
 
   return (
-    <div className="work-detail">
-      {/* Hero Section */}
-      <section className="hero-work-section">
-        <div className="hero-work-content">
-          <span className="work-year">{work.year}</span>
-          <h1 
-            className="work-title" 
-            style={{ 
-              fontFamily: config.fontFamily,
-              color: config.color 
-            }}
-          >
-            {work.title}
-          </h1>
-          <p className="work-subtitle">{work.subtitle}</p>
-          <div className="work-meta">
-            <span>{work.role}</span>
+    <>
+      {/* ✅ Ajouter la Navbar */}
+      <Navbar />
+      
+      <div className="work-detail">
+        {/* Hero Section */}
+        <section className="hero-work-section">
+          <div className="hero-work-content">
+            <span className="work-year">{work.year}</span>
+            <h1 
+              className="work-title" 
+              style={{ 
+                fontFamily: config.fontFamily,
+                color: config.color 
+              }}
+            >
+              {work.title}
+            </h1>
+            <p className="work-subtitle">{work.subtitle}</p>
+            <div className="work-meta">
+              <span>{work.role}</span>
+            </div>
           </div>
-        </div>
-        <div className="hero-work-image">
-          <ParallaxImage 
-            src={work.images.hero}
-            alt={work.title}
-            speed={0.3}
-          />
-        </div>
-      </section>
+          <div className="hero-work-image">
+            <ParallaxImage 
+              src={work.images.hero}
+              alt={work.title}
+              speed={0.3}
+            />
+          </div>
+        </section>
 
-      {/* Overview */}
-      <section className="overview-section">
-        <div className="section-content">
-          <h2>Overview</h2>
-          <p className="large-text">{work.description}</p>
-          
-          <div className="tech-stack">
-            <h3>Technologies</h3>
-            <div className="tech-tags">
-              {work.technologies.map((tech, index) => (
-                <span key={index} className="tech-tag">{tech}</span>
+        {/* Overview */}
+        <section className="overview-section">
+          <div className="section-content">
+            <h2>Overview</h2>
+            <p className="large-text">{work.description}</p>
+            
+            <div className="tech-stack">
+              <h3>Technologies</h3>
+              <div className="tech-tags">
+                {work.technologies.map((tech, index) => (
+                  <span key={index} className="tech-tag">{tech}</span>
+                ))}
+              </div>
+            </div>
+
+            {(work.link || work.github) && (
+              <div className="project-links">
+                {work.link && (
+                  <a href={work.link} target="_blank" rel="noopener noreferrer" className="btn-primary">
+                     <span>Visit Website</span> <span className='arrow-visite'> <FontAwesomeIcon icon={faArrowRight}/> </span>
+                  </a>
+                )}
+                {work.github && (
+                  <a href={work.github} target="_blank" rel="noopener noreferrer" className="btn-secondary">
+                    View Code
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Challenge & Solution */}
+        <section className="challenge-section">
+          <div className="section-content">
+            <div className="challenge-grid">
+              <div className="challenge-item">
+                <h3>Challenge</h3>
+                <p>{work.challenge}</p>
+              </div>
+              <div className="challenge-item">
+                <h3>Solution</h3>
+                <p>{work.solution}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Visual Showcase */}
+        <section className="showcase-section">
+          <div className="showcase-grid">
+            <div className="showcase-item large">
+              <ParallaxImage 
+                src={work.images.desktop}
+                alt={`${work.title} desktop`}
+                speed={0.2}
+              />
+            </div>
+            <div className="showcase-item">
+              <ParallaxImage 
+                src={work.images.mobile}
+                alt={`${work.title} mobile`}
+                speed={0.15}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Results */}
+        <section className="results-section">
+          <div className="section-content">
+            <h2>Results</h2>
+            <div className="results-grid">
+              {work.results.map((result, index) => (
+                <div key={index} className="result-item">
+                  <span className="result-number">{String(index + 1).padStart(2, '0')}</span>
+                  <p>{result}</p>
+                </div>
               ))}
             </div>
           </div>
+        </section>
 
-          {(work.link || work.github) && (
-            <div className="project-links">
-              {work.link && (
-                <a href={work.link} target="_blank" rel="noopener noreferrer" className="btn-primary">
-                   <span>Visit Websites</span> <span className='arrow-visite' > <FontAwesomeIcon icon={faArrowRight}/> </span>
-                </a>
-              )}
-              {work.github && (
-                <a href={work.github} target="_blank" rel="noopener noreferrer" className="btn-secondary">
-                  View Code
-                </a>
-              )}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Challenge & Solution */}
-      <section className="challenge-section">
-        <div className="section-content">
-          <div className="challenge-grid">
-            <div className="challenge-item">
-              <h3>Challenge</h3>
-              <p>{work.challenge}</p>
-            </div>
-            <div className="challenge-item">
-              <h3>Solution</h3>
-              <p>{work.solution}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Visual Showcase */}
-      <section className="showcase-section">
-        <div className="showcase-grid">
-          <div className="showcase-item large">
-            <ParallaxImage 
-              src={work.images.desktop}
-              alt={`${work.title} desktop`}
-              speed={0.2}
-            />
-          </div>
-          <div className="showcase-item">
-            <ParallaxImage 
-              src={work.images.mobile}
-              alt={`${work.title} mobile`}
-              speed={0.15}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Results */}
-      <section className="results-section">
-        <div className="section-content">
-          <h2>Results</h2>
-          <div className="results-grid">
-            {work.results.map((result, index) => (
-              <div key={index} className="result-item">
-                <span className="result-number">{String(index + 1).padStart(2, '0')}</span>
-                <p>{result}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Navigation */}
-      <section className="navigation-section">
-           <TransitionLink href="/#works" className="back-link">
-     <span><FontAwesomeIcon icon={faArrowLeft}/> </span> 
-     <span>Back to works</span>
-   </TransitionLink>
-      </section>
-    </div>
+        {/* Navigation */}
+        <section className="navigation-section">
+          <TransitionLink href="/#works" className="back-link">
+            <span><FontAwesomeIcon icon={faArrowLeft}/> </span> 
+            <span>Back to works</span>
+          </TransitionLink>
+        </section>
+      </div>
+    </>
   )
 }
 

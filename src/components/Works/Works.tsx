@@ -79,7 +79,7 @@ const Works = () => {
               </div>
               
               <div className="work-desc">
-                <p className='nashfood' ><span className='nash-name' >Nash. </span><span>Full-stack food ordering platform.</span></p>
+                <p className='nashfood' ><span className='nash-name' >Nash. </span><span className='opa_desc' >Full-stack food ordering platform.</span></p>
                                    <TransitionLink href="/works/nashfood">
      <div className="link" ref={link1Ref}>
        <div className="pink1"></div>
@@ -122,7 +122,7 @@ const Works = () => {
               </div>
               
               <div className="work-desc">
-                <p className='portfolio'><span className='port-name' >Nassir's Portfolio </span> <span>My personal showcase.</span></p>
+                <p className='portfolio'><span className='port-name' >Nassir's Portfolio </span> <span className='opa_desc'   >My personal showcase.</span></p>
                    <TransitionLink href="/works/nashfood">
      <div className="link" ref={link2Ref}>
        <div className="pink1"></div>

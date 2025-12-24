@@ -84,11 +84,11 @@
 
 .work-desc p {
   font-family: var(--font-generale-sans);
-  font-size: clamp(1.1rem, 2.2vw, 2.5rem);
+  font-size: clamp(1.1rem, 2.5vw, 2.5rem);
   transition: color 0.8s ease;
 }
 
-.work-desc .learn-more {
+.works .learn-more {
   font-family: var(--font-aeonik);
   font-size: clamp(0.9rem, 1.5vw, 1.2rem);
   opacity: 0.7;
@@ -99,7 +99,10 @@
   mix-blend-mode: difference;
 }
 .work-desc p{
-  font-size: clamp(0.8rem, 2.2vw, 1.5rem);
+  font-size: clamp(0.8rem, 4vw, 1.5rem);
+}
+.work-desc .opa_desc{
+  opacity: 0.7;
 }
 
 .work-desc p .nash-name {
@@ -112,7 +115,7 @@
   color: var(--light);
   font-family: var(--font-clash-display);
   font-optical-sizing: auto;
-  font-size: clamp(2rem, 3vw, 3rem);
+  font-size: clamp(2rem, 2.5vw, 3rem);
 }
 
 .work-desc .portfolio, .nashfood{
@@ -141,13 +144,13 @@
   left: 0.18em;
   top: 0.08em;
   mix-blend-mode: difference;
+  opacity: 0.7;
 }
 .button-arrow{
   margin-left: 0.5em;
 }
-/* ===========================
-   RESPONSIVE - TABLET
-   =========================== */
+/*
+   RESPONSIVE - TABLET */
 @media (max-width: 1024px) {
 
   .works1-right{
@@ -175,15 +178,8 @@
   }
 }
 
-/* ===========================
-   RESPONSIVE - MOBILE
-   =========================== */
+/*RESPONSIVE - MOBILE*/
 @media (max-width: 768px) {
-  .works h1 {
-    font-size: clamp(2rem, 8vw, 3.5rem);
-    margin-bottom: 2rem;
-  }
-
   .works .container-works {
     gap: 4rem;
   }
@@ -209,22 +205,9 @@
     gap: 1.5rem;
   }
 
-  .work-desc p {
-    font-size: clamp(1rem, 4vw, 1.5rem);
-    padding: 0 1rem;
-  }
-
-  .work-desc p span {
-    font-size: clamp(1.8rem, 6vw, 2.5rem);
-  }
 
   .link {
     padding: 0.7em 1.5em;
-  }
-
-  .work-desc .learn-more {
-    font-size: clamp(0.85rem, 3.5vw, 1rem);
-    letter-spacing: 1.5px;
   }
 
   .button-arrow {
@@ -233,9 +216,8 @@
   }
 }
 
-/* ===========================
-   RESPONSIVE - SMALL MOBILE
-   =========================== */
+/* 
+   RESPONSIVE - SMALL MOBILE */
 @media (max-width: 480px) {
   .works {
     padding: 0 0.5rem;
@@ -262,21 +244,9 @@
     height: 350px;
   }
 
-  .work-desc p {
-    font-size: clamp(0.95rem, 4.5vw, 1.2rem);
-  }
-
-  .work-desc p span {
-    font-size: clamp(1.6rem, 7vw, 2rem);
-  }
 
   .link {
     padding: 0.6em 1.3em;
-  }
-
-  .work-desc .learn-more {
-    font-size: 0.8rem;
-    letter-spacing: 1px;
   }
 
   .pink1 {

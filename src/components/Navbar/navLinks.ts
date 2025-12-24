@@ -4,9 +4,9 @@ export interface MenuLink {
 }
 
    export const menuLinks: MenuLink[] = [
-     { label: "Home", href: "/" },
-     { label: "About", href: "#About" },
-     { label: "Works", href: "#works" },
-     { label: "Skills", href: "#skills" },
-     { label: "Say Hello!", href: "#sayhello" },
+     { label: "Home", href: "/#home" },
+     { label: "About", href: "/#About" },
+     { label: "Works", href: "/#works" },
+     { label: "Skills", href: "/#skills" },
+     { label: "Say Hello!", href: "/#sayhello" },
    ];

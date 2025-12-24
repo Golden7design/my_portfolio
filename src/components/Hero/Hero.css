@@ -136,7 +136,6 @@
     justify-content: space-between;
     z-index: 2;
     display: flex;
-    width: 8%;
 }
 /* Animation de rebond (bounce) */
 @keyframes bounce {
@@ -220,6 +219,11 @@
     .hero .message{
         font-size: 0.6rem;
     }
+    .hero .scroll{
+    font-size: 1.1rem;
+    display: flex;
+    flex-direction: column-reverse;
+}
 }
 
 @media (max-width: 350px) {

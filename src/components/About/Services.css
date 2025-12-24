@@ -259,6 +259,10 @@ body.works-active {
     width: 70%;
     margin-left: 2.2rem;
   }
+  .card-svg svg {
+    width: 120px;
+    height: 100px;
+  }
 }
 
 /* Barre de progression */

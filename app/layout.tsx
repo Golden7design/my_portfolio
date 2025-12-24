@@ -32,6 +32,7 @@ const Generale_Sans = localFont({
   variable: "--font-generale-sans",
   display: "swap",
 });
+
 const Generale_Sans_light = localFont({
   src: [
     { path: "./fonts/Generale_Sans/GeneralSans-Light.otf", weight: "100"},

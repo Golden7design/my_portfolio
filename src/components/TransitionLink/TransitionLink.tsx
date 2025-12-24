@@ -36,6 +36,7 @@ export function TransitionLink({
 
     e.preventDefault();
 
+    // ✅ Gestion des ancres (même page)
     if (href.startsWith("#")) {
       const targetId = href.substring(1);
       
@@ -64,22 +65,27 @@ export function TransitionLink({
 
       waitForElement(targetId).then((targetElement) => {
         if (targetElement && lenis && smoothScroll) {
+          // ✅ Force le refresh de ScrollTrigger AVANT le scroll
+          if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
+            (window as any).ScrollTrigger.refresh();
+          }
+
           lenis.scrollTo(targetElement, {
             duration: scrollDuration,
             offset: -scrollOffset,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           });
 
-          // ✅ LIGNE CLÉ : résout le scroll bloqué dans la section Services
+          // ✅ Double refresh après le scroll
           setTimeout(() => {
             if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
               (window as any).ScrollTrigger.refresh();
             }
-          }, 300);
+          }, scrollDuration * 1000 + 100);
         } else if (targetElement) {
+          // Fallback scroll natif
           targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
           
-          // ✅ Même refresh pour le fallback natif
           setTimeout(() => {
             if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
               (window as any).ScrollTrigger.refresh();
@@ -91,6 +97,67 @@ export function TransitionLink({
       return;
     }
 
+    // ✅ Gestion des ancres cross-page (ex: /works#section)
+    if (href.includes("#")) {
+      const [path, hash] = href.split("#");
+      
+      // Si on est déjà sur la bonne page, juste scroller
+      if (window.location.pathname === path) {
+        const targetElement = document.getElementById(hash);
+        if (targetElement && lenis && smoothScroll) {
+          // ✅ Refresh avant scroll
+          if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
+            (window as any).ScrollTrigger.refresh();
+          }
+
+          lenis.scrollTo(targetElement, {
+            duration: scrollDuration,
+            offset: -scrollOffset,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          });
+
+          // ✅ Refresh après scroll
+          setTimeout(() => {
+            if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
+              (window as any).ScrollTrigger.refresh();
+            }
+          }, scrollDuration * 1000 + 100);
+        }
+        return;
+      }
+
+      // Sinon, naviguer puis scroller
+      navigateWithTransition(path, () => {
+        // ✅ Callback après navigation
+        setTimeout(() => {
+          const targetElement = document.getElementById(hash);
+          if (targetElement && lenis && smoothScroll) {
+            // ✅ Triple refresh pour être sûr
+            if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
+              (window as any).ScrollTrigger.refresh();
+            }
+
+            lenis.scrollTo(targetElement, {
+              duration: scrollDuration,
+              offset: -scrollOffset,
+              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            });
+
+            setTimeout(() => {
+              if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
+                (window as any).ScrollTrigger.refresh();
+              }
+            }, scrollDuration * 1000 + 100);
+          } else if (targetElement) {
+            targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, 500); // Attendre que la page soit chargée
+      });
+
+      return;
+    }
+
+    // ✅ Navigation normale
     navigateWithTransition(href);
   };
 

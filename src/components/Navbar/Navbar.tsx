@@ -20,6 +20,7 @@ export default function Navbar() {
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const menuOpenRef = useRef(false);
   const toggleMenuRef = useRef<(() => void) | null>(null);
+  const cleanupFunctionsRef = useRef<(() => void)[]>([]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -45,6 +46,7 @@ export default function Navbar() {
     let targetHighlighterwidth = 0;
 
     let isMenuAnimating = false;
+    let animationFrameId: number | null = null;
 
     const menuLinksEls = document.querySelectorAll<HTMLAnchorElement>(".menu-link a");
     menuLinksEls.forEach((link) => {
@@ -53,8 +55,8 @@ export default function Navbar() {
         if (!char.classList.contains("split-initialized")) {
           const split = new SplitText(char, { type: "chars" });
           split.chars.forEach((charEl) => {
-  charEl.classList.add("char");
-});
+            charEl.classList.add("char");
+          });
           char.classList.add("split-initialized");
           if (charIndex === 1) {
             gsap.set(split.chars, { y: "110%" });
@@ -136,19 +138,27 @@ export default function Navbar() {
 
     toggleMenuRef.current = toggleMenu;
 
-    navtoggle?.addEventListener("click", toggleMenu);
+    const handleNavToggleClick = () => toggleMenu();
+    navtoggle?.addEventListener("click", handleNavToggleClick);
+    cleanupFunctionsRef.current.push(() => {
+      navtoggle?.removeEventListener("click", handleNavToggleClick);
+    });
 
     menuLinksEls.forEach((linkEl) => {
-      linkEl.addEventListener("click", (e) => {
+      const handleLinkClick = (e: Event) => {
         if (menuOpenRef.current) {
           toggleMenu();
         }
+      };
+      linkEl.addEventListener("click", handleLinkClick);
+      cleanupFunctionsRef.current.push(() => {
+        linkEl.removeEventListener("click", handleLinkClick);
       });
     });
 
     const menuLinksContainer = document.querySelectorAll<HTMLDivElement>(".menu-link");
     menuLinksContainer.forEach((link) => {
-      link.addEventListener("mouseenter", () => {
+      const handleMouseEnter = () => {
         if (window.innerWidth < 1000) return;
         const spans = link.querySelectorAll<HTMLSpanElement>("a span");
         const [visible, hidden] = spans;
@@ -156,8 +166,9 @@ export default function Navbar() {
         const hChars = hidden.querySelectorAll<HTMLElement>(".char");
         gsap.to(vChars, { y: "-110%", stagger: 0.06, duration: 1, ease: "expo.inOut" });
         gsap.to(hChars, { y: "0%", stagger: 0.06, duration: 1, ease: "expo.inOut" });
-      });
-      link.addEventListener("mouseleave", () => {
+      };
+
+      const handleMouseLeave = () => {
         if (window.innerWidth < 1000) return;
         const spans = link.querySelectorAll<HTMLSpanElement>("a span");
         const [visible, hidden] = spans;
@@ -165,10 +176,18 @@ export default function Navbar() {
         const hChars = hidden.querySelectorAll<HTMLElement>(".char");
         gsap.to(hChars, { y: "100%", stagger: 0.03, duration: 0.5, ease: "expo.inOut" });
         gsap.to(vChars, { y: "0%", stagger: 0.03, duration: 0.5, ease: "expo.inOut" });
+      };
+
+      link.addEventListener("mouseenter", handleMouseEnter);
+      link.addEventListener("mouseleave", handleMouseLeave);
+
+      cleanupFunctionsRef.current.push(() => {
+        link.removeEventListener("mouseenter", handleMouseEnter);
+        link.removeEventListener("mouseleave", handleMouseLeave);
       });
     });
 
-    menuOverlay?.addEventListener("mousemove", (e: MouseEvent) => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (window.innerWidth < 1000) return;
       const mouseX = e.clientX;
       const vw = window.innerWidth;
@@ -179,20 +198,30 @@ export default function Navbar() {
       const endX = startX + range;
       let perc = mouseX < startX ? 0 : mouseX > endX ? 1 : (mouseX - startX) / range;
       targetX = perc * maxRight;
+    };
+
+    menuOverlay?.addEventListener("mousemove", handleMouseMove);
+    cleanupFunctionsRef.current.push(() => {
+      menuOverlay?.removeEventListener("mousemove", handleMouseMove);
     });
 
     menuLinksContainer.forEach((link) => {
-      link.addEventListener("mouseenter", () => {
+      const handleLinkMouseEnter = () => {
         if (window.innerWidth < 1000) return;
         const rect = link.getBoundingClientRect();
         const wrapperRect = menuLinksWrapper.getBoundingClientRect();
         targetHighlighterX = rect.left - wrapperRect.left;
         const span = link.querySelector<HTMLSpanElement>("a span");
         targetHighlighterwidth = span ? span.offsetWidth : link.offsetWidth;
+      };
+
+      link.addEventListener("mouseenter", handleLinkMouseEnter);
+      cleanupFunctionsRef.current.push(() => {
+        link.removeEventListener("mouseenter", handleLinkMouseEnter);
       });
     });
 
-    menuLinksWrapper?.addEventListener("mouseleave", () => {
+    const handleMenuWrapperLeave = () => {
       const firstLink = document.querySelector<HTMLDivElement>(".menu-link:first-child");
       const span = firstLink?.querySelector<HTMLSpanElement>("a span");
       if (!firstLink || !span) return;
@@ -200,6 +229,11 @@ export default function Navbar() {
       const wrapperRect = menuLinksWrapper.getBoundingClientRect();
       targetHighlighterX = linkRect.left - wrapperRect.left;
       targetHighlighterwidth = span.offsetWidth;
+    };
+
+    menuLinksWrapper?.addEventListener("mouseleave", handleMenuWrapperLeave);
+    cleanupFunctionsRef.current.push(() => {
+      menuLinksWrapper?.removeEventListener("mouseleave", handleMenuWrapperLeave);
     });
 
     function animate() {
@@ -213,10 +247,29 @@ export default function Navbar() {
         duration: 0.3,
         ease: "power4.out",
       });
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
     }
 
     animate();
+
+    cleanupFunctionsRef.current.push(() => {
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    });
+
+    // ✅ Cleanup complet au démontage
+    return () => {
+      cleanupFunctionsRef.current.forEach(cleanup => cleanup());
+      cleanupFunctionsRef.current = [];
+      
+      // ✅ Réinitialiser l'état du menu
+      menuOpenRef.current = false;
+      setIsBurgerOpen(false);
+      
+      // ✅ Tuer toutes les animations GSAP
+      gsap.killTweensOf([menuOverlay, menuContent, menuImage, menuLinksEls, linkHighlighter, menuLinksWrapper]);
+    };
   }, []);
 
   // Scroll behavior
@@ -260,7 +313,11 @@ export default function Navbar() {
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      gsap.killTweensOf(nav);
+    };
   }, []);
 
   return (

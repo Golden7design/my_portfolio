@@ -8,7 +8,7 @@ export function usePageTransition() {
   const router = useRouter();
 
   const navigateWithTransition = useCallback(
-    (href: string) => {
+    (href: string, onComplete?: () => void) => {
       const animateTransition = () => {
         return new Promise<void>((resolve) => {
           gsap.set(".block", { visibility: "visible", scaleY: 0 });
@@ -34,6 +34,13 @@ export function usePageTransition() {
 
       animateTransition().then(() => {
         router.push(href);
+        
+        // ✅ Attendre que la nouvelle page soit montée
+        if (onComplete) {
+          setTimeout(() => {
+            onComplete();
+          }, 100);
+        }
       });
     },
     [router]
