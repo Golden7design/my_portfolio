@@ -1,18 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 
-:root{
-    --light: #f3f3f3;
-    --dark: #141414;
-    --accent: rgba(128, 74, 74, 0.8);
-}
-
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 body{
-    background-color: #000;
     font-family: sans-serif;
     overflow-x: hidden;
 }
@@ -40,9 +33,8 @@ img{
 }
 .container{
     position: relative;
-        width: 100%;
+    width: 100%;
     max-width: 100vw;
-    overflow-x: hidden;
     height: 100%;
     will-change: transform, opacity;
     z-index: 0;

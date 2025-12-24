@@ -3,12 +3,14 @@ import './Hero.css'
 import { me } from './me'
 import ParticlesCanvas from './ParticlesCanvas'
 import { TechLogos } from '../techlogo/TechLogos'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons'
 
 const Hero = () => {
   return (
       <section className='hero'>
         <ParticlesCanvas/>
-        
+
         <div className='hero-content'>
           <div className="textes">
           <h1><span>Hey, I'm </span> {me.name}</h1> 
@@ -35,6 +37,7 @@ const Hero = () => {
         <div className='hero-spacer'></div>
 
         <div className="scroll">
+          <span className='scroll-arrow' ><FontAwesomeIcon icon={faArrowDown}/></span>
           <h4>Scroll down</h4>
         </div>
 

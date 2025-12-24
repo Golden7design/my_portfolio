@@ -1,84 +1,147 @@
-"use client";
+"use client"
+import React, { useEffect, useRef } from 'react'
+import './Works.css'
+import gsap from 'gsap'
+import ReactLenis from 'lenis/react'
+import ParallaxImage from './ParallaxImage'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'  
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { TransitionLink } from '../TransitionLink/TransitionLink'
 
-import React, { useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
+const Works = () => {
+  const link1Ref = useRef<HTMLDivElement>(null)
+  const link2Ref = useRef<HTMLDivElement>(null)
 
-gsap.registerPlugin(ScrollTrigger);
+  // Animation GSAP pour les boutons
+  useEffect(() => {
+    const setupButtonAnimation = (linkElement: HTMLDivElement | null) => {
+      if (!linkElement) return
 
-export default function ScrollPinExample() {
-  const container = useRef(null);
-  const left = useRef(null);
-  const right1 = useRef(null);
-  const right2 = useRef(null);
+      const pink = linkElement.querySelector(".pink1")
+      if (!pink) return
 
-  useGSAP(() => {
-    // Pin du bloc gauche
-    ScrollTrigger.create({
-      trigger: container.current,
-      start: "top top",
-      end: "bottom bottom",
-      pin: left.current,
-      pinType: "transform",
-    });
+      const hoverTL = gsap.timeline({ paused: true })
 
-    // Animation du bloc de droite
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: container.current,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: true,
-      },
-    })
-      // RIGHT 1 monte → sort du viewport
-      .to(right1.current, {
-        y: "-100%",
-        ease: "none",
+      hoverTL.to(pink, {
+        width: "calc(100% + 1.3em)", 
+        ease: "power2.out",
+        duration: 0.4
       })
-      // RIGHT 2 monte pour prendre la place du RIGHT 1
-      .to(
-        right2.current,
-        {
-          y: "-100%",
-          ease: "none",
-        },
-        "<" // en même temps
-      );
-  }, []);
+
+      hoverTL.to(pink, {
+        width: "2em", 
+        left: "calc(100% - 1.45em)",
+        ease: "power3.inOut", 
+        duration: 0.35
+      })
+
+      const handleMouseEnter = () => {
+        hoverTL.restart()
+      }
+
+      const handleMouseLeave = () => {
+        hoverTL.reverse()
+      }
+
+      linkElement.addEventListener("mouseenter", handleMouseEnter)
+      linkElement.addEventListener("mouseleave", handleMouseLeave)
+
+      return () => {
+        linkElement.removeEventListener("mouseenter", handleMouseEnter)
+        linkElement.removeEventListener("mouseleave", handleMouseLeave)
+      }
+    }
+
+    const cleanup1 = setupButtonAnimation(link1Ref.current)
+    const cleanup2 = setupButtonAnimation(link2Ref.current)
+
+    return () => {
+      cleanup1?.()
+      cleanup2?.()
+    }
+  }, [])
 
   return (
-    <div
-      ref={container}
-      className="relative h-[300vh] w-full bg-gray-200 flex gap-10 p-10"
-    >
-      {/* Bloc gauche (pinné) */}
-      <div
-        ref={left}
-        className="w-1/2 h-screen bg-purple-500 text-white p-10 sticky-content"
-      >
-        <h2 className="text-3xl">Bloc Gauche (pinned)</h2>
-      </div>
+    <ReactLenis>
+      <div className='works'>
+        <h1 id='works' >Works</h1>
+        <div className="container-works">
+          
+          {/* Work 1 */}
+          <div className="works1">
+            <div className="works1-left">
+              <div className="img-left">
+                <ParallaxImage 
+                  src='/assets/NashFoodDesk.png'
+                  alt='NashFood'
+                  speed={0.2}
+                />
+              </div>
+              
+              <div className="work-desc">
+                <p className='nashfood' ><span className='nash-name' >Nash. </span><span>Full-stack food ordering platform.</span></p>
+                                   <TransitionLink href="/works/nashfood">
+     <div className="link" ref={link1Ref}>
+       <div className="pink1"></div>
+       <span className="learn-more">learn more</span>
+       <span className='button-arrow'>
+         <FontAwesomeIcon icon={faArrowRight}/>
+       </span>
+     </div>
+   </TransitionLink>
+              </div>
+            </div>
+            
+            <div className="works1-right">
+              <ParallaxImage 
+                src='/assets/NashfoodPhones.jpg'
+                alt='NashFood'
+                speed={0.2}
+              />        
+            </div>
+          </div>
 
-      {/* Bloc droite */}
-      <div className="w-1/2 relative overflow-hidden">
-        {/* RIGHT 1 */}
-        <div
-          ref={right1}
-          className="absolute top-0 left-0 w-full h-screen bg-blue-400 p-10"
-        >
-          <h2 className="text-2xl">Bloc Droite 1</h2>
-        </div>
+          {/* Work 2 */}
+          <div className="works1">
 
-        {/* RIGHT 2 (positionné sous le viewport au départ) */}
-        <div
-          ref={right2}
-          className="absolute top-full left-0 w-full h-screen bg-green-400 p-10"
-        >
-          <h2 className="text-2xl">Bloc Droite 2</h2>
+            <div className="works1-right">
+              <ParallaxImage 
+                src='/assets/PortPhones.jpg'
+                alt='NashFood'
+                speed={0.2}
+              />            
+            </div>
+
+            <div className="works1-left">
+              <div className="img-left">
+                <ParallaxImage 
+                  src='/assets/PortDesk.jpg'
+                  alt='NashFood'
+                  speed={0.2}
+                />
+              </div>
+              
+              <div className="work-desc">
+                <p className='portfolio'><span className='port-name' >Nassir's Portfolio </span> <span>My personal showcase.</span></p>
+                   <TransitionLink href="/works/nashfood">
+     <div className="link" ref={link2Ref}>
+       <div className="pink1"></div>
+       <span className="learn-more">learn more</span>
+       <span className='button-arrow'>
+         <FontAwesomeIcon icon={faArrowRight}/>
+       </span>
+     </div>
+   </TransitionLink>
+              </div>
+            </div>
+            
+
+          </div>
+
         </div>
       </div>
-    </div>
-  );
+    </ReactLenis>
+  )
 }
+
+export default Works

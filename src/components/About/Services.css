@@ -1,0 +1,292 @@
+/* Transition globale sur le body */
+body {
+  transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* État actif quand Services est visible à 20% du top */
+body.works-active {
+  background-color: var(--dark);
+  color: #f5f5f5;
+}
+
+.services {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.services .services-desc {
+  font-family: var(--font-generale-sans);
+  font-size: clamp(1.1rem, 2.2vw, 2rem);
+  width: 50%;
+  margin-left: 10rem;
+  opacity: var(--title-opacity, 0);
+  transition: opacity 0.3s ease;
+}
+
+.cards-container {
+  position: relative;
+  display: flex;
+  margin-left: 6rem;
+  width: 250vw;
+  min-height: 100%;
+}
+
+.cards-pin {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+}
+
+.cards-container .card {
+  position: relative;
+  padding: 0.6rem;
+  width: 480px;
+  height: 480px;
+}
+
+.card1 {
+  border: 1px solid rgba(128, 128, 128, 0.63);
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 0rem 1rem;
+}
+
+.card-head .card-svg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-head .card-number {
+  font-size: 1.6rem;
+  opacity: 0.5;
+}
+.card-number {
+  font-variant-numeric: oldstyle-nums proportional-nums;
+  font-family: var(--font-gambarino);
+  letter-spacing: 0.05em;
+}
+
+.card-desc {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.8rem;
+  min-height: 42%;
+}
+
+.card-title {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-family: var(--font-clash-display);
+  min-height: 1rem;
+  margin: 0 0.7rem;
+}
+
+.card-body {
+  margin: 0 auto;
+  padding-top: 1.8rem;
+  width: 95%;
+  font-family: var(--font-aeonik);
+  opacity: 0.5;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+.card hr {
+  margin-bottom: 0.6rem;
+  opacity: 0.7;
+}
+
+.card2,
+.card3,
+.card4,
+.card5 {
+  border: 1px solid rgba(128, 128, 128, 0.63);
+  border-left: none;
+}
+.card svg{
+    width: 170px;
+    height: 170px;
+}
+
+@media (max-width: 1000px) {
+  .scroll-progress-container {
+    display: none;
+  }
+
+  .card-title {
+    font-size: 1.2rem;
+  }
+
+  .services {
+    gap: 1rem;
+  }
+
+  .card-head {
+    margin-bottom: 1rem;
+    padding: 0rem 0.8rem;
+  }
+
+  .card-svg svg {
+    width: 120px;
+    height: 120px;
+  }
+
+  .cards-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1rem;
+    margin: 0 0.2rem;
+    width: 100vw;
+    min-height: 100%;
+    margin-bottom: 5rem;
+  }
+
+  .cards-container .card {
+    padding: 0.6rem;
+    width: 90%;
+    height: 340px;
+    margin: auto;
+  }
+
+  .card hr {
+    margin-bottom: 1.1rem;
+  }
+
+  .card-body {
+    margin: 0 auto;
+    padding-top: 0.5rem;
+    width: 95%;
+    font-family: var(--font-aeonik);
+    opacity: 0.5;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+  }
+
+  .card2,
+  .card3,
+  .card4,
+  .card5 {
+    border-left: 1px solid rgba(128, 128, 128, 0.63);
+  }
+
+  .cards-pin {
+    height: 100%;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .services .services-desc {
+    font-family: var(--font-generale-sans);
+    font-size: 1.6rem;
+    margin-left: 2.2rem;
+    margin-bottom: 1rem;
+    width: 80%;
+  }
+}
+
+@media (max-width: 450px) {
+  .services {
+    gap: 1rem;
+  }
+
+  .card-head {
+    margin-bottom: 1rem;
+    padding: 0rem 0.8rem;
+  }
+
+  .card-svg svg{
+    width: 115px;
+    height: 115px;
+  }
+
+  .cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 0.2rem;
+    width: 100vw;
+    min-height: 100%;
+    margin-bottom: 5rem;
+  }
+
+  .card-head .card-number {
+    font-size: 1rem;
+  }
+
+  .cards-container .card {
+    padding: 0.6rem;
+    width: 90%;
+    height: 335px;
+    margin: auto;
+  }
+
+  .card hr {
+    margin-bottom: 0.8rem;
+  }
+
+  .card-body {
+    margin: 0 auto;
+    padding-top: 0.2rem;
+    width: 95%;
+    font-family: var(--font-aeonik);
+    opacity: 0.5;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+  }
+
+  .card2,
+  .card3,
+  .card4,
+  .card5 {
+    border-left: 1px solid rgba(128, 128, 128, 0.63);
+  }
+
+  .cards-pin {
+    height: 100%;
+    width: 100vw;
+    position: relative;
+  }
+
+  .services .services-desc {
+    font-family: var(--font-generale-sans);
+    font-size: clamp(1.1rem, 2.2vw, 2rem);
+    width: 70%;
+    margin-left: 2.2rem;
+  }
+}
+
+/* Barre de progression */
+.scroll-progress-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+
+.scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #d7fb61, #e1ff01);
+  box-shadow: 0 0 10px var(--accent2);
+  transition: width 0.1s ease-out;
+}
+
+.scroll-progress-container.thick {
+  height: 6px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.scroll-progress-container.thick .scroll-progress-bar {
+  background: linear-gradient(90deg, #d7fb61 0%, #e1ff01 50%, #ffaa00 100%);
+  box-shadow: 0 2px 15px var(--accent2);
+}

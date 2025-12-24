@@ -3,10 +3,10 @@ export interface MenuLink {
   href?: string; // pour futur ancrage
 }
 
-export const menuLinks: MenuLink[] = [
-  { label: "Home", href: "#home" },
-  { label: "Biography", href: "#biography" },
-  { label: "Works", href: "#works" },
-  { label: "Skills", href: "#skills" },
-  { label: "Say Hello!", href: "#sayhello" },
-];
+   export const menuLinks: MenuLink[] = [
+     { label: "Home", href: "/" },
+     { label: "About", href: "#About" },
+     { label: "Works", href: "#works" },
+     { label: "Skills", href: "#skills" },
+     { label: "Say Hello!", href: "#sayhello" },
+   ];
