@@ -31,7 +31,7 @@ void main () {
 
 // ============ CONFIG ============
 const config = {
-    logoPath: "./nash_white.svg",
+    logoPath: "/nash.svg",
     logoSize: 400,
     logoColor: "#252525",
     canvasBg: "#f8f8f8",

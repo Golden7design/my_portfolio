@@ -1,0 +1,59 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.animated-titles h1 {
+    font-size: 10rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.25rem;
+    font-family: var(--font-generale-sans);
+    transform: scaleY(1.4);
+    color: black;
+}
+
+.animated-titles{
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.animated-titles .title {
+    height: 85svh;
+    display: flex;
+    align-items: center;
+}
+
+
+.animated-titles .title-container{
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    will-change: transform;
+}
+
+.animated-titles .title:nth-child(1),
+.animated-titles .title:nth-child(3){
+    background-color: var(--accent2);
+}
+
+.animated-titles .title:nth-child(2){
+    background-color: var(--light);
+}
+
+.animated-titles .char{
+    position: relative;
+    display: inline-block;
+    will-change: transform;
+}
+
+@media (max-width: 1000px) {
+    .animated-titles h1{
+        font-size: 3rem;
+        letter-spacing: 0;
+    }
+}

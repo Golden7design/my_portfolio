@@ -1,4 +1,59 @@
-.hero{
-    transform: translateY(0svh);
-    position: relative;
+.skills{
+    width: 100vw;
+    margin-top: 12rem;
+    min-height: 100svh;
+}
+.skills h1{
+    font-family: var(--font-clash-display);
+    font-size: clamp(2.5rem, 5vw, 6rem);
+    text-align: center;
+    margin-bottom: 1.3rem;
+    text-transform: uppercase;
+}
+.skills-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 5rem;
+}
+
+.skill-left{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    padding-left: 6rem;
+    font-family: var(--font-generale-sans);
+    font-size: clamp(2rem, 2vw, 3.5rem);
+    width: 40%;
+}
+.skills-right{
+    width: 50%;
+}
+
+.tech-list{
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr 0.5fr 0.5fr;
+    row-gap: 2rem;
+}
+.skills-right .skill-tag {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--accent1);
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-family: var(--font-generale-sans) !important;
+  transition: opacity 0.3s ease, transform 0.25s ease, background-color 0.25s, border-color 0.25s;
+  cursor: pointer;
+  width: 80%;
+  text-align: center;
+  opacity: 0.6;
+  background-color: transparent;
+  border-color: var(--accent1);
+}
+
+.skill-left .skill-category {
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+  cursor: default;
 }

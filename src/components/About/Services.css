@@ -1,9 +1,9 @@
 /* Transition globale sur le body */
 body {
-  transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-              color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    background-color 1s cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 1s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-
 /* État actif quand Services est visible à 20% du top */
 body.works-active {
   background-color: var(--dark);
@@ -30,8 +30,9 @@ body.works-active {
   position: relative;
   display: flex;
   margin-left: 6rem;
-  width: 250vw;
+  width: 280vw;
   min-height: 100%;
+  margin-right: 6rem;
 }
 
 .cards-pin {
@@ -39,6 +40,7 @@ body.works-active {
   width: 100vw;
   overflow: hidden;
   position: relative;
+
 }
 
 .cards-container .card {

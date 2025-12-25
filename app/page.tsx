@@ -12,6 +12,8 @@ import About from "@/src/components/About/About";
 import Skills from "@/src/components/Skills/Skills";
 import Works from "@/src/components/Works/Works";
 import { usePathname } from "next/navigation";
+import SectionWords from "@/src/components/SectionWords/SectionWords";
+import Footer from "@/src/components/Footer/Footer";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -64,6 +66,8 @@ export default function Home() {
           <Services />
           <Works/>
           <Skills />
+          <SectionWords/>
+          <Footer/>
         </main>
       </>
     </ReactLenis>
