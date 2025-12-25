@@ -19,33 +19,52 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
   const pathname = usePathname();
-  // ✅ Force le remontage des composants lors du retour sur la page
-  const [key, setKey] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // ✅ Incrémenter la key à chaque changement de pathname
-    setKey(prev => prev + 1);
-  }, [pathname]);
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+
+    // ✅ Cleanup complet des ScrollTriggers au retour de navigation
+    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    
+    // ✅ Reset scroll position
+    window.scrollTo(0, 0);
+    
+    // ✅ Attendre que le DOM soit stable avant de refresh
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, [pathname, mounted]);
+
+  useEffect(() => {
+    if (!mounted) return;
+
     // Synchroniser Lenis avec ScrollTrigger
     const lenis = (window as any).lenis;
     
     if (lenis) {
-      lenis.on('scroll', () => {
-        ScrollTrigger.update();
-      });
+      lenis.on('scroll', ScrollTrigger.update);
     }
-
-    // Refresh ScrollTrigger après le chargement
-    ScrollTrigger.refresh();
 
     return () => {
       if (lenis) {
-        lenis.off('scroll');
+        lenis.off('scroll', ScrollTrigger.update);
       }
     };
-  }, [key]); // ✅ Recharger quand la key change
+  }, [mounted]);
+
+  if (!mounted) {
+    return null; // Évite les problèmes d'hydratation
+  }
 
   return (
     <ReactLenis root options={{ 
@@ -56,18 +75,16 @@ export default function Home() {
       touchMultiplier: 2,
     }}>
       <>
-        {/* ✅ Ajouter une key pour forcer le remontage */}
-        <Navbar key={`navbar-${key}`} />
+        <Navbar />
 
-        {/* SCROLL RÉEL */}
         <main id="scroll-root">
-          <Hero key={`hero-${key}`} />
+          <Hero />
           <About />
           <Services />
-          <Works/>
+          <Works />
           <Skills />
-          <SectionWords/>
-          <Footer/>
+          <SectionWords />
+          <Footer />
         </main>
       </>
     </ReactLenis>

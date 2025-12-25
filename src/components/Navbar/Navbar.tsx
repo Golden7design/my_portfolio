@@ -11,7 +11,6 @@ import AnimatedWords from "./AnimatedWords/AnimatedWords";
 import NavAreaClickSound from "../NavAreaClickSound";
 import { TransitionLink } from "../TransitionLink/TransitionLink";
 
-// Enregistre SplitText une fois côté client
 if (typeof window !== "undefined") {
   gsap.registerPlugin(SplitText);
 }
@@ -21,6 +20,9 @@ export default function Navbar() {
   const menuOpenRef = useRef(false);
   const toggleMenuRef = useRef<(() => void) | null>(null);
   const cleanupFunctionsRef = useRef<(() => void)[]>([]);
+  const lastScrollRef = useRef(0);
+  const isHiddenRef = useRef(false);
+  const scrollTicking = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -145,7 +147,7 @@ export default function Navbar() {
     });
 
     menuLinksEls.forEach((linkEl) => {
-      const handleLinkClick = (e: Event) => {
+      const handleLinkClick = () => {
         if (menuOpenRef.current) {
           toggleMenu();
         }
@@ -258,58 +260,55 @@ export default function Navbar() {
       }
     });
 
-    // ✅ Cleanup complet au démontage
     return () => {
       cleanupFunctionsRef.current.forEach(cleanup => cleanup());
       cleanupFunctionsRef.current = [];
-      
-      // ✅ Réinitialiser l'état du menu
       menuOpenRef.current = false;
       setIsBurgerOpen(false);
-      
-      // ✅ Tuer toutes les animations GSAP
       gsap.killTweensOf([menuOverlay, menuContent, menuImage, menuLinksEls, linkHighlighter, menuLinksWrapper]);
     };
   }, []);
 
-  // Scroll behavior
+  // ✅ Scroll optimisé avec throttle
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     const nav = document.querySelector("nav");
     if (!nav) return;
 
-    let lastScroll = window.scrollY;
-    let isHidden = false;
-
     const showNav = () => {
-      if (!isHidden) return;
+      if (!isHiddenRef.current) return;
       gsap.to(nav, { y: 0, duration: 0.35, ease: "power3.out" });
-      isHidden = false;
+      isHiddenRef.current = false;
     };
 
     const hideNav = () => {
-      if (isHidden) return;
+      if (isHiddenRef.current) return;
       gsap.to(nav, { y: "-120%", duration: 0.35, ease: "power3.out" });
-      isHidden = true;
+      isHiddenRef.current = true;
     };
 
     const onScroll = () => {
       if (menuOpenRef.current) return;
-
-      const current = window.scrollY;
-      if (current < 80) {
-        showNav();
-        lastScroll = current;
-        return;
+      
+      if (!scrollTicking.current) {
+        window.requestAnimationFrame(() => {
+          const current = window.scrollY;
+          
+          if (current < 80) {
+            showNav();
+          } else if (current > lastScrollRef.current) {
+            hideNav();
+          } else {
+            showNav();
+          }
+          
+          lastScrollRef.current = current;
+          scrollTicking.current = false;
+        });
+        
+        scrollTicking.current = true;
       }
-
-      if (current > lastScroll) {
-        hideNav();
-      } else {
-        showNav();
-      }
-      lastScroll = current;
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });

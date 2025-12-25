@@ -66,7 +66,8 @@ function hexToRgb(hex: string): { r: number; g: number; b: number } {
 // ============ COMPOSANT ============
 export default function ParticlesCanvas() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [isDesktop, setIsDesktop] = useState(true);
+    const [isDesktop, setIsDesktop] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
     
     const stateRef = useRef({
         gl: null as WebGLRenderingContext | null,
@@ -79,9 +80,10 @@ export default function ParticlesCanvas() {
         mouse: { x: 0, y: 0 },
         animationCount: 0,
         animationFrameId: 0,
+        isAnimating: false,
     });
 
-    // Détection de la taille d'écran
+    // Détection desktop côté client uniquement
     useEffect(() => {
         const checkDesktop = () => window.innerWidth >= 1000;
         setIsDesktop(checkDesktop());
@@ -89,6 +91,7 @@ export default function ParticlesCanvas() {
         const handleResize = () => {
             setIsDesktop(checkDesktop());
         };
+        
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
@@ -127,6 +130,8 @@ export default function ParticlesCanvas() {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
+        const state = stateRef.current;
+
         // Setup canvas size
         const dpr = window.devicePixelRatio || 1;
         const resizeCanvas = () => {
@@ -148,7 +153,6 @@ export default function ParticlesCanvas() {
         });
         if (!gl) throw new Error("WebGL not supported");
         
-        // ✅ FIX: Définir la couleur de fond immédiatement
         const bgColor = hexToRgb(config.canvasBg);
         gl.clearColor(bgColor.r, bgColor.g, bgColor.b, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
@@ -157,7 +161,6 @@ export default function ParticlesCanvas() {
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
         const program = setupShaders(gl);
-        const state = stateRef.current;
         state.gl = gl;
         state.program = program;
 
@@ -193,78 +196,10 @@ export default function ParticlesCanvas() {
         };
         window.addEventListener("resize", handleResize);
 
-        // ============ LOAD LOGO ============
-        const image = new Image();
-        image.onload = () => {
-            const tempCanvas = document.createElement("canvas");
-            const ctx = tempCanvas.getContext("2d")!;
-            tempCanvas.width = config.logoSize;
-            tempCanvas.height = config.logoSize;
-
-            const scale = 0.9;
-            const size = config.logoSize * scale;
-            const offset = (config.logoSize - size) / 2;
-            ctx.drawImage(image, offset, offset, size, size);
-
-            const imageData = ctx.getImageData(0, 0, config.logoSize, config.logoSize);
-            const data = imageData.data;
-            const centerX = canvas.width / 2 + config.logoOffsetX * dpr;
-            const centerY = canvas.height / 2;
-            const positions: number[] = [];
-            const colors: number[] = [];
-            const logoTint = hexToRgb(config.logoColor);
-
-            for (let i = 0; i < config.logoSize; i++) {
-                for (let j = 0; j < config.logoSize; j++) {
-                    const pixelIndex = (i * config.logoSize + j) * 4;
-                    const alpha = data[pixelIndex + 3];
-                    if (alpha > 10) {
-                        const particleX = centerX + (j - config.logoSize / 2);
-                        const particleY = centerY + (i - config.logoSize / 2);
-                        positions.push(particleX, particleY);
-
-                        const originalR = data[pixelIndex] / 255;
-                        const originalG = data[pixelIndex + 1] / 255;
-                        const originalB = data[pixelIndex + 2] / 255;
-                        const originalA = data[pixelIndex + 3] / 255;
-
-                        colors.push(
-                            originalR * logoTint.r,
-                            originalG * logoTint.g,
-                            originalB * logoTint.b,
-                            originalA
-                        );
-
-                        state.particles.push({
-                            originalX: particleX,
-                            originalY: particleY,
-                            velocityX: 0,
-                            velocityY: 0,
-                        });
-                    }
-                }
-            }
-
-            state.positionArray = new Float32Array(positions);
-            state.colorArray = new Float32Array(colors);
-
-            state.positionBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, state.positionBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, state.positionArray, gl.DYNAMIC_DRAW);
-
-            state.colorBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, state.colorBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, state.colorArray, gl.STATIC_DRAW);
-
-            animate();
-        };
-        image.src = config.logoPath;
-        image.onerror = () => console.error("Logo non chargé :", config.logoPath);
-
         // ============ ANIMATION LOOP ============
         const animate = () => {
             const { gl, program, particles, positionArray, positionBuffer, mouse, animationCount } = state;
-            if (!gl || !program || particles.length === 0) return;
+            if (!gl || !program || particles.length === 0 || !state.isAnimating) return;
 
             if (animationCount > 0) {
                 state.animationCount--;
@@ -347,10 +282,85 @@ export default function ParticlesCanvas() {
             state.animationFrameId = requestAnimationFrame(animate);
         };
 
+        // ============ LOAD LOGO ============
+        const image = new Image();
+        image.onload = () => {
+            const tempCanvas = document.createElement("canvas");
+            const ctx = tempCanvas.getContext("2d")!;
+            tempCanvas.width = config.logoSize;
+            tempCanvas.height = config.logoSize;
+
+            const scale = 0.9;
+            const size = config.logoSize * scale;
+            const offset = (config.logoSize - size) / 2;
+            ctx.drawImage(image, offset, offset, size, size);
+
+            const imageData = ctx.getImageData(0, 0, config.logoSize, config.logoSize);
+            const data = imageData.data;
+            const centerX = canvas.width / 2 + config.logoOffsetX * dpr;
+            const centerY = canvas.height / 2;
+            const positions: number[] = [];
+            const colors: number[] = [];
+            const logoTint = hexToRgb(config.logoColor);
+
+            for (let i = 0; i < config.logoSize; i++) {
+                for (let j = 0; j < config.logoSize; j++) {
+                    const pixelIndex = (i * config.logoSize + j) * 4;
+                    const alpha = data[pixelIndex + 3];
+                    if (alpha > 10) {
+                        const particleX = centerX + (j - config.logoSize / 2);
+                        const particleY = centerY + (i - config.logoSize / 2);
+                        positions.push(particleX, particleY);
+
+                        const originalR = data[pixelIndex] / 255;
+                        const originalG = data[pixelIndex + 1] / 255;
+                        const originalB = data[pixelIndex + 2] / 255;
+                        const originalA = data[pixelIndex + 3] / 255;
+
+                        colors.push(
+                            originalR * logoTint.r,
+                            originalG * logoTint.g,
+                            originalB * logoTint.b,
+                            originalA
+                        );
+
+                        state.particles.push({
+                            originalX: particleX,
+                            originalY: particleY,
+                            velocityX: 0,
+                            velocityY: 0,
+                        });
+                    }
+                }
+            }
+
+            state.positionArray = new Float32Array(positions);
+            state.colorArray = new Float32Array(colors);
+
+            state.positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, state.positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, state.positionArray, gl.DYNAMIC_DRAW);
+
+            state.colorBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, state.colorBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, state.colorArray, gl.STATIC_DRAW);
+
+            // ✅ Marquer comme chargé et démarrer l'animation
+            setIsLoaded(true);
+            state.isAnimating = true;
+            animate();
+        };
+        
+        image.src = config.logoPath;
+        image.onerror = () => console.error("Logo non chargé :", config.logoPath);
+
         return () => {
+            state.isAnimating = false;
             window.removeEventListener("mousemove", handleMouseMove);
             window.removeEventListener("resize", handleResize);
-            if (state.animationFrameId) cancelAnimationFrame(state.animationFrameId);
+            if (state.animationFrameId) {
+                cancelAnimationFrame(state.animationFrameId);
+            }
         };
     }, [isDesktop]);
 
@@ -358,5 +368,16 @@ export default function ParticlesCanvas() {
         return null;
     }
 
-    return <canvas ref={canvasRef} style={{ width: '100vw', height: '100vh', display: 'block' }} />;
+    return (
+        <canvas 
+            ref={canvasRef} 
+            style={{ 
+                width: '100vw', 
+                height: '100vh', 
+                display: 'block',
+                opacity: isLoaded ? 1 : 0,
+                transition: 'opacity 0.3s ease'
+            }} 
+        />
+    );
 }
