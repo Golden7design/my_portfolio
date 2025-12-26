@@ -30,7 +30,7 @@ const Skills: React.FC = () => {
     })
 
     const categories = categoryEls.map(el => el.dataset.category || '')
-    const stepDuration = 0.7
+    const stepDuration = 0.55
 
     // Activation visuelle
     const activate = (cat: string) => {
@@ -73,7 +73,7 @@ const Skills: React.FC = () => {
         end: `+=${categories.length * stepDuration * 100}%`,
         scrub: true,
         pin: true,
-        invalidateOnRefresh: true
+        invalidateOnRefresh: true,
       }
     })
 

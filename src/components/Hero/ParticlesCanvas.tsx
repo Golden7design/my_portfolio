@@ -31,11 +31,11 @@ void main () {
 
 // ============ CONFIG ============
 const config = {
-    logoPath: "/nash.svg",
-    logoSize: 400,
-    logoColor: "#252525",
+    logoPath: "/nash_white.svg",
+    logoSize: 530,
+    logoColor: "#808080",
     canvasBg: "#f8f8f8",
-    distortionRadius: 3000,
+    distortionRadius: 4000,
     forceStrength: 0.0035,
     maxDisplacement: 100,
     returnForce: 0.025,
@@ -177,7 +177,7 @@ export default function ParticlesCanvas() {
         const handleResize = () => {
             resizeCanvas();
             if (state.particles.length > 0) {
-                const centerX = canvas.width / 2 + config.logoOffsetX * dpr;
+                const centerX = canvas.width / 2;
                 const centerY = canvas.height / 2;
                 const dim = Math.sqrt(state.particles.length);
                 for (let i = 0; i < state.particles.length; i++) {
@@ -293,46 +293,39 @@ export default function ParticlesCanvas() {
             const scale = 0.9;
             const size = config.logoSize * scale;
             const offset = (config.logoSize - size) / 2;
+            const logoOffsetY = -50 * dpr;
             ctx.drawImage(image, offset, offset, size, size);
 
             const imageData = ctx.getImageData(0, 0, config.logoSize, config.logoSize);
             const data = imageData.data;
-            const centerX = canvas.width / 2 + config.logoOffsetX * dpr;
-            const centerY = canvas.height / 2;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2 + logoOffsetY;
             const positions: number[] = [];
             const colors: number[] = [];
             const logoTint = hexToRgb(config.logoColor);
 
             for (let i = 0; i < config.logoSize; i++) {
-                for (let j = 0; j < config.logoSize; j++) {
-                    const pixelIndex = (i * config.logoSize + j) * 4;
-                    const alpha = data[pixelIndex + 3];
-                    if (alpha > 10) {
-                        const particleX = centerX + (j - config.logoSize / 2);
-                        const particleY = centerY + (i - config.logoSize / 2);
-                        positions.push(particleX, particleY);
+    for (let j = 0; j < config.logoSize; j++) {
+        const pixelIndex = (i * config.logoSize + j) * 4;
+        const alpha = data[pixelIndex + 3];
+        if (alpha > 10) {
+            const particleX = centerX + (j - config.logoSize / 2) * scale;
+            const particleY = centerY + (i - config.logoSize / 2) * scale;
+            positions.push(particleX, particleY);
 
-                        const originalR = data[pixelIndex] / 255;
-                        const originalG = data[pixelIndex + 1] / 255;
-                        const originalB = data[pixelIndex + 2] / 255;
-                        const originalA = data[pixelIndex + 3] / 255;
+            const originalA = data[pixelIndex + 3] / 255;
+            colors.push(logoTint.r, logoTint.g, logoTint.b, originalA);
 
-                        colors.push(
-                            originalR * logoTint.r,
-                            originalG * logoTint.g,
-                            originalB * logoTint.b,
-                            originalA
-                        );
+            state.particles.push({
+                originalX: particleX,
+                originalY: particleY,
+                velocityX: 0,
+                velocityY: 0,
+            });
+        }
+    }
+}
 
-                        state.particles.push({
-                            originalX: particleX,
-                            originalY: particleY,
-                            velocityX: 0,
-                            velocityY: 0,
-                        });
-                    }
-                }
-            }
 
             state.positionArray = new Float32Array(positions);
             state.colorArray = new Float32Array(colors);
@@ -376,7 +369,7 @@ export default function ParticlesCanvas() {
                 height: '100vh', 
                 display: 'block',
                 opacity: isLoaded ? 1 : 0,
-                transition: 'opacity 0.3s ease'
+                transition: 'opacity 0.3s ease',
             }} 
         />
     );

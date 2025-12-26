@@ -45,16 +45,16 @@ nav {
   position: fixed;
   top: 0;
   left: 0;
-      width: 100%;
-    max-width: 100vw;
-    box-sizing: border-box;
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
   padding: 1.5rem 1.5rem;
   color: var(--dark);
   display: flex;
   justify-content: space-between;
   align-items: center;
   mix-blend-mode: difference;
-  z-index: 2;
+  z-index: 500;
   box-sizing: border-box;
   will-change: transform;
 }

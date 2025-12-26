@@ -6,6 +6,7 @@
 }
 .about-container{
     min-height: 100vh;
+    margin-top: 40vh;
 }
 img{
     width: 100%;

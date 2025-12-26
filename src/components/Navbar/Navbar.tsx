@@ -272,47 +272,62 @@ export default function Navbar() {
     };
   }, []);
 
-  // Scroll behavior
+
   useEffect(() => {
-  const nav = document.querySelector("nav");
-  const lenis = (window as any).lenis;
-  if (!nav || !lenis) return;
+    if (typeof window === "undefined") return;
 
-  let lastScroll = 0;
-  let isHidden = false;
+    const nav = document.querySelector("nav");
+    if (!nav) return;
 
-  const showNav = () => {
-    if (!isHidden) return;
-    gsap.to(nav, { y: 0, duration: 0.35, ease: "power3.out" });
-    isHidden = false;
-  };
+    let lastScroll = window.scrollY;
+    let isHidden = false;
 
-  const hideNav = () => {
-    if (isHidden) return;
-    gsap.to(nav, { y: "-120%", duration: 0.35, ease: "power3.out" });
-    isHidden = true;
-  };
+    const showNav = () => {
+      if (!isHidden) return;
+      gsap.to(nav, {
+        y: 0,
+        duration: 0.35,
+        ease: "power3.out",
+      });
+      isHidden = false;
+    };
 
-  const onLenisScroll = ({ scroll }: { scroll: number }) => {
-    if (menuOpenRef.current) return;
+    const hideNav = () => {
+      if (isHidden) return;
+      gsap.to(nav, {
+        y: "-120%",
+        duration: 0.35,
+        ease: "power3.out",
+      });
+      isHidden = true;
+    };
 
-    if (scroll < 80) {
-      showNav();
-    } else if (scroll > lastScroll) {
-      hideNav();
-    } else {
-      showNav();
-    }
-    lastScroll = scroll;
-  };
+    const onScroll = () => {
+      if (menuOpenRef.current) return;
 
-  lenis.on("scroll", onLenisScroll);
+      const current = window.scrollY;
 
-  return () => {
-    lenis.off("scroll", onLenisScroll);
-    gsap.killTweensOf(nav);
-  };
-}, []);
+      if (current < 80) {
+        showNav();
+        lastScroll = current;
+        return;
+      }
+
+      if (current > lastScroll) {
+        hideNav();
+      } else {
+        showNav();
+      }
+
+      lastScroll = current;
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
 
 
   return (
