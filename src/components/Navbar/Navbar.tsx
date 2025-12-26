@@ -274,51 +274,46 @@ export default function Navbar() {
 
   // Scroll behavior
   useEffect(() => {
-    if (typeof window === "undefined") return;
+  const nav = document.querySelector("nav");
+  const lenis = (window as any).lenis;
+  if (!nav || !lenis) return;
 
-    const nav = document.querySelector("nav");
-    if (!nav) return;
+  let lastScroll = 0;
+  let isHidden = false;
 
-    let lastScroll = window.scrollY;
-    let isHidden = false;
+  const showNav = () => {
+    if (!isHidden) return;
+    gsap.to(nav, { y: 0, duration: 0.35, ease: "power3.out" });
+    isHidden = false;
+  };
 
-    const showNav = () => {
-      if (!isHidden) return;
-      gsap.to(nav, { y: 0, duration: 0.35, ease: "power3.out" });
-      isHidden = false;
-    };
+  const hideNav = () => {
+    if (isHidden) return;
+    gsap.to(nav, { y: "-120%", duration: 0.35, ease: "power3.out" });
+    isHidden = true;
+  };
 
-    const hideNav = () => {
-      if (isHidden) return;
-      gsap.to(nav, { y: "-120%", duration: 0.35, ease: "power3.out" });
-      isHidden = true;
-    };
+  const onLenisScroll = ({ scroll }: { scroll: number }) => {
+    if (menuOpenRef.current) return;
 
-    const onScroll = () => {
-      if (menuOpenRef.current) return;
+    if (scroll < 80) {
+      showNav();
+    } else if (scroll > lastScroll) {
+      hideNav();
+    } else {
+      showNav();
+    }
+    lastScroll = scroll;
+  };
 
-      const current = window.scrollY;
-      if (current < 80) {
-        showNav();
-        lastScroll = current;
-        return;
-      }
+  lenis.on("scroll", onLenisScroll);
 
-      if (current > lastScroll) {
-        hideNav();
-      } else {
-        showNav();
-      }
-      lastScroll = current;
-    };
+  return () => {
+    lenis.off("scroll", onLenisScroll);
+    gsap.killTweensOf(nav);
+  };
+}, []);
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      gsap.killTweensOf(nav);
-    };
-  }, []);
 
   return (
     <>
