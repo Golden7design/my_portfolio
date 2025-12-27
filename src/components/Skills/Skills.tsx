@@ -69,7 +69,7 @@ const Skills: React.FC = () => {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: skills,
-        start: 'top top',
+        start: 'top 8%',
         end: `+=${categories.length * stepDuration * 100}%`,
         scrub: true,
         pin: true,

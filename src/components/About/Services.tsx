@@ -11,67 +11,72 @@ const Services = () => {
   const triggerRef = useRef<HTMLDivElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const serviceRef = useRef<HTMLDivElement>(null);
+  
 
   // ✨ Animation opacité / background
+  // Background + opacité
   useEffect(() => {
-    if (!serviceRef.current) return;
+    if (typeof window === 'undefined' || !serviceRef.current) return;
     const ctx = gsap.context(() => {
       gsap.to(serviceRef.current, {
-        "--title-opacity": 1,
+        '--title-opacity': 1,
         scrollTrigger: {
           trigger: serviceRef.current,
-          start: "top 80%",
-          end: "top 20%",
+          start: 'top 80%',
+          end: 'top 20%',
           scrub: true,
         },
       });
-
-      gsap.to(document.documentElement, {
-  "--bg-progress": 1,
-  ease: "none",
-  scrollTrigger: {
-    trigger: serviceRef.current,
-    start: "top 80%",
-    end: "top 20%",
-    scrub: 1.5, // 👈 très important pour la douceur
-  },
-});
-
+      ScrollTrigger.create({
+        trigger: serviceRef.current,
+        start: 'top 20%',
+        onEnter: () => document.body.classList.add('works-active'),
+        onLeaveBack: () => document.body.classList.remove('works-active'),
+      });
     });
     return () => {
       ctx.revert();
-      document.body.classList.remove("works-active");
+      document.body.classList.remove('works-active');
     };
   }, []);
 
-  // ✨ Horizontal scroll (desktop only)
-  useEffect(() => {
-    if (!sectionRef.current || !triggerRef.current || window.innerWidth < 1000) return;
+useEffect(() => {
+  if (!sectionRef.current || !triggerRef.current || window.innerWidth < 1000) return;
 
-    const ctx = gsap.context(() => {
-      const cards = sectionRef.current!;
-      const progress = progressBarRef.current!;
+  const ctx = gsap.context(() => {
+    const cards = sectionRef.current!;
+    const progress = progressBarRef.current!;
 
-      gsap.to(cards, {
-        x: "-70vw",
-        ease: "none",
-        scrollTrigger: {
-          trigger: triggerRef.current,
-          start: "top 20%",
-          end: "+=1500",
-          scrub: true,
-          pin: true,
-          pinSpacing: true,
-          anticipatePin: 1,
-          onUpdate: (self) => {
-            progress.style.width = `${self.progress * 100}%`;
-          },
+    // 👉 Petit offset pour laisser respirer la dernière card
+    const getExtraOffset = () => window.innerWidth * 0.15; // 15vw
+
+    const getScrollAmount = () => {
+      return cards.scrollWidth - window.innerWidth + getExtraOffset();
+    };
+
+    gsap.to(cards, {
+      x: () => -getScrollAmount(),
+      ease: "none",
+      scrollTrigger: {
+        trigger: triggerRef.current,
+        start: "top 20%",
+        end: () => `+=${getScrollAmount()}`,
+        scrub: true,
+        pin: true,
+        pinSpacing: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          progress.style.width = `${self.progress * 100}%`;
         },
-      });
+      },
     });
+  });
 
-    return () => ctx.revert();
-  }, []);
+  return () => ctx.revert();
+}, []);
+
+
 
   return (
     <div className="services" ref={serviceRef}>
