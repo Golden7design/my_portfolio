@@ -167,6 +167,9 @@ img{
         align-items: center;
         text-align: center;
     }
+    .about-container{
+    margin-top: 0vh;
+}
 }
 @media (max-width: 500px){
     .img_inversed, .inversion-lens{

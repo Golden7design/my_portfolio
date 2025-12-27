@@ -1,9 +1,42 @@
 /* Transition globale sur le body */
-body {
-  transition:
-    background-color 1s cubic-bezier(0.34, 1.56, 0.64, 1),
-    color 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+:root {
+  --bg-progress: 0;
+  --bg-light: #f8f8f8;
+  --bg-dark: #0e0e0e;
+  --text-light: #111;
+  --text-dark: #f8f8f8;
 }
+body {
+  background-color: color-mix(
+    in oklab,
+    var(--bg-light) calc((1 - var(--bg-progress)) * 100%),
+    var(--bg-dark) calc(var(--bg-progress) * 100%)
+  );
+
+  color: color-mix(
+    in oklab,
+    var(--text-light) calc((1 - var(--bg-progress)) * 100%),
+    var(--text-dark) calc(var(--bg-progress) * 100%)
+  );
+
+  transition: none; /* ⛔ on laisse GSAP gérer */
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at center,
+    rgba(255,255,255,0.04),
+    transparent 70%
+  );
+  opacity: var(--bg-progress);
+  transition: opacity 0.2s linear;
+}
+
 /* État actif quand Services est visible à 20% du top */
 body.works-active {
   background-color: var(--dark);
@@ -64,6 +97,7 @@ body.works-active {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0.7rem;
 }
 
 .card-head .card-number {
@@ -71,7 +105,6 @@ body.works-active {
   opacity: 0.5;
 }
 .card-number {
-  font-variant-numeric: oldstyle-nums proportional-nums;
   font-family: var(--font-gambarino);
   letter-spacing: 0.05em;
 }
@@ -113,8 +146,8 @@ body.works-active {
   border-left: none;
 }
 .card svg{
-    width: 170px;
-    height: 170px;
+    width: 100px;
+    height: 100px;
 }
 
 @media (max-width: 1000px) {
@@ -136,8 +169,8 @@ body.works-active {
   }
 
   .card-svg svg {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
   }
 
   .cards-container {
@@ -204,8 +237,8 @@ body.works-active {
   }
 
   .card-svg svg{
-    width: 115px;
-    height: 115px;
+    width: 85px;
+    height: 85px;
   }
 
   .cards-container {
@@ -260,10 +293,6 @@ body.works-active {
     font-size: clamp(1.1rem, 2.2vw, 2rem);
     width: 70%;
     margin-left: 2.2rem;
-  }
-  .card-svg svg {
-    width: 120px;
-    height: 100px;
   }
 }
 

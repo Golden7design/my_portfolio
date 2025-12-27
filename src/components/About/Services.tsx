@@ -26,12 +26,17 @@ const Services = () => {
         },
       });
 
-      ScrollTrigger.create({
-        trigger: serviceRef.current,
-        start: "top 20%",
-        onEnter: () => document.body.classList.add("works-active"),
-        onLeaveBack: () => document.body.classList.remove("works-active"),
-      });
+      gsap.to(document.documentElement, {
+  "--bg-progress": 1,
+  ease: "none",
+  scrollTrigger: {
+    trigger: serviceRef.current,
+    start: "top 80%",
+    end: "top 20%",
+    scrub: 1.5, // 👈 très important pour la douceur
+  },
+});
+
     });
     return () => {
       ctx.revert();
@@ -121,7 +126,7 @@ const Services = () => {
               <div className="card-number">03</div>
             </div>
             <div className="card-desc">
-              <h2 className="card-title">Secured API & Back-End</h2>
+              <h2 className="card-title">Secured API <br /> & Back-End</h2>
               <div className="card-body">
                 <hr />
                 <p>
@@ -138,7 +143,7 @@ const Services = () => {
               <div className="card-number">04</div>
             </div>
             <div className="card-desc">
-              <h2 className="card-title">CI/CD & DevOps</h2>
+              <h2 className="card-title">CI/CD & <br /> DevOps</h2>
               <div className="card-body">
                 <hr />
                 <p>
@@ -155,7 +160,7 @@ const Services = () => {
               <div className="card-number">05</div>
             </div>
             <div className="card-desc">
-              <h2 className="card-title">Performance Optimization</h2>
+              <h2 className="card-title">Performance <br /> Optimization</h2>
               <div className="card-body">
                 <hr />
                 <p>
