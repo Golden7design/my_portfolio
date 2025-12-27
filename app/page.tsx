@@ -18,8 +18,16 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
   useEffect(() => {
-    // Refresh ScrollTrigger après le chargement
-    ScrollTrigger.refresh();
+    // Force un reset complet de ScrollTrigger
+    ScrollTrigger.refresh(true);
+    
+    // Scroll vers le haut si nécessaire
+    window.scrollTo(0, 0);
+
+    return () => {
+      // Cleanup lors du démontage
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
   }, []);
 
   return (

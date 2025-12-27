@@ -167,7 +167,7 @@ const Skills: React.FC = () => {
           <div className="skill-tag" data-category="devops"><span>Github Action</span></div>
           <div className="skill-tag" data-category="backend"><span>Node JS</span></div>
           <div className="skill-tag" data-category="tools"><span>Figma</span></div>
-          <div className="skill-tag" data-category="devops"><span>Docker</span></div>          
+          <div className="skill-tag" data-category="devops"><span>Docker</span></div>                    
           <div className="skill-tag" data-category="frontend"><span>GSAP</span></div>
           <div className="skill-tag" data-category="backend"><span>PHP</span></div>
           <div className="skill-tag" data-category="tools"><span>Vs Code</span></div>
@@ -176,9 +176,11 @@ const Skills: React.FC = () => {
           <div className="skill-tag" data-category="frontend"><span>Tailwind CSS</span></div>
           <div className="skill-tag" data-category="tools"><span>Github</span></div>
           <div className="skill-tag" data-category="backend"><span>PostgresSQL</span></div>
+          <div className="skill-tag" data-category="devops"><span>terraform</span></div>
           <div className="skill-tag" data-category="backend"><span>TypeScript</span></div>
           <div className="skill-tag" data-category="frontend"><span>ThreeJS</span></div>
           <div className="skill-tag" data-category="devops"><span>AWS</span></div>
+          <div className="skill-tag" data-category="devops"><span>Ansible</span></div>
         </div>
       </div>
       </div>
