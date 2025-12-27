@@ -56,12 +56,12 @@ const worksData: Record<string, Work> = {
     role: 'Full-Stack Developer & UI/UX Designer',
     technologies: ['React.js', 'Firebase', 'Express', 'CSS', 'Node.js', 'MongoDB'],
     images: {
-      hero: '/assets/nashfood-det1.png',
-      desktop: '/assets/nashfood-det3.jpg',
-      mobile: '/assets/nashfood-det2.jpg',
+      hero: '/assets/nashfood-det1.avif',
+      desktop: '/assets/nashfood-det3.avif',
+      mobile: '/assets/nashfood-det2.avif',
       details: [
-        '/assets/NashFoodDesk.png',
-        '/assets/NashfoodPhones.jpg',
+        '/assets/NashFoodDesk.avif',
+        '/assets/NashfoodPhones.avif',
       ]
     },
     link: 'https://nashfood.com',

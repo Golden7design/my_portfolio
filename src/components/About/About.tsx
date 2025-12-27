@@ -183,7 +183,7 @@ Cordialement,
             <circle cx="263" cy="15.0203" r="2.5" fill="#d7fb61" />
           </svg>
 
-          <InversionLens src="/nassir_img.png" className="inversion-lens"/>
+          <InversionLens src="/assets/nassir_img.avif" className="inversion-lens"/>
         </div>
       </div>
     </div>

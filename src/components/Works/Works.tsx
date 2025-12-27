@@ -72,7 +72,7 @@ const Works = () => {
             <div className="works1-left">
               <div className="img-left">
                 <ParallaxImage 
-                  src='/assets/NashFoodDesk.png'
+                  src='/assets/NashFoodDesk.avif'
                   alt='NashFood'
                   speed={0.2}
                 />
@@ -94,7 +94,7 @@ const Works = () => {
             
             <div className="works1-right">
               <ParallaxImage 
-                src='/assets/NashfoodPhones.jpg'
+                src='/assets/NashfoodPhones.avif'
                 alt='NashFood'
                 speed={0.2}
               />        
@@ -106,7 +106,7 @@ const Works = () => {
 
             <div className="works1-right">
               <ParallaxImage 
-                src='/assets/PortPhones.jpg'
+                src='/assets/PortPhones.avif'
                 alt='NashFood'
                 speed={0.2}
               />            
@@ -115,7 +115,7 @@ const Works = () => {
             <div className="works1-left">
               <div className="img-left">
                 <ParallaxImage 
-                  src='/assets/PortDesk.jpg'
+                  src='/assets/PortDesk.avif'
                   alt='NashFood'
                   speed={0.2}
                 />
