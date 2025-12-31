@@ -74,6 +74,33 @@ const worksData: Record<string, Work> = {
       '95% mobile satisfaction score'
     ]
   },
+  'portfolio': {
+    slug: 'portfolio',
+    title: "Nassir's Portfolio",
+    subtitle: 'My portfolio',
+    description: 'Portfolio in a refined neo-brutalist style',
+    year: '2026',
+    role: 'Developer & UI/UX Designer',
+    technologies: ['Next.js', 'ThreeJS', 'GSAP', 'CSS', 'WebGL', 'Github Action'],
+    images: {
+      hero: '/assets/port_img2.avif',
+      desktop: '/assets/port_img3.avif',
+      mobile: '/assets/nashfood-det2.avif',
+      details: [
+        '/assets/NashFoodDesk.avif',
+        '/assets/NashfoodPhones.avif',
+      ]
+    },
+    link: '-',
+    github: 'https://github.com/Golden7Design/my-portfolio',
+    challenge: 'The challenge was to design a portfolio that balances strong visual identity, smooth interactions, and high performance, while clearly communicating my skills and problem-solving approach.',
+    solution: "The solution was to build a performant, accessible, and animation-driven portfolio that communicates my value clearly while showcasing my technical and creative skills.",
+    results: [
+      '-',
+      '-',
+      '-'
+    ]
+  },
   // Ajoutez d'autres projets ici
 }
 
@@ -87,6 +114,11 @@ const WorkDetail = () => {
     fontFamily: '"Dancing Script", cursive',
     color: '#ffffff'
   }
+
+  // Déterminer la font family selon le slug
+  const titleFontFamily = slug === 'nashfood' 
+    ? '"Dancing Script", cursive' 
+    : 'var(--font-clash-display)';
 
   if (!work) {
     return (
@@ -105,7 +137,7 @@ const WorkDetail = () => {
 
   return (
     <>
-      {/* ✅ Ajouter la Navbar */}
+      {/* Ajouter la Navbar */}
       <Navbar />
       
       <div className="work-detail">
@@ -113,11 +145,10 @@ const WorkDetail = () => {
         <section className="hero-work-section">
           <div className="hero-work-content">
             <span className="work-year">{work.year}</span>
-            <h1 
+                       <h1 
               className="work-title" 
               style={{ 
-                fontFamily: config.fontFamily,
-                color: config.color 
+                fontFamily: titleFontFamily
               }}
             >
               {work.title}

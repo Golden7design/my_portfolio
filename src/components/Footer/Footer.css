@@ -1,3 +1,194 @@
-.footer-container{
+.say-hello{
     height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: var(--light);
+    padding-top: 2.5rem;
+    min-width: 100vw;
+    overflow: hidden;
+}
+
+.say-hello .say-hello-title{
+    font-family: var(--font-gambarino);
+  font-size: clamp(2.5rem, 5vw, 6rem);
+  margin-bottom: 3rem;
+  text-decoration: underline var(--accent2) ;
+  font-weight: 200;
+    color: var(--dark);
+  pointer-events: none;
+  font-style: italic;
+}
+.say-hello .message p{
+    font-family: var(--font-aeonik);
+    font-size: clamp(0.6rem, 3.8vw, 1.2rem);
+    font-weight: 700;
+    margin-bottom: 4rem;
+  pointer-events: none;
+}
+.say-hello-contact{
+    display: flex;
+    justify-content: space-between;
+    width: 100vw;
+    padding: 0rem 3rem;
+    align-items: center;
+    margin-bottom:10rem;
+    color: var(--dark);
+}
+.say-hello-contact .social-contact{
+    display: flex;
+    gap: 1.2rem;
+}
+.say-hello-contact .social-contact svg{
+    width: 32px;
+    height: 32px;
+}
+.email-container{
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    justify-content: center;
+}
+.email-container input{
+    border: 1px solid gray;
+    color: var(--dark);
+    height: 1.5rem;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: var(--font-gambarino);
+    outline: none;
+}
+.email-container .send{
+    padding: 0.3rem 1.5rem;
+    background-color: #000;
+    color: var(--light);
+    border-radius: 12px;
+    font-family: var(--font-aeonik);
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.say-hello-contact .my-contact{
+    text-align: left;
+    font-family: var(--font-aeonik);
+    pointer-events: none;
+}
+.my-contact p:nth-child(2){
+    text-decoration: underline;
+}
+.copyright-container{
+    z-index: 2;
+    border: 1px solid gray;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1.5rem;
+    font-family: var(--font-aeonik);
+    pointer-events: none;
+}
+.copyright-container .copyright svg{
+    width: 25px;
+    height: 25px;
+}
+.copyright{
+    display: flex;
+    gap: 1rem;
+}
+.say-name {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+    color: var(--dark);
+}
+
+.name-mask {
+  width: 100vw;
+  height: 12rem;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+
+.say-name h1 {
+  font-family: var(--font-clash-display);
+  margin: 0;
+
+  font-size: clamp(8rem, 25vw, 16rem);
+  line-height: 0.75;
+
+  transform: translateY(30%);
+}
+.name-mask .sign {
+    position: absolute;
+    top: 0rem;
+    left: 40%;
+    height: 10rem;
+    width: 18rem;
+
+    z-index: 3;
+    pointer-events: none;
+    transform: rotate(-15deg);
+}
+
+@media (min-width: 1000px) {
+  .say-name {
+    height: 14rem;
+  }
+
+  .say-name h1 {
+    font-size: 22rem;
+    line-height: 0.72;
+    transform: translateY(32%);
+  }
+}
+
+
+@media (max-width: 600px) {
+    .copyright-container{
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+}
+.copyright-container .copyright svg{
+    width: 18px;
+    height: 18px;
+}
+.copyright{
+    gap: 0.5rem;
+}
+    .say-hello-contact{
+        flex-direction: column-reverse;
+        margin-top: 3rem;
+        gap: 4rem;
+    }
+    .say-hello-contact .my-contact{
+        text-align: center;
+    }
+  .say-name {
+    height:8rem;
+  }
+
+  .say-name h1 {
+    transform: translateY(22%);
+  }
+  .name-mask .sign {
+    position: absolute;
+    top: 0rem;
+    left: 20%;
+    height: 5rem;
+    width: 18rem;
+
+    z-index: 3;
+    pointer-events: none;
+    transform: rotate(-15deg);
+}
 }

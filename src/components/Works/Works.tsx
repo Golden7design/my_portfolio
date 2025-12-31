@@ -115,7 +115,7 @@ const Works = () => {
             <div className="works1-left">
               <div className="img-left">
                 <ParallaxImage 
-                  src='/assets/PortDesk.avif'
+                  src='/assets/port_img1.avif'
                   alt='NashFood'
                   speed={0.2}
                 />
@@ -123,7 +123,7 @@ const Works = () => {
               
               <div className="work-desc">
                 <p className='portfolio'><span className='port-name' >Nassir's Portfolio </span> <span className='opa_desc'   >My personal showcase.</span></p>
-                   <TransitionLink href="/works/nashfood">
+                   <TransitionLink href="/works/portfolio">
      <div className="link" ref={link2Ref}>
        <div className="pink1"></div>
        <span className="learn-more">learn more</span>

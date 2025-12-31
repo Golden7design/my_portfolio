@@ -51,15 +51,23 @@ export default function Navbar() {
     const menuLinksEls = document.querySelectorAll<HTMLAnchorElement>(".menu-link a");
     menuLinksEls.forEach((link) => {
       const spans = link.querySelectorAll<HTMLSpanElement>("span");
-      spans.forEach((char, charIndex) => {
-        if (!char.classList.contains("split-initialized")) {
-          const split = new SplitText(char, { type: "chars" });
-          split.chars.forEach((charEl) => {
-            charEl.classList.add("char");
-          });
-          char.classList.add("split-initialized");
-          if (charIndex === 1) {
-            gsap.set(split.chars, { y: "110%" });
+      spans.forEach((span, charIndex) => {
+        if (!span.classList.contains("split-initialized")) {
+          // S'assurer que le span a du contenu
+          if (!span.textContent || span.textContent.trim() === '') return;
+          
+          const split = new SplitText(span, { type: "chars" });
+          
+          // Vérifier que le split a bien fonctionné
+          if (split.chars && split.chars.length > 0) {
+            split.chars.forEach((charEl) => {
+              charEl.classList.add("char");
+            });
+            span.classList.add("split-initialized");
+            
+            if (charIndex === 1) {
+              gsap.set(split.chars, { y: "110%" });
+            }
           }
         }
       });
@@ -162,20 +170,58 @@ export default function Navbar() {
         if (window.innerWidth < 1000) return;
         const spans = link.querySelectorAll<HTMLSpanElement>("a span");
         const [visible, hidden] = spans;
+        
+        if (!visible || !hidden) return;
+        
         const vChars = visible.querySelectorAll<HTMLElement>(".char");
         const hChars = hidden.querySelectorAll<HTMLElement>(".char");
-        gsap.to(vChars, { y: "-110%", stagger: 0.06, duration: 1, ease: "expo.inOut" });
-        gsap.to(hChars, { y: "0%", stagger: 0.06, duration: 1, ease: "expo.inOut" });
+        
+        // Vérifier qu'on a bien des chars avant d'animer
+        if (vChars.length === 0 || hChars.length === 0) return;
+        
+        gsap.killTweensOf([...vChars, ...hChars]);
+        
+        gsap.to(vChars, { 
+          y: "-110%", 
+          stagger: 0.06, 
+          duration: 1, 
+          ease: "expo.inOut" 
+        });
+        gsap.to(hChars, { 
+          y: "0%", 
+          stagger: 0.06, 
+          duration: 1, 
+          ease: "expo.inOut" 
+        });
       };
 
       const handleMouseLeave = () => {
         if (window.innerWidth < 1000) return;
         const spans = link.querySelectorAll<HTMLSpanElement>("a span");
         const [visible, hidden] = spans;
+        
+        if (!visible || !hidden) return;
+        
         const vChars = visible.querySelectorAll<HTMLElement>(".char");
         const hChars = hidden.querySelectorAll<HTMLElement>(".char");
-        gsap.to(hChars, { y: "100%", stagger: 0.03, duration: 0.5, ease: "expo.inOut" });
-        gsap.to(vChars, { y: "0%", stagger: 0.03, duration: 0.5, ease: "expo.inOut" });
+        
+        // Vérifier qu'on a bien des chars avant d'animer
+        if (vChars.length === 0 || hChars.length === 0) return;
+        
+        gsap.killTweensOf([...vChars, ...hChars]);
+        
+        gsap.to(hChars, { 
+          y: "100%", 
+          stagger: 0.03, 
+          duration: 0.5, 
+          ease: "expo.inOut" 
+        });
+        gsap.to(vChars, { 
+          y: "0%", 
+          stagger: 0.03, 
+          duration: 0.5, 
+          ease: "expo.inOut" 
+        });
       };
 
       link.addEventListener("mouseenter", handleMouseEnter);
@@ -258,16 +304,16 @@ export default function Navbar() {
       }
     });
 
-    // ✅ Cleanup complet au démontage
+    // Cleanup complet au démontage
     return () => {
       cleanupFunctionsRef.current.forEach(cleanup => cleanup());
       cleanupFunctionsRef.current = [];
       
-      // ✅ Réinitialiser l'état du menu
+      //  Réinitialiser l'état du menu
       menuOpenRef.current = false;
       setIsBurgerOpen(false);
       
-      // ✅ Tuer toutes les animations GSAP
+      // Tuer toutes les animations GSAP
       gsap.killTweensOf([menuOverlay, menuContent, menuImage, menuLinksEls, linkHighlighter, menuLinksWrapper]);
     };
   }, []);

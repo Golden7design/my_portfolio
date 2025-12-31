@@ -100,10 +100,8 @@ useEffect(() => {
               <h2 className="card-title">Development of tailor-made web applications</h2>
               <div className="card-body">
                 <hr />
-                <p>
-                  I create custom web applications designed specifically for your product and your users.
-                  From architecture to deployment, every solution is scalable, maintainable and focused on long-term performance.
-                </p>
+                <p>I create custom web applications that are user-focused, scalable, and built for long-term performance.
+</p>
               </div>
             </div>
           </div>

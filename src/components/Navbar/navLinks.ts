@@ -8,5 +8,5 @@ export interface MenuLink {
      { label: "About", href: "/#About" },
      { label: "Works", href: "/#works" },
      { label: "Skills", href: "/#skills" },
-     { label: "Say Hello!", href: "/#sayhello" },
+     { label: "Say Hello!", href: "/#say-hello!" },
    ];

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 const lerp = (start: number, end: number, factor: number): number =>
   start + (end - start) * factor;
@@ -17,8 +17,30 @@ const ParallaxImage: React.FC<ParallaxImageProps> = ({ src, alt, speed = 0.5 }) 
   const currentTranslateY = useRef(0);
   const targetTranslateY = useRef(0);
   const rafId = useRef<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Détection mobile
+    const checkMobile = () => window.innerWidth < 1000;
+    setIsMobile(checkMobile());
+
+    const handleResize = () => {
+      setIsMobile(checkMobile());
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    // Si mobile, pas d'animation parallax
+    if (isMobile) {
+      if (imageRef.current) {
+        imageRef.current.style.transform = 'translate3d(0, 0, 0) scale(1)';
+      }
+      return;
+    }
+
     let isAnimating = true;
 
     const animate = () => {
@@ -71,7 +93,7 @@ const ParallaxImage: React.FC<ParallaxImageProps> = ({ src, alt, speed = 0.5 }) 
         cancelAnimationFrame(rafId.current);
       }
     };
-  }, [speed]);
+  }, [speed, isMobile]);
 
   return (
     <div
@@ -92,8 +114,8 @@ const ParallaxImage: React.FC<ParallaxImageProps> = ({ src, alt, speed = 0.5 }) 
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          willChange: 'transform',
-          transform: 'translate3d(0, 0, 0) scale(1.3)',
+          willChange: isMobile ? 'auto' : 'transform',
+          transform: isMobile ? 'translate3d(0, 0, 0) scale(1)' : 'translate3d(0, 0, 0) scale(1.3)',
           display: 'block',
           verticalAlign: 'top',
         }}

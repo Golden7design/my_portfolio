@@ -338,11 +338,11 @@ nav p {
 }
 
 .burger.open span:first-child {
-  transform: rotate(45deg) translate(4px, 4px);
+  transform: rotate(45deg) translate(4px, 2px);
 }
 
 .burger.open span:last-child {
-  transform: rotate(-45deg) translate(4px, -4px);
+  transform: rotate(-45deg) translate(4px, -2px);
 }
 
 @media (max-width: 480px) {

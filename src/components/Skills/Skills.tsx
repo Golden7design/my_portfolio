@@ -153,7 +153,7 @@ const Skills: React.FC = () => {
       <div className="skill-left">
         <div className="skill-category" data-category="frontend" ><p>Frontend</p></div>
         <div className="skill-category" data-category="backend" ><p>Backend</p></div>
-        <div className="skill-category" data-category="devops"><p>DevOps & CI/CD</p></div>
+        <div className="skill-category" data-category="devops"><p>DevOps</p></div>
         <div className="skill-category" data-category="tools"><p>Tools</p></div>
       </div>
 
@@ -176,7 +176,7 @@ const Skills: React.FC = () => {
           <div className="skill-tag" data-category="frontend"><span>Tailwind CSS</span></div>
           <div className="skill-tag" data-category="tools"><span>Github</span></div>
           <div className="skill-tag" data-category="backend"><span>PostgresSQL</span></div>
-          <div className="skill-tag" data-category="devops"><span>terraform</span></div>
+          <div className="skill-tag" data-category="devops"><span>Terraform</span></div>
           <div className="skill-tag" data-category="backend"><span>TypeScript</span></div>
           <div className="skill-tag" data-category="frontend"><span>ThreeJS</span></div>
           <div className="skill-tag" data-category="devops"><span>AWS</span></div>

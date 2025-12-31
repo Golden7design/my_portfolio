@@ -213,7 +213,7 @@ body.works-active {
     height: 70px;
   }
   .card-svg{
-    margin: 0.4rem;
+    margin: 0rem;
   }
 
   .cards-container {
@@ -268,6 +268,12 @@ body.works-active {
     font-size: clamp(1.1rem, 2.2vw, 2rem);
     width: 70%;
     margin-left: 2.2rem;
+  }
+}
+@media (max-width: 380px) {
+    .card-svg svg{
+    width: 75px;
+    height: 65px;
   }
 }
 
