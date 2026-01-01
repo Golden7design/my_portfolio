@@ -81,7 +81,7 @@ const Hero = () => {
   }, [])
 
   return (
-    <section className='hero'>
+    <section className='hero' id='home'>
       <ParticlesCanvas/>
 
       <div className="hero-container">

@@ -103,11 +103,11 @@
     gap: 1.2rem;
 }
 
-.hero .links svg{
+.hero .links svg, .social-contact svg{
     transition: transform 0.3s;
 }
 
-.hero .links svg:hover{
+.hero .links  svg:hover, .social-contact svg:hover{
     transform: scale(1.1);
     transition: transform 0.3s;
 }
@@ -250,11 +250,6 @@
     .hero .links-content{
         top: 62%;
         gap: 1rem;
-    }
-    
-    .hero .links svg{
-        height: 22px;
-        width: 22px;
     }
     
     .hero .links{
