@@ -151,14 +151,14 @@ const Skills: React.FC = () => {
       <h1>Skills</h1>
       <div className="skills-container">
       <div className="skill-left">
-        <div className="skill-category" data-category="frontend" ><p>Frontend</p></div>
+        <div className="skill-category" data-category="frontend" translate="no"><p>Frontend</p></div>
         <div className="skill-category" data-category="backend" ><p>Backend</p></div>
         <div className="skill-category" data-category="devops"><p>DevOps</p></div>
         <div className="skill-category" data-category="tools"><p>Tools</p></div>
       </div>
 
       <div className="skills-right">
-        <div className="tech-list">
+        <div className="tech-list" translate="no">
           <div className="skill-tag" data-category="frontend"><span>React JS</span></div>
           <div className="skill-tag" data-category="backend"><span>Express</span></div>
           <div className="skill-tag" data-category="devops"><span>Jenkins</span></div>

@@ -380,7 +380,7 @@ export default function Navbar() {
     <>
       <NavAreaClickSound />
       <div className="navbar-wrapper">
-        <AnimatedWords isMenuOpen={isBurgerOpen} />
+        <AnimatedWords  isMenuOpen={isBurgerOpen} />
         <nav>
           <div className="nav-left">
             <div className="nav-toggle" aria-label={isBurgerOpen ? "Close menu" : "Open menu"}>
@@ -430,7 +430,7 @@ export default function Navbar() {
 
           <div className="menu-img" />
 
-          <div className="menu-links-wrapper">
+          <div className="menu-links-wrapper" translate="no">
             {menuLinks.map((link, index) => (
               <div className="menu-link" key={index}>
                 <TransitionLink href={link.href || ""}>

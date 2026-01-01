@@ -97,7 +97,7 @@ useEffect(() => {
               <div className="card-number">01</div>
             </div>
             <div className="card-desc">
-              <h2 className="card-title">Development of tailor-made web applications</h2>
+              <h2 className="card-title" translate="no">Development of tailor-made web applications</h2>
               <div className="card-body">
                 <hr />
                 <p>I create custom web applications that are user-focused, scalable, and built for long-term performance.
@@ -112,7 +112,7 @@ useEffect(() => {
               <div className="card-number">02</div>
             </div>
             <div className="card-desc">
-              <h2 className="card-title">Modern & Animated Front-End Interfaces</h2>
+              <h2 className="card-title" translate="no">Modern & Animated Front-End Interfaces</h2>
               <div className="card-body">
                 <hr />
                 <p>
@@ -129,7 +129,7 @@ useEffect(() => {
               <div className="card-number">03</div>
             </div>
             <div className="card-desc">
-              <h2 className="card-title">Secured API <br /> & Back-End</h2>
+              <h2 className="card-title" translate="no">Secured API <br /> & Back-End</h2>
               <div className="card-body">
                 <hr />
                 <p>
@@ -143,10 +143,10 @@ useEffect(() => {
           <div className="card card4">
             <div className="card-head">
               <div className="card-svg">{SvgService.devops()}</div>
-              <div className="card-number">04</div>
+              <div className="card-number" >04</div>
             </div>
             <div className="card-desc">
-              <h2 className="card-title">CI/CD & <br /> DevOps</h2>
+              <h2 className="card-title" translate="no">CI/CD & <br /> DevOps</h2>
               <div className="card-body">
                 <hr />
                 <p>
@@ -163,7 +163,7 @@ useEffect(() => {
               <div className="card-number">05</div>
             </div>
             <div className="card-desc">
-              <h2 className="card-title">Performance <br /> Optimization</h2>
+              <h2 className="card-title" translate="no">Performance <br /> Optimization</h2>
               <div className="card-body">
                 <hr />
                 <p>

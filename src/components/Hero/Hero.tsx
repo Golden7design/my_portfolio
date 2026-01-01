@@ -86,13 +86,13 @@ const Hero = () => {
 
       <div className="hero-container">
         <div className="presente">
-          <h3 className='myjob' ref={jobRef}>{me.job}</h3>
-          <h4 className='mymessage' ref={messageRef}>{me.message}</h4>          
+          <h3 className='myjob' translate="no" ref={jobRef}>{me.job}</h3>
+          <h4 className='mymessage' translate="no" ref={messageRef}>{me.message}</h4>          
         </div>
         <div className="hero-name">
           <h1>
-            <span className='firstname' ref={firstnameRef}>Nassir</span>
-            <span className='lastname' ref={lastnameRef}>&nbsp;GOUOMBA</span>
+            <span className='firstname' translate="no" ref={firstnameRef}>Nassir</span>
+            <span className='lastname' translate="no" ref={lastnameRef}>&nbsp;GOUOMBA</span>
           </h1>
         </div>
       </div>

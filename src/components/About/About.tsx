@@ -145,6 +145,7 @@ Cordialement,
           </AnimatedCopy>
           
           <button 
+          translate="no"
             ref={buttonRef} 
             className="magnetic-btn fill-btn"
             onClick={handleContactClick}

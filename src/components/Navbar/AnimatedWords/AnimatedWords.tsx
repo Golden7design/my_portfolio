@@ -117,7 +117,7 @@ export default function AnimatedWords({ isMenuOpen }: AnimatedWordsProps) {
     <div 
       ref={containerRef}
       className={`animated-words-container ${isMenuOpen ? "active" : ""}`}
-    >
+    translate="no">
       <div 
         ref={wordRef}
         className="giant-word"

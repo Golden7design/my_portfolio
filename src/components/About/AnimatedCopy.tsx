@@ -148,7 +148,7 @@ export default function AnimatedCopy({
 
   // Toujours wrapper dans un div pour éviter les problèmes de ref
   return (
-    <div ref={containerRef} data-copy-wrapper={React.Children.count(children) > 1 ? "true" : undefined}>
+    <div ref={containerRef} translate="no" data-copy-wrapper={React.Children.count(children) > 1 ? "true" : undefined}>
       {children}
     </div>
   );

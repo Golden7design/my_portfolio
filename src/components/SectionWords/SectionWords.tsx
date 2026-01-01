@@ -105,7 +105,7 @@ const SectionWords: React.FC = () => {
   }, []);
 
   return (
-    <section className="animated-titles" ref={sectionRef}>
+    <section className="animated-titles" translate="no" ref={sectionRef}>
       <div className="title">
         <div className="title-container">
           <h1>You focus</h1>
