@@ -36,6 +36,7 @@
     align-items: center;
     margin-bottom:10rem;
     color: var(--dark);
+    
 }
 .say-hello-contact .social-contact{
     display: flex;
