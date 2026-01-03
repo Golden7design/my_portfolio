@@ -2,12 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import './HeroLoader.css'
 
-const HeroLoader = ({ onLoadComplete }) => {
-  const loaderRef = useRef(null);
-  const blocksRef = useRef([]);
-  const counterRef = useRef(null);
-  const signatureRef = useRef(null);
-  const [progress, setProgress] = useState(0);
+interface HeroLoaderProps {
+  onLoadComplete?: () => void;
+}
+
+const HeroLoader: React.FC<HeroLoaderProps> = ({ onLoadComplete }) => {
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+  const blocksRef = useRef<Array<HTMLDivElement | null>>([]);
+  const counterRef = useRef<HTMLDivElement | null>(null);
+  const signatureRef = useRef<SVGSVGElement | null>(null);
+  const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
     const tl = gsap.timeline({
@@ -35,8 +39,8 @@ const HeroLoader = ({ onLoadComplete }) => {
     });
 
     // Animation de la signature (path drawing)
-    const signPath = signatureRef.current?.querySelector('path');
-    const signCircles = signatureRef.current?.querySelectorAll('circle');
+    const signPath = signatureRef.current?.querySelector('path') as SVGPathElement | null;
+    const signCircles = signatureRef.current?.querySelectorAll('circle') as NodeListOf<SVGCircleElement> | undefined;
     
     if (signPath) {
       const length = signPath.getTotalLength();
@@ -64,7 +68,8 @@ const HeroLoader = ({ onLoadComplete }) => {
     }
 
     // Animation des blocs qui se retirent
-    tl.to(blocksRef.current, {
+    const blocks = blocksRef.current.filter(Boolean) as HTMLDivElement[];
+    tl.to(blocks, {
       scaleY: 0,
       stagger: {
         amount: 0.8,
@@ -111,7 +116,7 @@ const HeroLoader = ({ onLoadComplete }) => {
         {Array.from({ length: 48 }).map((_, i) => (
           <div
             key={i}
-            ref={el => blocksRef.current[i] = el}
+            ref={el => { blocksRef.current[i] = el }}
             style={{
               backgroundColor: '#f8f8f8',
               transformOrigin: i % 2 === 0 ? 'top' : 'bottom',
@@ -216,7 +221,7 @@ export { HeroLoader };
 export default function HeroWithLoader() {
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
-  const heroContentRef = useRef(null);
+  const heroContentRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     // Vérifier si c'est la première visite de la session
@@ -224,8 +229,10 @@ export default function HeroWithLoader() {
     
     if (hasSeenLoader) {
       // Skip le loader si déjà vu dans cette session
-      setIsLoading(false);
-      setShowContent(true);
+      setTimeout(() => {
+        setIsLoading(false);
+        setShowContent(true);
+      }, 0);
     }
 
     // Désactiver le scroll pendant le chargement

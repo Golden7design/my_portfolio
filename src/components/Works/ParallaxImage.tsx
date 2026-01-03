@@ -17,12 +17,11 @@ const ParallaxImage: React.FC<ParallaxImageProps> = ({ src, alt, speed = 0.5 }) 
   const currentTranslateY = useRef(0);
   const targetTranslateY = useRef(0);
   const rafId = useRef<number | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 1000 : false);
 
   useEffect(() => {
     // Détection mobile
     const checkMobile = () => window.innerWidth < 1000;
-    setIsMobile(checkMobile());
 
     const handleResize = () => {
       setIsMobile(checkMobile());

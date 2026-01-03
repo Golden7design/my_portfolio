@@ -42,4 +42,3 @@ export const TimeDisplay = () => {
   );
 };
 
-const prevCharsRef = { current: [] as string[] };

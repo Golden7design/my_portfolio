@@ -21,10 +21,12 @@ export default function AnimatedWords({ isMenuOpen }: AnimatedWordsProps) {
 
   // Changer le mot à chaque ouverture du menu
   useEffect(() => {
-    if (isMenuOpen) {
-      const newWord = getRandomWord(currentWord);
-      setCurrentWord(newWord);
-    }
+    if (!isMenuOpen) return;
+
+    // Déférer l'update pour éviter un setState synchrone dans l'effet
+    setTimeout(() => {
+      setCurrentWord(prev => getRandomWord(prev));
+    }, 0);
   }, [isMenuOpen]);
 
   // Animation GSAP + Inertie souris

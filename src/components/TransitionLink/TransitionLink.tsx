@@ -25,6 +25,12 @@ export function TransitionLink({
   const { navigateWithTransition } = usePageTransition();
   const lenis = useLenis();
 
+  const refreshScrollTrigger = () => {
+    if (typeof window === 'undefined') return;
+    const w = window as unknown as { ScrollTrigger?: { refresh?: () => void } };
+    w.ScrollTrigger?.refresh?.();
+  };
+
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     if (e.ctrlKey || e.metaKey || e.shiftKey) {
       return;
@@ -66,9 +72,7 @@ export function TransitionLink({
       waitForElement(targetId).then((targetElement) => {
         if (targetElement && lenis && smoothScroll) {
           //  Force le refresh de ScrollTrigger AVANT le scroll
-          if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
-            (window as any).ScrollTrigger.refresh();
-          }
+          refreshScrollTrigger();
 
           lenis.scrollTo(targetElement, {
             duration: scrollDuration,
@@ -78,18 +82,14 @@ export function TransitionLink({
 
           //  Double refresh après le scroll
           setTimeout(() => {
-            if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
-              (window as any).ScrollTrigger.refresh();
-            }
+            refreshScrollTrigger();
           }, scrollDuration * 1000 + 100);
         } else if (targetElement) {
           // Fallback scroll natif
           targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
           
           setTimeout(() => {
-            if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
-              (window as any).ScrollTrigger.refresh();
-            }
+            refreshScrollTrigger();
           }, 300);
         }
       });
@@ -106,9 +106,7 @@ export function TransitionLink({
         const targetElement = document.getElementById(hash);
         if (targetElement && lenis && smoothScroll) {
           //  Refresh avant scroll
-          if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
-            (window as any).ScrollTrigger.refresh();
-          }
+          refreshScrollTrigger();
 
           lenis.scrollTo(targetElement, {
             duration: scrollDuration,
@@ -118,9 +116,7 @@ export function TransitionLink({
 
           //  Refresh après scroll
           setTimeout(() => {
-            if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
-              (window as any).ScrollTrigger.refresh();
-            }
+            refreshScrollTrigger();
           }, scrollDuration * 1000 + 100);
         }
         return;
@@ -133,9 +129,7 @@ export function TransitionLink({
           const targetElement = document.getElementById(hash);
           if (targetElement && lenis && smoothScroll) {
             // ✅ Triple refresh pour être sûr
-            if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
-              (window as any).ScrollTrigger.refresh();
-            }
+            refreshScrollTrigger();
 
             lenis.scrollTo(targetElement, {
               duration: scrollDuration,
@@ -144,9 +138,7 @@ export function TransitionLink({
             });
 
             setTimeout(() => {
-              if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
-                (window as any).ScrollTrigger.refresh();
-              }
+              refreshScrollTrigger();
             }, scrollDuration * 1000 + 100);
           } else if (targetElement) {
             targetElement.scrollIntoView({ behavior: "smooth", block: "start" });

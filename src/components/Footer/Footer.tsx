@@ -19,7 +19,6 @@ const FORMSPREE_URL = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT!;
 const Footer = () => {
   const svgRef = useRef<SVGSVGElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const animationInitialized = useRef(false);
 
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "error" | "success">("idle");
@@ -152,7 +151,7 @@ const Footer = () => {
       <h1 className="say-hello-title" >Say Hello!</h1>
 
       <div className="message">
-        <p>Let's build something great together!</p>
+        <p>Let&apos;s build something great together!</p>
 
         <div style={{ position: "relative" }}>
           <form className="email-container" onSubmit={handleSubmit} noValidate>
@@ -200,7 +199,7 @@ const Footer = () => {
 
             {status === "success" && (
               <p className="form-success" role="status" style={{ margin: 0 }}>
-                Thanks! I'll get back to you soon 😉 .
+                Thanks! I&apos;ll get back to you soon 😉.
               </p>
             )}
           </div>

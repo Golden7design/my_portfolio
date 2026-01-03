@@ -7,7 +7,7 @@ import ParallaxImage from './ParallaxImage'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'  
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { TransitionLink } from '../TransitionLink/TransitionLink'
-
+import NavAreaClickSound from '../NavAreaClickSound'
 const Works = () => {
   const link1Ref = useRef<HTMLDivElement>(null)
   const link2Ref = useRef<HTMLDivElement>(null)
@@ -63,6 +63,7 @@ const Works = () => {
 
   return (
     <ReactLenis>
+
       <div className='works'>
         <h1 id='works' >Works</h1>
         <div className="container-works">
@@ -122,15 +123,17 @@ const Works = () => {
               </div>
               
               <div className="work-desc">
-                <p className='portfolio'><span className='port-name' >Nassir's Portfolio </span> <span className='opa_desc'   >My personal showcase.</span></p>
+                <p className='portfolio'><span className='port-name' >Nassir&apos;s Portfolio </span> <span className='opa_desc'   >My personal showcase.</span></p>
+
                    <TransitionLink href="/works/portfolio">
-     <div className="link" ref={link2Ref}>
-       <div className="pink1"></div>
-       <span className="learn-more">learn more</span>
-       <span className='button-arrow'>
-         <FontAwesomeIcon icon={faArrowRight}/>
-       </span>
-     </div>
+                  
+                      <div className="link" ref={link2Ref}>
+                        <div className="pink1"></div>
+                        <span className="learn-more">learn more</span>
+                        <span className='button-arrow'>
+                          <FontAwesomeIcon icon={faArrowRight}/>
+                        </span>
+                      </div>
    </TransitionLink>
               </div>
             </div>

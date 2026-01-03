@@ -242,7 +242,7 @@ export default function Navbar() {
       const range = vw * 0.5;
       const startX = (vw - range) / 2;
       const endX = startX + range;
-      let perc = mouseX < startX ? 0 : mouseX > endX ? 1 : (mouseX - startX) / range;
+      const perc = mouseX < startX ? 0 : mouseX > endX ? 1 : (mouseX - startX) / range;
       targetX = perc * maxRight;
     };
 
