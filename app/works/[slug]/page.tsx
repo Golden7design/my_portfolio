@@ -64,8 +64,8 @@ const worksData: Record<string, Work> = {
         '/assets/NashfoodPhones.avif',
       ]
     },
-    link: 'https://nashfood.com',
-    github: 'https://github.com/yourusername/nashfood',
+    link: 'https://nashfood.netlify.app',
+    github: 'https://github.com/Golden7design/Nash_Food',
     challenge: 'Creating an intuitive food ordering experience that works seamlessly across all devices while maintaining fast load times and real-time updates.',
     solution: 'I designed a progressive web application (PWA) in Node.js and Express, combining server-side rendering for optimal SEO, optimistic interface updates for a smooth user experience, and enhanced security via middleware on each sensitive endpoint.',
     results: [

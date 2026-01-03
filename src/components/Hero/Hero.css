@@ -28,6 +28,7 @@
     display: flex;
     flex-direction: column;
     width: 100vw;
+    pointer-events: none;
 }
 
 .hero-container .presente{
@@ -40,6 +41,7 @@
     padding: 0rem 1.5rem;
     font-size: clamp(0.6rem, 4.8vw, 1.5rem);
     font-family: var(--font-generale-sans);
+    pointer-events: none;
 }
 
 .hero-name h1{
@@ -130,6 +132,14 @@
 
 /* Tablettes et petits écrans PC */
 @media (max-width: 1000px) {
+        .hero .bar-content{
+        display: none;
+    }
+    
+    .hero .links{
+        display: flex;
+        flex-direction: row;
+    }
     .hero {
         display: flex;
         flex-direction: column-reverse;
@@ -234,17 +244,10 @@
 
 /* Petits mobiles */
 @media (max-width: 480px) {
-    .hero .bar-content{
-        display: none;
-    }
-    
-    .hero .links{
-        display: flex;
-        flex-direction: row;
-    }
+
     
     .hero-name h1{
-        font-size: 3.2rem;
+        font-size: 4.2rem;
     }
     
     .hero .links-content{

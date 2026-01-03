@@ -16,7 +16,7 @@ export default function NavAreaClickSound() {
     const play = () => {
       if (!audioRef.current) return;
 
-      // ⛔ Désactive le son si largeur < 1000px
+      // Désactive le son si largeur < 1000px
       if (window.innerWidth < 1000) return;
 
       audioRef.current.currentTime = 0;

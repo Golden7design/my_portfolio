@@ -13,7 +13,7 @@ const Services = () => {
   const serviceRef = useRef<HTMLDivElement>(null);
   
 
-  // ✨ Animation opacité / background
+  // Animation opacité / background
   // Background + opacité
   useEffect(() => {
     if (typeof window === 'undefined' || !serviceRef.current) return;

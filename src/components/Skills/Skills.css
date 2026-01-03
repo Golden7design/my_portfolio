@@ -3,7 +3,7 @@
     margin-top: 12rem;
     min-height: 100svh;
     position: relative;
-    z-index: 1; /* Assure que Skills reste au-dessus pendant le pin */
+    z-index: 1;
 }
 
 .skills h1{
@@ -12,6 +12,7 @@
     text-align: center;
     margin-bottom: 1.3rem;
     text-transform: uppercase;
+    z-index: 3;
 }
 
 .skills-container{
@@ -20,6 +21,7 @@
     align-items: center;
     width: 100%;
     margin-top: 5rem;
+    z-index: 3;
 }
 
 .skill-left{
@@ -66,8 +68,11 @@
     cursor: default;
     margin-bottom: 1.5rem;
 }
+.particules{
+    z-index: 2;
+}
 
-/* ========== MEDIA QUERIES ========== */
+/* MEDIA QUERIES */
 
 /* Tablettes et écrans moyens */
 @media (max-width: 1200px) {

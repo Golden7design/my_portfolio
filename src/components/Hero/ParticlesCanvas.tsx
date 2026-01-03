@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-// ============ SHADERS ============
+// SHADERS
 const vertexShaderSource = `
 precision highp float;
 uniform vec2 u_resolution;
@@ -29,7 +29,7 @@ void main () {
 }
 `;
 
-// ============ CONFIG ============
+// CONFIG 
 const config = {
     logoPath: "/nash_white.svg",
     logoSize: 530,
@@ -43,7 +43,7 @@ const config = {
     logoOffsetX: 310,
 };
 
-// ============ TYPES ============
+// TYPES
 interface Particle {
     originalX: number;
     originalY: number;
@@ -51,7 +51,7 @@ interface Particle {
     velocityY: number;
 }
 
-// ============ UTILS ============
+//UTILS
 function hexToRgb(hex: string): { r: number; g: number; b: number } {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result
@@ -63,7 +63,7 @@ function hexToRgb(hex: string): { r: number; g: number; b: number } {
         : { r: 1, g: 1, b: 1 };
 }
 
-// ============ COMPOSANT ============
+//  COMPOSANT 
 export default function ParticlesCanvas() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isDesktop, setIsDesktop] = useState(false);
@@ -96,7 +96,7 @@ export default function ParticlesCanvas() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // ============ WEBGL HELPERS ============
+    //  WEBGL HELPERS 
     const compileShader = (gl: WebGLRenderingContext, type: number, source: string): WebGLShader => {
         const shader = gl.createShader(type)!;
         gl.shaderSource(shader, source);
@@ -123,7 +123,7 @@ export default function ParticlesCanvas() {
         return program;
     };
 
-    // ============ MAIN LOGIC ============
+    //  MAIN LOGIC 
     useEffect(() => {
         if (!isDesktop) return;
 
@@ -196,7 +196,7 @@ export default function ParticlesCanvas() {
         };
         window.addEventListener("resize", handleResize);
 
-        // ============ ANIMATION LOOP ============
+        //  ANIMATION LOOP 
         const animate = () => {
             const { gl, program, particles, positionArray, positionBuffer, mouse, animationCount } = state;
             if (!gl || !program || particles.length === 0 || !state.isAnimating) return;
@@ -282,7 +282,7 @@ export default function ParticlesCanvas() {
             state.animationFrameId = requestAnimationFrame(animate);
         };
 
-        // ============ LOAD LOGO ============
+        //  LOAD LOGO 
         const image = new Image();
         image.onload = () => {
             const tempCanvas = document.createElement("canvas");
@@ -338,7 +338,7 @@ export default function ParticlesCanvas() {
             gl.bindBuffer(gl.ARRAY_BUFFER, state.colorBuffer);
             gl.bufferData(gl.ARRAY_BUFFER, state.colorArray, gl.STATIC_DRAW);
 
-            // ✅ Marquer comme chargé et démarrer l'animation
+            //  Marquer comme chargé et démarrer l'animation
             setIsLoaded(true);
             state.isAnimating = true;
             animate();

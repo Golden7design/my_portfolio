@@ -1,0 +1,120 @@
+/* HeroLoader.css */
+.hero-loader-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  background-color: #f8f8f8;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.hero-loader-blocks {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 2px;
+  background: #d7fb61;
+}
+
+.hero-loader-block {
+  background-color: #f8f8f8;
+  will-change: transform;
+}
+
+.hero-loader-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  z-index: 1;
+}
+
+.hero-loader-signature {
+  width: min(60vw, 400px);
+  height: auto;
+}
+
+.hero-loader-counter {
+  font-size: clamp(4rem, 12vw, 8rem);
+  font-family: var(--font-clash-display);
+  font-weight: 700;
+  color: #141414;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.hero-loader-text {
+  font-family: var(--font-generale-sans);
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
+  color: #141414;
+  opacity: 0.6;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.hero-loader-progress {
+  width: min(80vw, 400px);
+  height: 2px;
+  background-color: rgba(20,20,20,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-loader-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #141414;
+  transition: width 0.3s ease;
+}
+
+/* Animation du glow pour le compteur */
+@keyframes pulse-glow {
+  0%, 100% {
+    text-shadow: 0 0 20px rgba(215, 251, 97, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 40px rgba(215, 251, 97, 0.6);
+  }
+}
+
+.hero-loader-counter {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .hero-loader-blocks {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+  }
+  
+  .hero-loader-content {
+    gap: 2rem;
+  }
+  
+  .hero-loader-signature {
+    width: 70vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-loader-blocks {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+  }
+}

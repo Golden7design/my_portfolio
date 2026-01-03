@@ -46,14 +46,14 @@ const About = () => {
       },
     });
 
-    // 1️⃣ écriture de la ligne
+    // écriture de la ligne
     tl.to(path, {
       strokeDashoffset: 0,
       duration: 2.2,
       ease: "power2.out",
     });
 
-    // 2️⃣ cercles un par un
+    // cercles un par un
     tl.to(
       circles,
       {

@@ -36,7 +36,7 @@ export function TransitionLink({
 
     e.preventDefault();
 
-    // ✅ Gestion des ancres (même page)
+    //  Gestion des ancres (même page)
     if (href.startsWith("#")) {
       const targetId = href.substring(1);
       
@@ -65,7 +65,7 @@ export function TransitionLink({
 
       waitForElement(targetId).then((targetElement) => {
         if (targetElement && lenis && smoothScroll) {
-          // ✅ Force le refresh de ScrollTrigger AVANT le scroll
+          //  Force le refresh de ScrollTrigger AVANT le scroll
           if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
             (window as any).ScrollTrigger.refresh();
           }
@@ -76,7 +76,7 @@ export function TransitionLink({
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           });
 
-          // ✅ Double refresh après le scroll
+          //  Double refresh après le scroll
           setTimeout(() => {
             if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
               (window as any).ScrollTrigger.refresh();
@@ -97,7 +97,7 @@ export function TransitionLink({
       return;
     }
 
-    // ✅ Gestion des ancres cross-page (ex: /works#section)
+    //  Gestion des ancres cross-page (ex: /works#section)
     if (href.includes("#")) {
       const [path, hash] = href.split("#");
       
@@ -105,7 +105,7 @@ export function TransitionLink({
       if (window.location.pathname === path) {
         const targetElement = document.getElementById(hash);
         if (targetElement && lenis && smoothScroll) {
-          // ✅ Refresh avant scroll
+          //  Refresh avant scroll
           if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
             (window as any).ScrollTrigger.refresh();
           }
@@ -116,7 +116,7 @@ export function TransitionLink({
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           });
 
-          // ✅ Refresh après scroll
+          //  Refresh après scroll
           setTimeout(() => {
             if (typeof window !== "undefined" && (window as any).ScrollTrigger?.refresh) {
               (window as any).ScrollTrigger.refresh();
@@ -128,7 +128,7 @@ export function TransitionLink({
 
       // Sinon, naviguer puis scroller
       navigateWithTransition(path, () => {
-        // ✅ Callback après navigation
+        //  Callback après navigation
         setTimeout(() => {
           const targetElement = document.getElementById(hash);
           if (targetElement && lenis && smoothScroll) {
@@ -157,7 +157,7 @@ export function TransitionLink({
       return;
     }
 
-    // ✅ Navigation normale
+    // Navigation normale
     navigateWithTransition(href);
   };
 

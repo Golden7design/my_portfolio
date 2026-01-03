@@ -1,4 +1,3 @@
-// useCurrentTime.ts
 import { useState, useEffect, useRef } from 'react';
 
 export const useCurrentTime = () => {

@@ -2,7 +2,6 @@ import React, { useRef, useEffect } from 'react'
 import './Skills.css'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
 gsap.registerPlugin(ScrollTrigger)
 
 const Skills: React.FC = () => {
@@ -170,8 +169,8 @@ const Skills: React.FC = () => {
           <div className="skill-tag" data-category="devops"><span>Docker</span></div>                    
           <div className="skill-tag" data-category="frontend"><span>GSAP</span></div>
           <div className="skill-tag" data-category="backend"><span>PHP</span></div>
-          <div className="skill-tag" data-category="tools"><span>Vs Code</span></div>
           <div className="skill-tag" data-category="devops"><span>GitLab CI/CD</span></div> 
+          <div className="skill-tag" data-category="tools"><span>Vs Code</span></div>
           <div className="skill-tag" data-category="backend"><span>MongoDB</span></div>
           <div className="skill-tag" data-category="frontend"><span>Tailwind CSS</span></div>
           <div className="skill-tag" data-category="tools"><span>Github</span></div>

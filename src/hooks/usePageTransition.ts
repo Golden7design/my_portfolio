@@ -35,7 +35,7 @@ export function usePageTransition() {
       animateTransition().then(() => {
         router.push(href);
         
-        // ✅ Attendre que la nouvelle page soit montée
+        // Attendre que la nouvelle page soit montée
         if (onComplete) {
           setTimeout(() => {
             onComplete();

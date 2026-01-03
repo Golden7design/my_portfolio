@@ -1,6 +1,6 @@
 export interface MenuLink {
   label: string;
-  href?: string; // pour futur ancrage
+  href?: string;
 }
 
    export const menuLinks: MenuLink[] = [

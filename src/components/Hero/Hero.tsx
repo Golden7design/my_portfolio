@@ -1,4 +1,7 @@
-import React, { useEffect, useRef } from 'react'
+// Hero.tsx
+"use client";
+
+import React, { useEffect, useRef, useState } from 'react'
 import './Hero.css'
 import { me } from './me'
 import ParticlesCanvas from './ParticlesCanvas'
@@ -6,22 +9,29 @@ import { TechLogos } from '../techlogo/TechLogos'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 
+// IMPORTER LE LOADER
+import { HeroLoader } from '../HeroLoader/HeroLoader'; // À créer
+
 gsap.registerPlugin(SplitText)
 
 const Hero = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [showContent, setShowContent] = useState(false);
+  
   const firstnameRef = useRef<HTMLSpanElement>(null)
   const lastnameRef = useRef<HTMLSpanElement>(null)
   const jobRef = useRef<HTMLHeadingElement>(null)
   const messageRef = useRef<HTMLHeadingElement>(null)
 
+  // Animation du texte (votre code existant)
   useEffect(() => {
-    // Split text avec GSAP
+    if (!showContent) return; // N'animer que quand le loader est terminé
+    
     const firstnameSplit = new SplitText(firstnameRef.current, { type: 'chars' })
     const lastnameSplit = new SplitText(lastnameRef.current, { type: 'chars' })
     const jobSplit = new SplitText(jobRef.current, { type: 'chars' })
     const messageSplit = new SplitText(messageRef.current, { type: 'chars' })
 
-    // Configuration initiale
     gsap.set([firstnameSplit.chars, lastnameSplit.chars, jobSplit.chars, messageSplit.chars], {
       opacity: 0,
       yPercent: 120,
@@ -29,10 +39,8 @@ const Hero = () => {
       transformOrigin: '50% 100%',
     })
 
-    // Timeline principale
     const tl = gsap.timeline({ delay: 0.3 })
 
-    // Animation du prénom (plus rapide et dynamique)
     tl.to(firstnameSplit.chars, {
       opacity: 1,
       yPercent: 0,
@@ -42,7 +50,6 @@ const Hero = () => {
       ease: 'expo.out',
     })
 
-    // Animation du nom (légèrement décalé)
     tl.to(lastnameSplit.chars, {
       opacity: 1,
       yPercent: 0,
@@ -52,7 +59,6 @@ const Hero = () => {
       ease: 'expo.out',
     }, '-=0.8')
 
-    // Animation du job
     tl.to(jobSplit.chars, {
       opacity: 1,
       yPercent: 0,
@@ -62,7 +68,6 @@ const Hero = () => {
       ease: 'power3.out',
     }, '-=0.9')
 
-    // Animation du message
     tl.to(messageSplit.chars, {
       opacity: 1,
       yPercent: 0,
@@ -78,38 +83,58 @@ const Hero = () => {
       jobSplit.revert()
       messageSplit.revert()
     }
-  }, [])
+  }, [showContent])
+
+  // Gérer la fin du chargement
+  const handleLoadComplete = () => {
+    setIsLoading(false);
+    setTimeout(() => {
+      setShowContent(true);
+    }, 300);
+  };
 
   return (
-    <section className='hero' id='home'>
-      <ParticlesCanvas/>
+    <>
+      {isLoading && <HeroLoader onLoadComplete={handleLoadComplete} />}
+      
+      <section 
+        className='hero' 
+        id='home'
+        style={{
+          opacity: showContent ? 1 : 0,
+          visibility: showContent ? 'visible' : 'hidden',
+          transition: 'opacity 0.5s ease'
+        }}
+      >
+        <ParticlesCanvas/>
 
-      <div className="hero-container">
-        <div className="presente">
-          <h3 className='myjob' translate="no" ref={jobRef}>{me.job}</h3>
-          <h4 className='mymessage' translate="no" ref={messageRef}>{me.message}</h4>          
+        <div className="hero-container">
+          <div className="presente">
+            <h3 className='myjob' translate="no" ref={jobRef}>{me.job}</h3>
+            <h4 className='mymessage' translate="no" ref={messageRef}>{me.message}</h4>          
+          </div>
+          <div className="hero-name">
+            <h1>
+              <span className='firstname' translate="no" ref={firstnameRef}>Nassir</span>
+              <span className='lastname' translate="no" ref={lastnameRef}>&nbsp;GOUOMBA</span>
+            </h1>
+          </div>
         </div>
-        <div className="hero-name">
-          <h1>
-            <span className='firstname' translate="no" ref={firstnameRef}>Nassir</span>
-            <span className='lastname' translate="no" ref={lastnameRef}>&nbsp;GOUOMBA</span>
-          </h1>
-        </div>
-      </div>
 
-      <div className="links-content">
-        <div className="bar-content">
-          <div className="dot"></div>
-          <div className="bar"></div>
-          <div className="dot"></div>
+        <div className="links-content">
+          <div className="bar-content">
+            <div className="dot"></div>
+            <div className="bar"></div>
+            <div className="dot"></div>
+          </div>
+          <div className="links">
+            <TechLogos.GitHub/>
+            <TechLogos.LinkedIn/>
+            <TechLogos.Whatsapp/>
+          </div>
         </div>
-        <div className="links">
-          <TechLogos.GitHub/>
-          <TechLogos.LinkedIn/>
-          <TechLogos.Whatsapp/>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }
 

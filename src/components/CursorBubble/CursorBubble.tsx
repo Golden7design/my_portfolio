@@ -33,8 +33,8 @@ export default function CursorBubble() {
       className="cursor-bubble"
       style={{
         position: 'fixed',
-        width: '15px',
-        height: '15px',
+        width: '18px',
+        height: '18px',
         borderRadius: '50%',
         pointerEvents: 'none',
         backgroundColor: 'white',

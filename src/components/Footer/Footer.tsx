@@ -148,8 +148,8 @@ const Footer = () => {
   };
 
   return (
-    <div className="say-hello" ref={sectionRef}>
-      <h1 className="say-hello-title">Say Hello!</h1>
+    <div className="say-hello"  ref={sectionRef}>
+      <h1 className="say-hello-title" >Say Hello!</h1>
 
       <div className="message">
         <p>Let's build something great together!</p>
@@ -231,7 +231,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="name-mask">
+        <div className="name-mask" id="say-hello!">
           <h1>
             NAS
             <svg
