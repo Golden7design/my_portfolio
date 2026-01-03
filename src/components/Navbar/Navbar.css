@@ -71,40 +71,8 @@ nav > div {
   transform-origin: center;
   transition: transform 0.2s ease;
   overflow: visible;
-  width: 40px;
-  height: 40px;
-}
-
-/* Groupe global du SVG */
-.logo-groups {
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  transform-origin: center;
-}
-
-/* Rotation au hover */
-.logo:hover .logo-groups {
-  transform: rotate(12deg); /* tu peux tester : -5deg, 10deg, etc. */
-}
-
-
-/* Groupe gauche : va vers la gauche */
-.logo:hover .left-part {
-  transform: translateX(-30px);
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Groupe droit : va vers la droite */
-.logo:hover .right-part {
-  transform: translateX(30px);
-  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.logo .left-part {
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Groupe droit : va vers la droite */
-.logo .right-part {
-  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 110px;
+  height: 110px;
 }
 
 /* Centrage absolu du logo */
@@ -237,12 +205,22 @@ nav p {
     position: relative;
     color: var(--dark);
     font-family: var(--font-clash-display);
-    font-size: 10rem;
+    font-size: 10rem;    
     font-weight: 500;
     letter-spacing: -0.02rem;
     display: inline-block;
     overflow: hidden;
 }
+
+/* Hide navbar while loader is active */
+body.loader-active .navbar-wrapper,
+body.loader-active nav {
+  visibility: hidden;
+  opacity: 0 !important;
+  pointer-events: none;
+  transition: none !important;
+}
+
 .menu-link a span {
   font-size: inherit !important;
   display: inline-block;
@@ -307,8 +285,8 @@ nav p {
     font-size: 3rem !important;
   }
       .nav-item .logo{
-        width: 28px;
-        height: 28px;
+        width: 68px;
+        height: 68px;
     }
     .time-container{
       font-size: 0.6rem;
@@ -352,8 +330,8 @@ nav p {
     font-size: 2.25rem !important;
   }
     .nav-item .logo{
-        width: 28px;
-        height: 28px;
+        width: 78px;
+        height: 78px;
     }
     .burger{
       width: 32px;

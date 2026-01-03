@@ -14,6 +14,9 @@ const HeroLoader: React.FC<HeroLoaderProps> = ({ onLoadComplete }) => {
   const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
+    // Marquer le loader comme actif pour cacher la nav
+    if (typeof document !== 'undefined') document.body.classList.add('loader-active');
+
     const tl = gsap.timeline({
       onComplete: () => {
         // Animation de sortie
@@ -22,6 +25,8 @@ const HeroLoader: React.FC<HeroLoaderProps> = ({ onLoadComplete }) => {
           duration: 1,
           ease: "power4.inOut",
           onComplete: () => {
+            // Nettoyer la class et informer le parent
+            if (typeof document !== 'undefined') document.body.classList.remove('loader-active');
             onLoadComplete?.();
           }
         });
@@ -64,7 +69,7 @@ const HeroLoader: React.FC<HeroLoaderProps> = ({ onLoadComplete }) => {
         stagger: 0.1,
         duration: 0.3,
         ease: "back.out(2)"
-      }, "-=0.5");
+      }, "+=0.1");
     }
 
     // Animation des blocs qui se retirent
@@ -81,6 +86,7 @@ const HeroLoader: React.FC<HeroLoaderProps> = ({ onLoadComplete }) => {
 
     return () => {
       tl.kill();
+      if (typeof document !== 'undefined') document.body.classList.remove('loader-active');
     };
   }, [onLoadComplete]);
 

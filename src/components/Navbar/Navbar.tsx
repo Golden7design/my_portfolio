@@ -376,6 +376,55 @@ export default function Navbar() {
   }, []);
 
 
+
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  useEffect(() => {
+    if (!svgRef.current) return;
+
+    const svg = svgRef.current;
+    const path = svg.querySelector("path");
+    const circles = svg.querySelectorAll("circle");
+
+    if (!path) return;
+
+    const length = path.getTotalLength();
+
+    // État initial : SVG déjà visible
+    gsap.set(path, {
+      strokeDasharray: length,
+      strokeDashoffset: 0, // path déjà visible
+    });
+
+    gsap.set(circles, {
+      scale: 1,   // cercles déjà visibles
+      opacity: 1,
+      transformOrigin: "50% 50%",
+    });
+
+    const animateHover = () => {
+      const tl = gsap.timeline();
+      tl.fromTo(
+        path,
+        { strokeDashoffset: length },
+        { strokeDashoffset: 0, duration: 1.2, ease: "power2.out" }
+      );
+      tl.fromTo(
+  circles,
+  { scale: 0, opacity: 0 },
+  { scale: 1, opacity: 1, duration: 0.25, stagger: 0.2, ease: "back.out(2)" },
+  "+=0.1"
+);
+
+    };
+
+    svg.addEventListener("mouseenter", animateHover);
+
+    return () => {
+      svg.removeEventListener("mouseenter", animateHover);
+    };
+  }, []);
+
   return (
     <>
       <NavAreaClickSound />
@@ -393,22 +442,25 @@ export default function Navbar() {
 
           <div className="nav-center">
             <div className="nav-item">
-              <svg className="logo" viewBox="0 0 154 164" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="Group-4" className="logo-groups">
-                  <g id="Group-2" className="logo-part left-part">
-                    <path d="M0 2L27 27.5V120H0V2Z" fill="white" />
-                    <path d="M1.42755 40.4772L20.0063 20.8856L79 77L67.5 102L1.42755 40.4772Z" fill="white" />
-                    <path d="M40.7 162.554L40.8647 135.554L97.9418 135.293L127.2 162.554L40.7 162.554Z" fill="white" />
-                    <rect y="119.592" width="27" height="58.9808" transform="rotate(-43.52 0 119.592)" fill="white" />
-                  </g>
-                  <g id="Group-3" className="logo-part right-part">
-                    <path d="M153.612 161.077L126.415 135.787L125.697 43.2897L152.696 43.0801L153.612 161.077Z" fill="white" />
-                    <path d="M151.886 122.612L133.459 142.347L74.0319 86.692L85.3375 61.6035L151.886 122.612Z" fill="white" />
-                    <path d="M111.667 0.843628L111.712 27.8436L54.6382 28.5475L25.1693 1.51503L111.667 0.843628Z" fill="white" />
-                    <rect x="152.699" y="43.4877" width="27" height="58.9808" transform="rotate(136.035 152.699 43.4877)" fill="white" />
-                  </g>
-                </g>
-              </svg>
+              <svg
+              ref={svgRef}
+              className="logo"
+              viewBox="0 0 297 145"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              style={{ willChange: 'transform' }}
+            >
+              <path
+                d="M1.5 70.5203H296.5C296.5 70.5203 -24.5774 145.666 36.5 64.5203C64.9354 26.7418 140.5 2.52029 140.5 2.52029L69.5 143.52C69.5 143.52 138.854 1.30253 147.5 48.5203C149.54 59.6603 142.5 77.5203 142.5 77.5203C142.5 77.5203 154.175 39.5382 165.5 48.5203C174.373 55.5577 164.5 77.5203 164.5 77.5203C164.5 77.5203 180.175 37.9761 191.5 48.5203C199.789 56.2375 179.5 77.5203 179.5 77.5203"
+                stroke="#ffffff"
+                strokeWidth="6"
+                strokeLinecap="round"
+              />
+              <circle cx="212" cy="38.0203" r="5.5" fill="#ffffff" />
+              <circle cx="237" cy="26.0203" r="5.5" fill="#ffffff" />
+              <circle cx="263" cy="15.0203" r="5.5" fill="#ffffff" />
+            </svg>
             </div>
           </div>
 
