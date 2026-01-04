@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-import './HeroLoader.css'
 
 interface HeroLoaderProps {
   onLoadComplete?: () => void;
@@ -14,8 +13,31 @@ const HeroLoader: React.FC<HeroLoaderProps> = ({ onLoadComplete }) => {
   const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
-    // Marquer le loader comme actif pour cacher la nav
-    if (typeof document !== 'undefined') document.body.classList.add('loader-active');
+    // Force le body à cacher la navbar immédiatement
+    document.body.classList.add('loader-active');
+    
+    // Retirer la classe de blocage initial
+    document.documentElement.classList.remove('initial-load');
+
+    // 🔴 CRITIQUE : Cacher la signature IMMÉDIATEMENT avant toute animation
+    if (signatureRef.current) {
+      signatureRef.current.style.opacity = '0';
+      
+      const signPath = signatureRef.current.querySelector('path') as SVGPathElement | null;
+      const signCircles = signatureRef.current.querySelectorAll('circle') as NodeListOf<SVGCircleElement> | undefined;
+      
+      if (signPath) {
+        const length = signPath.getTotalLength();
+        gsap.set(signPath, {
+          strokeDasharray: length,
+          strokeDashoffset: length,
+        });
+      }
+
+      if (signCircles) {
+        gsap.set(signCircles, { scale: 0, opacity: 0 });
+      }
+    }
 
     const tl = gsap.timeline({
       onComplete: () => {
@@ -25,12 +47,18 @@ const HeroLoader: React.FC<HeroLoaderProps> = ({ onLoadComplete }) => {
           duration: 1,
           ease: "power4.inOut",
           onComplete: () => {
-            // Nettoyer la class et informer le parent
-            if (typeof document !== 'undefined') document.body.classList.remove('loader-active');
+            document.body.classList.remove('loader-active');
             onLoadComplete?.();
           }
         });
       }
+    });
+
+    // Faire apparaître la signature en fondu
+    tl.to(signatureRef.current, {
+      opacity: 1,
+      duration: 0.3,
+      ease: "power2.out"
     });
 
     // Animation du compteur
@@ -41,28 +69,21 @@ const HeroLoader: React.FC<HeroLoaderProps> = ({ onLoadComplete }) => {
       onUpdate: function() {
         setProgress(Math.floor(this.targets()[0].val));
       }
-    });
+    }, "-=0.3");
 
     // Animation de la signature (path drawing)
     const signPath = signatureRef.current?.querySelector('path') as SVGPathElement | null;
     const signCircles = signatureRef.current?.querySelectorAll('circle') as NodeListOf<SVGCircleElement> | undefined;
     
     if (signPath) {
-      const length = signPath.getTotalLength();
-      gsap.set(signPath, {
-        strokeDasharray: length,
-        strokeDashoffset: length,
-      });
-
       tl.to(signPath, {
         strokeDashoffset: 0,
         duration: 1.5,
         ease: "power2.inOut"
-      }, "-=1.5");
+      }, "-=1.8");
     }
 
     if (signCircles) {
-      gsap.set(signCircles, { scale: 0, opacity: 0 });
       tl.to(signCircles, {
         scale: 1,
         opacity: 1,
@@ -86,7 +107,7 @@ const HeroLoader: React.FC<HeroLoaderProps> = ({ onLoadComplete }) => {
 
     return () => {
       tl.kill();
-      if (typeof document !== 'undefined') document.body.classList.remove('loader-active');
+      document.body.classList.remove('loader-active');
     };
   }, [onLoadComplete]);
 
@@ -144,7 +165,7 @@ const HeroLoader: React.FC<HeroLoaderProps> = ({ onLoadComplete }) => {
         gap: '3rem',
         zIndex: 1
       }}>
-        {/* Signature SVG */}
+        {/* Signature SVG - CACHÉE PAR DÉFAUT */}
         <svg
           ref={signatureRef}
           width="297"
@@ -154,7 +175,8 @@ const HeroLoader: React.FC<HeroLoaderProps> = ({ onLoadComplete }) => {
           xmlns="http://www.w3.org/2000/svg"
           style={{
             width: 'min(60vw, 400px)',
-            height: 'auto'
+            height: 'auto',
+            opacity: 0  // 🔴 Caché par défaut
           }}
         >
           <path
@@ -220,25 +242,53 @@ const HeroLoader: React.FC<HeroLoaderProps> = ({ onLoadComplete }) => {
   );
 };
 
-// Export du loader pour utilisation dans Hero.tsx
 export { HeroLoader };
 
-// Exemple d'intégration dans votre Hero existant
-export default function HeroWithLoader() {
+// SCRIPT À INJECTER DANS layout.tsx (avant le body)
+export const InitialLoaderScript = () => (
+  <script
+    dangerouslySetInnerHTML={{
+      __html: `
+        (function() {
+          const isRefresh = performance.getEntriesByType('navigation')[0]?.type === 'reload';
+          const hasSeenLoader = sessionStorage.getItem('hasSeenLoader');
+          
+          if (isRefresh || !hasSeenLoader) {
+            document.documentElement.classList.add('initial-load');
+          }
+        })();
+      `
+    }}
+  />
+);
+
+// Hero.tsx avec gestion intelligente du loader
+export function HeroWithSmartLoader({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
-  const heroContentRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    // Vérifier si c'est la première visite de la session
+    // Détecte si c'est un refresh (performance.navigation.type === 1)
+    const isRefresh = 
+      (performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming)?.type === 'reload';
+    
+    // Détecte si on vient d'une autre page de l'app
     const hasSeenLoader = sessionStorage.getItem('hasSeenLoader');
     
-    if (hasSeenLoader) {
-      // Skip le loader si déjà vu dans cette session
-      setTimeout(() => {
-        setIsLoading(false);
-        setShowContent(true);
-      }, 0);
+    // Si refresh OU première visite : montrer le loader
+    if (isRefresh || !hasSeenLoader) {
+      // Réinitialiser le flag si c'est un refresh
+      if (isRefresh) {
+        sessionStorage.removeItem('hasSeenLoader');
+      }
+      
+      // Cacher la navbar immédiatement
+      document.body.classList.add('loader-active');
+      setIsLoading(true);
+    } else {
+      // Skip le loader si déjà vu dans cette session (navigation interne)
+      setIsLoading(false);
+      setShowContent(true);
     }
 
     // Désactiver le scroll pendant le chargement
@@ -250,38 +300,18 @@ export default function HeroWithLoader() {
 
     return () => {
       document.body.style.overflow = '';
+      document.body.classList.remove('loader-active');
     };
   }, [isLoading]);
 
   const handleLoadComplete = () => {
+    // Marquer qu'on a vu le loader dans cette session
     sessionStorage.setItem('hasSeenLoader', 'true');
     setIsLoading(false);
     
-    // délai
+    // Délai pour la transition
     setTimeout(() => {
       setShowContent(true);
-      
-      // Animation d'entrée fluide du contenu
-      if (heroContentRef.current) {
-        const elements = heroContentRef.current.querySelectorAll('.hero-animate');
-        
-        gsap.fromTo(elements,
-          { 
-            opacity: 0,
-            y: 80,
-            scale: 0.95
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 1.2,
-            stagger: 0.15,
-            ease: "power3.out",
-            clearProps: "all"
-          }
-        );
-      }
     }, 300);
   };
 
@@ -289,19 +319,40 @@ export default function HeroWithLoader() {
     <>
       {isLoading && <HeroLoader onLoadComplete={handleLoadComplete} />}
       
-      <section
-        ref={heroContentRef}
-        className="hero"
+      <div
         style={{
           opacity: showContent ? 1 : 0,
-          visibility: showContent ? 'visible' : 'hidden'
+          visibility: showContent ? 'visible' : 'hidden',
+          transition: 'opacity 0.5s ease'
         }}
       >
-        {/*Hero existant avec la classe .hero-animate sur les éléments à animer */}
-        <div className="hero-animate" style={{ willChange: 'transform, opacity' }}>
-          {/* Contenu du hero */}
-        </div>
-      </section>
+        {children}
+      </div>
     </>
   );
 }
+
+// Styles critiques à ajouter dans globals.css ou HeroLoader.css
+const criticalStyles = `
+/* Cache la navbar immédiatement au chargement initial */
+body.loader-active .navbar-wrapper,
+body.loader-active nav {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: none !important;
+}
+
+/* Empêche le flash de la signature SVG */
+body.loader-active .hero canvas {
+  visibility: hidden !important;
+}
+
+/* S'assure que le loader est au-dessus de tout */
+.hero-loader-wrapper {
+  z-index: 10000 !important;
+}
+`;
+
+// Export du CSS pour copier dans votre fichier CSS
+export const loaderStyles = criticalStyles;

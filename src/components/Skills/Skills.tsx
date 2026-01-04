@@ -146,7 +146,7 @@ const Skills: React.FC = () => {
 
 
   return (
-    <div className='skills' ref={skillsRef}>
+    <div className='skills' id='skills' ref={skillsRef}>
       <h1>Skills</h1>
       <div className="skills-container">
       <div className="skill-left">

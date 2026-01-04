@@ -175,13 +175,13 @@ Cordialement,
             <path
               d="M1.5 70.5203H296.5C296.5 70.5203 -24.5774 145.666 36.5 64.5203C64.9354 26.7418 140.5 2.52029 140.5 2.52029L69.5 143.52C69.5 143.52 138.854 1.30253 147.5 48.5203C149.54 59.6603 142.5 77.5203 142.5 77.5203C142.5 77.5203 154.175 39.5382 165.5 48.5203C174.373 55.5577 164.5 77.5203 164.5 77.5203C164.5 77.5203 180.175 37.9761 191.5 48.5203C199.789 56.2375 179.5 77.5203 179.5 77.5203"
               stroke="#d7fb61"
-              strokeWidth="3"
+              strokeWidth="4"
               strokeLinecap="round"
               fill="none"
             />
-            <circle cx="212" cy="38.0203" r="2.5" fill="#d7fb61" />
-            <circle cx="237" cy="26.0203" r="2.5" fill="#d7fb61" />
-            <circle cx="263" cy="15.0203" r="2.5" fill="#d7fb61" />
+            <circle cx="212" cy="38.0203" r="4.5" fill="#d7fb61" />
+            <circle cx="237" cy="26.0203" r="4.5" fill="#d7fb61" />
+            <circle cx="263" cy="15.0203" r="4.5" fill="#d7fb61" />
           </svg>
 
           <InversionLens src="/assets/nassir_img.avif" className="inversion-lens"/>

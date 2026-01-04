@@ -53,6 +53,23 @@ const Aeonik = localFont({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full">
+            <head>
+        {/* CRITIQUE : Script qui s'exécute AVANT React */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const isRefresh = performance.getEntriesByType('navigation')[0]?.type === 'reload';
+                const hasSeenLoader = sessionStorage.getItem('hasSeenLoader');
+                
+                if (isRefresh || !hasSeenLoader) {
+                  document.documentElement.classList.add('initial-load');
+                }
+              })();
+            `
+          }}
+        />
+      </head>
       <body
         className={`
           ${clashDisplay.variable}

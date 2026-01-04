@@ -23,7 +23,7 @@ img{
 
 .about-container .about-title{
     font-family: var(--font-clash-display);
-    font-size: clamp(2.5rem, 5vw, 6rem);
+    font-size: clamp(3rem, 5vw, 8rem);
     text-align: center;
     margin-bottom: 1.3rem;
     text-transform: uppercase;
@@ -179,8 +179,8 @@ img{
         height: 30svh;
     }
     .sign {
-    top: 0.2rem;
-    left: -0.2rem;
+    top: 0.8rem;
+    left: -0.6rem;
 
     width: 55%;
 }

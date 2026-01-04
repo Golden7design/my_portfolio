@@ -9,7 +9,7 @@
 
 .works h1 {
   font-family: var(--font-clash-display);
-  font-size: clamp(2.5rem, 5vw, 6rem);
+  font-size: clamp(3rem, 5vw, 8rem);
   text-align: center;
   margin-bottom: 1.3rem;
   transform: translateY(calc((1 - var(--title-opacity)) * 20px));

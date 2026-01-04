@@ -85,14 +85,14 @@ const worksData: Record<string, Work> = {
     images: {
       hero: '/assets/port_img2.avif',
       desktop: '/assets/port_img3.avif',
-      mobile: '/assets/nashfood-det2.avif',
+      mobile: '/assets/PortPhones2.avif',
       details: [
         '/assets/NashFoodDesk.avif',
-        '/assets/NashfoodPhones.avif',
+        '/assets/PortPhones2.avif',
       ]
     },
-    link: '-',
-    github: 'https://github.com/Golden7Design/my-portfolio',
+    link: 'https://nassir.vercel.app',
+    github: 'https://github.com/Golden7design/my_portfolio.git',
     challenge: 'The challenge was to design a portfolio that balances strong visual identity, smooth interactions, and high performance, while clearly communicating my skills and problem-solving approach.',
     solution: "The solution was to build a performant, accessible, and animation-driven portfolio that communicates my value clearly while showcasing my technical and creative skills.",
     results: [

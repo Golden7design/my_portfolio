@@ -59,7 +59,6 @@ nav {
   box-sizing: border-box;
   will-change: transform;
 }
-
 /* Empêche le débordement */
 nav > div {
   flex-shrink: 0;
@@ -75,7 +74,7 @@ nav > div {
   height: 110px;
 }
 
-/* Centrage absolu du logo */
+/* centrage absolu du logo */
 .nav-center {
   position: absolute;
   left: 50%;
@@ -84,20 +83,20 @@ nav > div {
   z-index: 3;
 }
 
-/* Assure que les côtés ne prennent pas trop de place */
+/* assure que les côtés ne prennent pas trop de place */
 .nav-left,
 .nav-right {
   min-width: 0;
 }
 
-/* Style existant pour le toggle */
+/* style existant pour le toggle */
 nav p {
   padding: 1rem;
   cursor: pointer;
   margin: 0;
 }
 
-/* Ton style TimeDisplay reste inchangé */
+/* style TimeDisplay reste */
 .time-container {
   display: flex;
   font-family: 'JetBrains Mono', monospace;
@@ -212,15 +211,6 @@ nav p {
     overflow: hidden;
 }
 
-/* Hide navbar while loader is active */
-body.loader-active .navbar-wrapper,
-body.loader-active nav {
-  visibility: hidden;
-  opacity: 0 !important;
-  pointer-events: none;
-  transition: none !important;
-}
-
 .menu-link a span {
   font-size: inherit !important;
   display: inline-block;
@@ -292,7 +282,7 @@ body.loader-active nav {
       font-size: 0.6rem;
     }
 }
-/* === BURGER MENU ANIMATION === */
+/*  burger menu    */
 .burger {
   display: flex;
   flex-direction: column;

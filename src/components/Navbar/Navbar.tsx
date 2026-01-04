@@ -377,53 +377,73 @@ export default function Navbar() {
 
 
 
-  const svgRef = useRef<SVGSVGElement>(null);
+const svgRef = useRef<SVGSVGElement>(null);
+const isAnimating = useRef(false);
 
-  useEffect(() => {
-    if (!svgRef.current) return;
+useEffect(() => {
+  if (!svgRef.current) return;
 
-    const svg = svgRef.current;
-    const path = svg.querySelector("path");
-    const circles = svg.querySelectorAll("circle");
+  const svg = svgRef.current;
+  const path = svg.querySelector("path");
+  const circles = svg.querySelectorAll("circle");
 
-    if (!path) return;
+  if (!path) return;
 
-    const length = path.getTotalLength();
+  const length = path.getTotalLength();
 
-    // État initial : SVG déjà visible
-    gsap.set(path, {
-      strokeDasharray: length,
-      strokeDashoffset: 0, // path déjà visible
+  // SVG visible par défaut
+  gsap.set(path, {
+    strokeDasharray: length,
+    strokeDashoffset: 0,
+  });
+
+  gsap.set(circles, {
+    scale: 1,
+    opacity: 1,
+    transformOrigin: "50% 50%",
+  });
+
+  const animateHover = () => {
+    // 🔒 Bloque si animation en cours ou cooldown
+    if (isAnimating.current) return;
+
+    isAnimating.current = true;
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        // ⏳ Cooldown après animation
+        setTimeout(() => {
+          isAnimating.current = false;
+        }, 200);
+      },
     });
 
-    gsap.set(circles, {
-      scale: 1,   // cercles déjà visibles
-      opacity: 1,
-      transformOrigin: "50% 50%",
-    });
+    tl.fromTo(
+      path,
+      { strokeDashoffset: length },
+      { strokeDashoffset: 0, duration: 0.6, ease: "power2.out" }
+    );
 
-    const animateHover = () => {
-      const tl = gsap.timeline();
-      tl.fromTo(
-        path,
-        { strokeDashoffset: length },
-        { strokeDashoffset: 0, duration: 1.2, ease: "power2.out" }
-      );
-      tl.fromTo(
-  circles,
-  { scale: 0, opacity: 0 },
-  { scale: 1, opacity: 1, duration: 0.25, stagger: 0.2, ease: "back.out(2)" },
-  "+=0.1"
-);
+    tl.fromTo(
+      circles,
+      { scale: 0, opacity: 0 },
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 0.25,
+        stagger: 0.2,
+        ease: "back.out(2)",
+      },
+      "+=0.1"
+    );
+  };
 
-    };
+  svg.addEventListener("mouseenter", animateHover);
 
-    svg.addEventListener("mouseenter", animateHover);
-
-    return () => {
-      svg.removeEventListener("mouseenter", animateHover);
-    };
-  }, []);
+  return () => {
+    svg.removeEventListener("mouseenter", animateHover);
+  };
+}, []);
 
   return (
     <>
