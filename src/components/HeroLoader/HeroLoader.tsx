@@ -19,7 +19,7 @@ const HeroLoader: React.FC<HeroLoaderProps> = ({ onLoadComplete }) => {
     // Retirer la classe de blocage initial
     document.documentElement.classList.remove('initial-load');
 
-    // 🔴 CRITIQUE : Cacher la signature IMMÉDIATEMENT avant toute animation
+    // CRITIQUE : Cacher la signature IMMÉDIATEMENT avant toute animation
     if (signatureRef.current) {
       signatureRef.current.style.opacity = '0';
       
@@ -176,7 +176,7 @@ const HeroLoader: React.FC<HeroLoaderProps> = ({ onLoadComplete }) => {
           style={{
             width: 'min(60vw, 400px)',
             height: 'auto',
-            opacity: 0  // 🔴 Caché par défaut
+            opacity: 0  // Caché par défaut
           }}
         >
           <path
@@ -194,6 +194,7 @@ const HeroLoader: React.FC<HeroLoaderProps> = ({ onLoadComplete }) => {
         {/* Compteur de progression */}
         <div
           ref={counterRef}
+          translate='no'
           style={{
             fontSize: 'clamp(4rem, 12vw, 8rem)',
             fontFamily: 'var(--font-clash-display)',
