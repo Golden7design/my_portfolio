@@ -2,7 +2,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
 @import "tailwindcss";
 
-/* 🔴 BLOCAGE CRITIQUE - Doit être EN PREMIER */
 html.initial-load .navbar-wrapper,
 html.initial-load nav,
 html.initial-load .hero canvas {

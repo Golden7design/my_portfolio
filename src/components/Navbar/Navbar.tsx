@@ -11,7 +11,7 @@ import AnimatedWords from "./AnimatedWords/AnimatedWords";
 import NavAreaClickSound from "../NavAreaClickSound";
 import { TransitionLink } from "../TransitionLink/TransitionLink";
 
-// Enregistre SplitText une fois côté client
+// enregistrement de SplitText
 if (typeof window !== "undefined") {
   gsap.registerPlugin(SplitText);
 }
@@ -404,14 +404,14 @@ useEffect(() => {
   });
 
   const animateHover = () => {
-    // 🔒 Bloque si animation en cours ou cooldown
+    // Bloque si animation en cours ou cooldown
     if (isAnimating.current) return;
 
     isAnimating.current = true;
 
     const tl = gsap.timeline({
       onComplete: () => {
-        // ⏳ Cooldown après animation
+        // Cooldown après animation
         setTimeout(() => {
           isAnimating.current = false;
         }, 200);

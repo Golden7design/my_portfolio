@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-// SHADERS
+// les shaders
 const vertexShaderSource = `
 precision highp float;
 uniform vec2 u_resolution;
@@ -83,7 +83,7 @@ export default function ParticlesCanvas() {
         isAnimating: false,
     });
 
-    // Détection desktop côté client uniquement
+    // Détection desktop
     useEffect(() => {
         const checkDesktop = () => window.innerWidth >= 1000;
         setIsDesktop(checkDesktop());
@@ -96,7 +96,7 @@ export default function ParticlesCanvas() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    //  WEBGL HELPERS 
+    //  WEBGL
     const compileShader = (gl: WebGLRenderingContext, type: number, source: string): WebGLShader => {
         const shader = gl.createShader(type)!;
         gl.shaderSource(shader, source);
@@ -123,7 +123,7 @@ export default function ParticlesCanvas() {
         return program;
     };
 
-    //  MAIN LOGIC 
+    //  logique principale 
     useEffect(() => {
         if (!isDesktop) return;
 
@@ -132,7 +132,7 @@ export default function ParticlesCanvas() {
 
         const state = stateRef.current;
 
-        // Setup canvas size
+        // on Setup canvas size
         const dpr = window.devicePixelRatio || 1;
         const resizeCanvas = () => {
             canvas.width = window.innerWidth * dpr;
@@ -142,7 +142,7 @@ export default function ParticlesCanvas() {
         };
         resizeCanvas();
 
-        // Setup WebGL
+        // on Setup WebGL
         const gl = canvas.getContext("webgl", {
             alpha: false,
             depth: false,
@@ -164,7 +164,7 @@ export default function ParticlesCanvas() {
         state.gl = gl;
         state.program = program;
 
-        // Mouse handling
+        // evenement avec la souris
         const handleMouseMove = (e: MouseEvent) => {
             const rect = canvas.getBoundingClientRect();
             state.mouse.x = (e.clientX - rect.left) * dpr;
@@ -173,7 +173,7 @@ export default function ParticlesCanvas() {
         };
         window.addEventListener("mousemove", handleMouseMove);
 
-        // Resize handling
+        // Resize 
         const handleResize = () => {
             resizeCanvas();
             if (state.particles.length > 0) {
@@ -196,7 +196,7 @@ export default function ParticlesCanvas() {
         };
         window.addEventListener("resize", handleResize);
 
-        //  ANIMATION LOOP 
+        //  animation Loop
         const animate = () => {
             const { gl, program, particles, positionArray, positionBuffer, mouse, animationCount } = state;
             if (!gl || !program || particles.length === 0 || !state.isAnimating) return;
@@ -282,7 +282,7 @@ export default function ParticlesCanvas() {
             state.animationFrameId = requestAnimationFrame(animate);
         };
 
-        //  LOAD LOGO 
+        //  chargement de mon Logo 
         const image = new Image();
         image.onload = () => {
             const tempCanvas = document.createElement("canvas");

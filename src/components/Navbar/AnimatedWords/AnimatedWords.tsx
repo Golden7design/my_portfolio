@@ -104,7 +104,7 @@ export default function AnimatedWords({ isMenuOpen }: AnimatedWordsProps) {
       if (animationFrameId.current !== null) {
         cancelAnimationFrame(animationFrameId.current);
       }
-      // Reset position
+      // Reset la position
       wordPos.current = { x: 0, y: 0 };
       mousePos.current = { x: 0, y: 0 };
     };

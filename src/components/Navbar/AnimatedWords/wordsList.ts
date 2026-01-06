@@ -1,4 +1,4 @@
-// Liste des mots géants à afficher aléatoirement
+// Liste des mots
 export const wordsList = [
   "CREATE",
   "DESIGN",

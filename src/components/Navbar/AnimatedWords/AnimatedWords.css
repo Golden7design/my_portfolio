@@ -21,7 +21,7 @@
   transform: translate(-50%, -50%);
   font-size: clamp(8rem, 20vw, 25rem);
   font-weight: 900;
-  color: var(--accent); /* Temporairement très visible pour debug */
+  color: var(--accent);
   white-space: nowrap;
   user-select: none;
   will-change: transform;

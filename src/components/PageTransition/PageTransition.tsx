@@ -10,7 +10,6 @@ export default function PageTransition() {
   const isFirstLoad = useRef(true);
 
   useEffect(() => {
-    // Skip animation on first load (page refresh)
     if (isFirstLoad.current) {
       isFirstLoad.current = false;
       // Cacher immédiatement les blocs sans animation
@@ -23,7 +22,6 @@ export default function PageTransition() {
       return new Promise<void>((resolve) => {
         gsap.set(".block", { visibility: "visible", scaleY: 1 });
         
-        // Anime row-1 (origin: top) et row-2 (origin: bottom) simultanément
         gsap.to(".row-1 .block", {
           scaleY: 0,
           duration: 1,

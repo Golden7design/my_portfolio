@@ -13,7 +13,7 @@ export function usePageTransition() {
         return new Promise<void>((resolve) => {
           gsap.set(".block", { visibility: "visible", scaleY: 0 });
           
-          // Anime row-1 vers le bas (origin: top)
+          // Anime row-1 vers le bas
           gsap.to(".row-1 .block", {
             scaleY: 1,
             duration: 1,
@@ -21,7 +21,7 @@ export function usePageTransition() {
             ease: "power4.inOut",
           });
           
-          // Anime row-2 vers le haut (origin: bottom)
+          // Anime row-2 vers le haut
           gsap.to(".row-2 .block", {
             scaleY: 1,
             duration: 1,

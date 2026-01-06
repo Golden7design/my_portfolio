@@ -7,7 +7,7 @@
     background-color: #f8f8f8;
 }
 
-/* Canvas en arrière-plan en position absolute */
+/* Canvas en position absolute */
 .hero canvas {
     position: absolute !important;
     top: 0;
@@ -114,7 +114,6 @@
     transition: transform 0.3s;
 }
 
-/* Écrans moyens - Tablettes paysage et petits PC */
 @media (max-width: 1200px) {
     .hero-name h1{
         font-size: 8rem;
@@ -130,7 +129,6 @@
     }
 }
 
-/* Tablettes et petits écrans PC */
 @media (max-width: 1000px) {
         .hero .bar-content{
         display: none;
@@ -202,7 +200,6 @@
     }
 }
 
-/* Tablettes portrait */
 @media (max-width: 768px) {
     .hero-name h1{
         font-size: 4.5rem;
@@ -227,7 +224,6 @@
     }
 }
 
-/* Grands mobiles */
 @media (max-width: 640px) {
     .hero-name h1{
         font-size: 3.8rem;
@@ -242,7 +238,6 @@
     }
 }
 
-/* Petits mobiles */
 @media (max-width: 480px) {
 
     
@@ -260,7 +255,6 @@
     }
 }
 
-/* Très petits mobiles */
 @media (max-width: 375px) {
     .hero-name h1{
         font-size: 2.8rem;
@@ -280,7 +274,6 @@
     }
 }
 
-/* Très grands écrans */
 @media (min-width: 1400px) {
     .hero-name h1{
         font-size: 10.2rem;
@@ -301,7 +294,7 @@
     }
 }
 
-/* Écrans ultra-larges */
+
 @media (min-width: 1800px) {
     .hero-name h1{
         font-size: 13rem;

@@ -47,7 +47,7 @@ useEffect(() => {
     const cards = sectionRef.current!;
     const progress = progressBarRef.current!;
 
-    // 👉 Petit offset pour laisser respirer la dernière card
+    // Petit offset pour laisser respirer la dernière card
     const getExtraOffset = () => window.innerWidth * 0.15; // 15vw
 
     const getScrollAmount = () => {

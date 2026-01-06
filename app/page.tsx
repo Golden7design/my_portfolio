@@ -21,7 +21,7 @@ export default function Home() {
     // Force un reset complet de ScrollTrigger
     ScrollTrigger.refresh(true);
     
-    // Scroll vers le haut si nécessaire
+    // Scroll vers le haut
     window.scrollTo(0, 0);
 
     return () => {

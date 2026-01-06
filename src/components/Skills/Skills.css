@@ -72,9 +72,6 @@
     z-index: 2;
 }
 
-/* MEDIA QUERIES */
-
-/* Tablettes et écrans moyens */
 @media (max-width: 1200px) {
     .skill-left {
         padding-left: 3rem;
@@ -138,7 +135,6 @@
     }
 }
 
-/* Smartphones paysage */
 @media (max-width: 768px) {
     .skills {
         margin-top: 6rem;
@@ -174,7 +170,6 @@
     }
 }
 
-/* Petits smartphones */
 @media (max-width: 480px) {
     .skills {
         margin-top: 4rem;
@@ -212,7 +207,6 @@
     }
 }
 
-/* Très petits écrans */
 @media (max-width: 360px) {
     .skills h1 {
         font-size: 1.5rem;

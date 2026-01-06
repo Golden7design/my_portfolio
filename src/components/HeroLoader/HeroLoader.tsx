@@ -245,7 +245,6 @@ const HeroLoader: React.FC<HeroLoaderProps> = ({ onLoadComplete }) => {
 
 export { HeroLoader };
 
-// SCRIPT À INJECTER DANS layout.tsx (avant le body)
 export const InitialLoaderScript = () => (
   <script
     dangerouslySetInnerHTML={{
@@ -269,7 +268,6 @@ export function HeroWithSmartLoader({ children }: { children: React.ReactNode })
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    // Détecte si c'est un refresh (performance.navigation.type === 1)
     const isRefresh = 
       (performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming)?.type === 'reload';
     
@@ -333,7 +331,6 @@ export function HeroWithSmartLoader({ children }: { children: React.ReactNode })
   );
 }
 
-// Styles critiques à ajouter dans globals.css ou HeroLoader.css
 const criticalStyles = `
 /* Cache la navbar immédiatement au chargement initial */
 body.loader-active .navbar-wrapper,
@@ -355,5 +352,4 @@ body.loader-active .hero canvas {
 }
 `;
 
-// Export du CSS pour copier dans votre fichier CSS
 export const loaderStyles = criticalStyles;

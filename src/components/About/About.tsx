@@ -23,13 +23,13 @@ const About = () => {
 
     const length = path.getTotalLength();
 
-    // ÉTAPE 1 – préparer la ligne
+    // la ligne
     gsap.set(path, {
       strokeDasharray: length,
       strokeDashoffset: length,
     });
 
-    // ÉTAPE 2 – préparer les cercles
+    // les cercles
     gsap.set(circles, {
       scale: 0,
       opacity: 0,

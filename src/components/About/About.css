@@ -80,7 +80,6 @@ img{
     will-change: transform;
 }
 
-/* BACKGROUND QUI REMPLIT */
 .fill-btn .fill-bg {
     position: absolute;
     inset: 0;
@@ -91,7 +90,8 @@ img{
     transition: transform 0.6s cubic-bezier(.65,0,.35,1);
 
     z-index: 0;
-    pointer-events: auto !important; /* Force l'interaction */
+    pointer-events: auto !important;
+    
 }
 
 /* TEXTE */
@@ -107,19 +107,16 @@ img{
     transform: translateX(2px);
 }
 
-/* LETTRES */
 .fill-btn .char {
     transition: color 0.25s linear;
     mix-blend-mode: multiply;
     color: white;
 }
 
-/* HOVER : remplissage */
 .fill-btn:hover .fill-bg {
     transform: scaleX(1);
 }
 
-/* HOVER : lettres deviennent blanches progressivement */
 .fill-btn:hover .char {
     color: black;
 }

@@ -8,9 +8,7 @@ import ParticlesCanvas from './ParticlesCanvas'
 import { TechLogos } from '../techlogo/TechLogos'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
-
-// IMPORTER LE LOADER
-import { HeroLoader } from '../HeroLoader/HeroLoader'; // À créer
+import { HeroLoader } from '../HeroLoader/HeroLoader'; 
 
 gsap.registerPlugin(SplitText)
 
@@ -23,9 +21,9 @@ const Hero = () => {
   const jobRef = useRef<HTMLHeadingElement>(null)
   const messageRef = useRef<HTMLHeadingElement>(null)
 
-  // Animation du texte (votre code existant)
   useEffect(() => {
-    if (!showContent) return; // N'animer que quand le loader est terminé
+    //animé que quand le loader est terminé
+    if (!showContent) return; 
     
     const firstnameSplit = new SplitText(firstnameRef.current, { type: 'chars' })
     const lastnameSplit = new SplitText(lastnameRef.current, { type: 'chars' })

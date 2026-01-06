@@ -8,7 +8,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Regex email pro (utilisée en production)
+// Regex email
+
 const EMAIL_REGEX =
   /^[a-zA-Z0-9._%+-]{1,64}@[a-zA-Z0-9.-]{2,255}\.[a-zA-Z]{2,}$/;
 
@@ -99,7 +100,7 @@ const Footer = () => {
 }, []);
 // Tableau de dépendances vide pour exécuter une seule fois
 
-  /*FORM */
+  /*formulaire */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 

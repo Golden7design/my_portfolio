@@ -4,13 +4,13 @@
   height: 40px;
   border-radius: 50%;
   border-radius: 50%;
-  pointer-events: none; /* Ne pas interférer avec le clic */
+  pointer-events: none;
   background-color: white;
 
   z-index: 9999;
-  transform: translate(-50%, -50%); /* Centre la bulle sur le curseur */
+  transform: translate(-50%, -50%);
   transition: transform 0.1s ease-out, width 0.2s ease-out, height 0.2s ease-out;
-  mix-blend-mode: difference; /* Optionnel : pour un effet "lumineux" */
+  mix-blend-mode: difference;
 }
 
 @media (max-width:1000px) {
