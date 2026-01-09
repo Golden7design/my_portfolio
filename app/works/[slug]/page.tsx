@@ -35,10 +35,10 @@ interface Work {
 // Configuration complète par projet (font + couleur)
 const worksConfig: Record<string, { fontFamily: string; color: string }> = {
   'nashfood': {
-    fontFamily: '"Dancing Script", cursive',
+    fontFamily: 'var(--font-dancing)',
     color: '#FF6B35'
   },
-  'Portfolio': {
+  'portfolio': {
     fontFamily: 'var(--font-clash-display)',
     color: '#D7FB61'
   },
@@ -111,13 +111,13 @@ const WorkDetail = () => {
   
   // Récupérer la config pour ce projet (fallback sur config par défaut)
   const config = worksConfig[slug] || {
-    fontFamily: '"Dancing Script", cursive',
+    fontFamily: 'var(--font-dancing)',
     color: '#ffffff'
   }
 
   // Déterminer la font family selon le slug
   const titleFontFamily = slug === 'nashfood' 
-    ? '"Dancing Script", cursive' 
+    ? 'var(--font-dancing)' 
     : 'var(--font-clash-display)';
 
   if (!work) {

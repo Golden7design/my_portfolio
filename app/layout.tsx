@@ -49,10 +49,27 @@ const Aeonik = localFont({
   variable: "--font-aeonik",
   display: "swap",
 });
+const Anton = localFont({
+  src: [
+    { path: "./fonts/Anton/Anton-Regular.ttf", weight: "400" },
+  ],
+  variable: "--font-anton",
+  display: "swap",
+});
+
+const dancing = localFont({
+  src: [
+    { path: "./fonts/Dancing_Script/DancingScript-VariableFont_wght.ttf", weight: "400" },
+  ],
+  variable: "--font-dancing",
+  display: "swap",
+});
+
+
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="en">
             <head>
         {/* CRITIQUE : Script qui s'exécute AVANT React */}
         <script
@@ -77,6 +94,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           ${Generale_Sans.variable}
           ${gambarino.variable}
           ${Generale_Sans_light.variable}
+          ${Anton.variable}
+          ${dancing.variable}
           antialiased h-full
         `}
       >

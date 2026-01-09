@@ -107,7 +107,7 @@
 
 .work-desc p .nash-name {
   color: tomato;
-  font-family: "Dancing Script", cursive;
+  font-family: var(--font-dancing);
   font-optical-sizing: auto;
   font-size: clamp(2.1rem, 3.2vw, 3.5rem);
 }
