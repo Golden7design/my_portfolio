@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
-
 *{
     margin: 0;
     padding: 0;
@@ -59,12 +57,10 @@ nav {
   box-sizing: border-box;
   will-change: transform;
 }
-/* Empêche le débordement */
 nav > div {
   flex-shrink: 0;
 }
 
-/* === LOGO ANIMATION — ÉCART AU HOVER === */
 .logo {
   cursor: pointer;
   transform-origin: center;
