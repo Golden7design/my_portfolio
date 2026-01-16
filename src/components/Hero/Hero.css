@@ -44,15 +44,24 @@
     pointer-events: none;
 }
 
+.hero-name{
+    width: 100vw;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
 .hero-name h1{
-    font-size: 10.2rem;
+    font-size: clamp(8.5rem, 8.5vw, 13rem);
     line-height: 0.8;
     font-family: var(--font-clash-display);
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .hero-container .myjob, .mymessage{
-    letter-spacing: -0.5;
+    letter-spacing: -0.2;
     opacity: 0.7;
 }
 
@@ -114,23 +123,8 @@
     transition: transform 0.3s;
 }
 
-@media (max-width: 1200px) {
-    .hero-name h1{
-        font-size: 8rem;
-    }
-    
-    .hero .links-content{
-        right: 1.5rem;
-        top: 15%;
-    }
-    
-    .hero .bar-content .bar{
-        height: 150px;
-    }
-}
-
 @media (max-width: 1000px) {
-        .hero .bar-content{
+    .hero .bar-content{
         display: none;
     }
     
@@ -213,15 +207,6 @@
     .hero .links-content{
         top: 68%;
     }
-    
-    .hero .bar-content .bar{
-        height: 120px;
-    }
-    
-    .hero .links svg{
-        height: 24px;
-        width: 24px;
-    }
 }
 
 @media (max-width: 640px) {
@@ -239,8 +224,6 @@
 }
 
 @media (max-width: 480px) {
-
-    
     .hero-name h1{
         font-size: 4.2rem;
     }
@@ -271,41 +254,5 @@
     .hero .links svg{
         height: 20px;
         width: 20px;
-    }
-}
-
-@media (min-width: 1400px) {
-    .hero-name h1{
-        font-size: 10.2rem;
-    }
-    
-    .hero .bar-content .bar{
-        height: 250px;
-    }
-    
-    .hero .links svg{
-        height: 32px;
-        width: 32px;
-    }
-}
-@media (min-width: 1300px) and (max-width: 1380px) {
-        .hero-name h1{
-        font-size: 9.15rem;
-    }
-}
-
-
-@media (min-width: 1800px) {
-    .hero-name h1{
-        font-size: 13rem;
-    }
-    
-    .hero .links-content{
-        right: 3rem;
-        gap: 2rem;
-    }
-    
-    .hero .bar-content .bar{
-        height: 300px;
     }
 }

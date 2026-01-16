@@ -54,7 +54,7 @@ const worksData: Record<string, Work> = {
     description: 'A modern food ordering website with seamless user experience and real-time order tracking.',
     year: '2025',
     role: 'Full-Stack Developer & UI/UX Designer',
-    technologies: ['React.js', 'Firebase', 'Express', 'CSS', 'Node.js', 'MongoDB'],
+    technologies: ['React.js', 'Firebase', 'Express', 'CSS', 'Node.js', 'MongoDB', 'API Rest'],
     images: {
       hero: '/assets/nashfood-det1.avif',
       desktop: '/assets/nashfood-det3.avif',
