@@ -77,13 +77,25 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.json({
-    metrics: {
-      requests_per_sec: 12.3,
-      latency_p95: 220,
-      error_rate: 0.01,
-      cpu_usage: 0.32,
-      memory_usage: 0.45,
-    },
-  })
+  const url = new URL(request.url)
+  const mode = url.searchParams.get("mode")
+  const isPost = mode === "post"
+
+  const metrics = isPost
+    ? {
+        requests_per_sec: 6.1,
+        latency_p95: 680,
+        error_rate: 0.12,
+        cpu_usage: 0.78,
+        memory_usage: 0.88,
+      }
+    : {
+        requests_per_sec: 12.3,
+        latency_p95: 220,
+        error_rate: 0.01,
+        cpu_usage: 0.32,
+        memory_usage: 0.45,
+      }
+
+  return NextResponse.json({ metrics })
 }

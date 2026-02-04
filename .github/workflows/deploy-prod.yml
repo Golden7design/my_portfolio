@@ -69,4 +69,4 @@ jobs:
           curl -s -X POST "$SEQPULSE_BASE_URL/deployments/finish" \
             -H "X-API-Key: $SEQPULSE_API_KEY" \
             -H "Content-Type: application/json" \
-            -d "{\"deployment_id\":\"$DEPLOY_ID\",\"result\":\"$RESULT\",\"metrics_endpoint\":\"$SEQPULSE_METRICS_ENDPOINT\"}"
+            -d "{\"deployment_id\":\"$DEPLOY_ID\",\"result\":\"$RESULT\",\"metrics_endpoint\":\"$SEQPULSE_METRICS_ENDPOINT?mode=post\"}"
