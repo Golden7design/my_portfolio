@@ -3,6 +3,9 @@ name: Deploy Production
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  SEQPULSE_BASE_URL: https://51fd3068f62d.ngrok-free.app
+  SEQPULSE_API_KEY: ${{ secrets.SEQPULSE_API_KEY }}
+  SEQPULSE_METRICS_ENDPOINT: ${{ secrets.SEQPULSE_METRICS_ENDPOINT }}
 
 on:
   push:
@@ -31,8 +34,39 @@ jobs:
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
+      - name: Trigger SeqPulse (pre-deploy)
+        run: |
+          RESP=$(curl -s -X POST "$SEQPULSE_BASE_URL/deployments/trigger" \
+            -H "X-API-Key: $SEQPULSE_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{\"env\":\"prod\",\"metrics_endpoint\":\"$SEQPULSE_METRICS_ENDPOINT\"}")
+          DEPLOY_ID=$(python -c 'import sys,json; print(json.loads(sys.stdin.read()).get("deployment_id", ""))' <<< "$RESP")
+          if [ -z "$DEPLOY_ID" ]; then
+            echo "Failed to get deployment_id from SeqPulse"
+            echo "$RESP"
+            exit 1
+          fi
+          echo "DEPLOY_ID=$DEPLOY_ID" >> $GITHUB_ENV
+
       - name: Build Project Artifact
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }} --prod
 
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Finish SeqPulse (post-deploy)
+        if: always()
+        run: |
+          if [ -z "$DEPLOY_ID" ]; then
+            echo "No DEPLOY_ID found, skipping finish"
+            exit 0
+          fi
+          if [ "${{ job.status }}" = "success" ]; then
+            RESULT="success"
+          else
+            RESULT="failed"
+          fi
+          curl -s -X POST "$SEQPULSE_BASE_URL/deployments/finish" \
+            -H "X-API-Key: $SEQPULSE_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{\"deployment_id\":\"$DEPLOY_ID\",\"result\":\"$RESULT\",\"metrics_endpoint\":\"$SEQPULSE_METRICS_ENDPOINT\"}"
