@@ -35,4 +35,4 @@ jobs:
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy Pro
-        run: vercel deploy --prebui --token=${{ secrets
+        run: vercel deploy --prebui --token=${{ secre

@@ -3,7 +3,7 @@ name: Deploy Production
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  SEQPULSE_BASE_URL: https://1483-102-129-82-64.ngrok-free.app
+  SEQPULSE_BASE_URL: https://c9bc-102-129-82-64.ngrok-free.app
   SEQPULSE_API_KEY: ${{ secrets.SEQPULSE_API_KEY }}
   SEQPULSE_METRICS_ENDPOINT: ${{ secrets.SEQPULSE_METRICS_ENDPOINT }}
 
