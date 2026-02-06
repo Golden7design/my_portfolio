@@ -7,13 +7,13 @@ const HMAC_ENABLED = process.env.SEQPULSE_HMAC_ENABLED === "true"
 const HMAC_SECRET = process.env.SEQPULSE_HMAC_SECRET || ""
 const MAX_SKEW_PAST = Number(process.env.SEQPULSE_HMAC_MAX_SKEW_PAST || 300)
 const MAX_SKEW_FUTURE = Number(process.env.SEQPULSE_HMAC_MAX_SKEW_FUTURE || 30)
-const NONCE_TTL = MAX_SKEW_PAST + MAX_SKEW_FUTURE
+const NONCE_TTL_MS = (MAX_SKEW_PAST + MAX_SKEW_FUTURE) * 1000
 
 const nonceCache = new Map<string, number>()
 
 function cleanupNonceCache(now: number) {
   for (const [nonce, ts] of nonceCache.entries()) {
-    if (now - ts > NONCE_TTL) nonceCache.delete(nonce)
+    if (now - ts > NONCE_TTL_MS) nonceCache.delete(nonce)
   }
 }
 
