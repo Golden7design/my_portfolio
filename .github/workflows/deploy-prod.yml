@@ -3,7 +3,7 @@ name: Deploy Production
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  SEQPULSE_BASE_URL: https://c9bc-102-129-82-64.ngrok-free.app
+  SEQPULSE_BASE_URL: ${{ secrets.SEQPULSE_BASE_URL }}
   SEQPULSE_API_KEY: ${{ secrets.SEQPULSE_API_KEY }}
   SEQPULSE_METRICS_ENDPOINT: ${{ secrets.SEQPULSE_METRICS_ENDPOINT }}
 
@@ -13,20 +13,21 @@ on:
       - main
 
 jobs:
-  deploy-Production:
+  deploy-production:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Install Vercel CLI
         run: npm install -g vercel
@@ -36,17 +37,26 @@ jobs:
 
       - name: Trigger SeqPulse (pre-deploy)
         run: |
-          RESP=$(curl -s -X POST "$SEQPULSE_BASE_URL/deployments/trigger" \
+          set -euo pipefail
+          if [ -z "${SEQPULSE_BASE_URL:-}" ] || [ -z "${SEQPULSE_API_KEY:-}" ] || [ -z "${SEQPULSE_METRICS_ENDPOINT:-}" ]; then
+            echo "Missing SeqPulse secrets (SEQPULSE_BASE_URL / SEQPULSE_API_KEY / SEQPULSE_METRICS_ENDPOINT)."
+            exit 1
+          fi
+
+          RESP=$(curl -sS -X POST "$SEQPULSE_BASE_URL/deployments/trigger" \
             -H "X-API-Key: $SEQPULSE_API_KEY" \
             -H "Content-Type: application/json" \
-            -d "{\"env\":\"prod\",\"metrics_endpoint\":\"$SEQPULSE_METRICS_ENDPOINT\"}")
-          DEPLOY_ID=$(python -c 'import sys,json; print(json.loads(sys.stdin.read()).get("deployment_id", ""))' <<< "$RESP")
+            -d "{\"env\":\"prod\",\"metrics_endpoint\":\"$SEQPULSE_METRICS_ENDPOINT\",\"idempotency_key\":\"gha-${{ github.run_id }}-${{ github.run_attempt }}\",\"branch\":\"${{ github.ref_name }}\"}")
+
+          DEPLOY_ID=$(python -c 'import json,sys; print(json.loads(sys.stdin.read()).get("deployment_id",""))' <<< "$RESP")
           if [ -z "$DEPLOY_ID" ]; then
-            echo "Failed to get deployment_id from SeqPulse"
+            echo "Failed to parse deployment_id from SeqPulse response"
             echo "$RESP"
             exit 1
           fi
-          echo "DEPLOY_ID=$DEPLOY_ID" >> $GITHUB_ENV
+
+          echo "DEPLOY_ID=$DEPLOY_ID" >> "$GITHUB_ENV"
+          echo "SeqPulse deployment_id: $DEPLOY_ID"
 
       - name: Build Project Artifact
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }} --prod
@@ -57,16 +67,26 @@ jobs:
       - name: Finish SeqPulse (post-deploy)
         if: always()
         run: |
-          if [ -z "$DEPLOY_ID" ]; then
+          set -euo pipefail
+          if [ -z "${DEPLOY_ID:-}" ]; then
             echo "No DEPLOY_ID found, skipping finish"
             exit 0
           fi
+
           if [ "${{ job.status }}" = "success" ]; then
             RESULT="success"
           else
             RESULT="failed"
           fi
-          curl -s -X POST "$SEQPULSE_BASE_URL/deployments/finish" \
+
+          POST_ENDPOINT="$SEQPULSE_METRICS_ENDPOINT"
+          if [[ "$POST_ENDPOINT" == *\?* ]]; then
+            POST_ENDPOINT="${POST_ENDPOINT}&mode=post"
+          else
+            POST_ENDPOINT="${POST_ENDPOINT}?mode=post"
+          fi
+
+          curl -sS -X POST "$SEQPULSE_BASE_URL/deployments/finish" \
             -H "X-API-Key: $SEQPULSE_API_KEY" \
             -H "Content-Type: application/json" \
-            -d "{\"deployment_id\":\"$DEPLOY_ID\",\"result\":\"$RESULT\",\"metrics_endpoint\":\"$SEQPULSE_METRICS_ENDPOINT?mode=post\"}"
+            -d "{\"deployment_id\":\"$DEPLOY_ID\",\"result\":\"$RESULT\",\"metrics_endpoint\":\"$POST_ENDPOINT\"}"

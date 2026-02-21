@@ -10,20 +10,21 @@ on:
       - main
 
 jobs:
-  deploy-Preview:
+  deploy-preview:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Install Vercel CLI
         run: npm install -g vercel
@@ -34,5 +35,5 @@ jobs:
       - name: Build Project Artifact
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Deploy Pro
-        run: vercel deploy --prebui --token=${{ secre
+      - name: Deploy Preview
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}

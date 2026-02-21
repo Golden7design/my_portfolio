@@ -97,5 +97,8 @@ export async function GET(request: Request) {
         memory_usage: 0.45,
       }
 
-  return NextResponse.json({ metrics })
+  return NextResponse.json({
+    metrics,
+    ...metrics,
+  })
 }
