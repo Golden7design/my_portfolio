@@ -79,17 +79,29 @@ export async function GET(request: Request) {
 
   const url = new URL(request.url)
   const mode = url.searchParams.get("mode")
+  const scenario = url.searchParams.get("scenario")
   const isPost = mode === "post"
 
   const metrics = isPost
-    ? {
-        requests_per_sec: 6.1,
-        latency_p95: 680,
-        error_rate: 0.12,
-        cpu_usage: 0.78,
-        memory_usage: 0.88,
-      }
+    ? scenario === "rollback"
+      ? {
+          // Degraded metrics to force a rollback-recommended verdict in SeqPulse
+          requests_per_sec: 3.2, // strong drop vs pre
+          latency_p95: 980,      // far above industrial threshold
+          error_rate: 0.18,      // 18% errors -> critical
+          cpu_usage: 0.94,
+          memory_usage: 0.92,
+        }
+      : {
+          // Default POST degradation (mild)
+          requests_per_sec: 6.1,
+          latency_p95: 680,
+          error_rate: 0.12,
+          cpu_usage: 0.78,
+          memory_usage: 0.88,
+        }
     : {
+        // Baseline PRE metrics
         requests_per_sec: 12.3,
         latency_p95: 220,
         error_rate: 0.01,
