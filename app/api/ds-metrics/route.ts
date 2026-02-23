@@ -52,8 +52,8 @@ export async function GET(request: Request) {
     const nonce = headers.get("X-SeqPulse-Nonce") || ""
     const sig = headers.get("X-SeqPulse-Signature") || ""
     const ver = headers.get("X-SeqPulse-Signature-Version") || ""
-    const method = (headers.get("X-SeqPulse-Method") || "GET").toUpperCase()
-    const canonicalPath = canonicalizePath(headers.get("X-SeqPulse-Canonical-Path") || "/ds-metrics")
+    const method = request.method.toUpperCase()
+    const canonicalPath = canonicalizePath(new URL(request.url).pathname)
 
     if (!ts || !nonce || !sig || ver !== "v2") {
       return NextResponse.json({ error: "Missing or invalid HMAC headers" }, { status: 401 })

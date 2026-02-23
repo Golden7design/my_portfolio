@@ -6,7 +6,7 @@ const SECRET = "TON_HMAC_SECRET_LOCAL"
 const ts = new Date().toISOString().replace(/\.\d{3}Z$/, "Z")
 const nonce = "replay-test-123"
 const method = "GET"
-const path = "/ds-metrics"
+const path = "/api/ds-metrics"
 
 const payload = `${ts}|${method}|${path}|${nonce}`
 const signature = "sha256=" + crypto.createHmac("sha256", SECRET).update(payload).digest("hex")
