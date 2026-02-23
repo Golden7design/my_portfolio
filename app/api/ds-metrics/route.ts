@@ -85,23 +85,20 @@ export async function GET(request: Request) {
   const metrics = isPost
     ? scenario === "warning"
       ? {
-          // Targeted degradation to force a warning (single non-critical signal)
-          // Keep critical signals healthy:
-          // - error_rate <= secured threshold (0.009)
-          // - requests_per_sec drop <= 20% vs pre baseline
-          requests_per_sec: 11.2,
-          latency_p95: 360,
+          // Keep post-deploy profile healthy to produce an OK verdict.
+          requests_per_sec: 12.1,
+          latency_p95: 230,
           error_rate: 0.004,
-          cpu_usage: 0.55,
-          memory_usage: 0.62,
+          cpu_usage: 0.36,
+          memory_usage: 0.47,
         }
       : {
-          // Default POST degradation (mild)
-          requests_per_sec: 6.1,
-          latency_p95: 680,
-          error_rate: 0.12,
-          cpu_usage: 0.78,
-          memory_usage: 0.88,
+          // Default POST profile (healthy)
+          requests_per_sec: 12.0,
+          latency_p95: 225,
+          error_rate: 0.0045,
+          cpu_usage: 0.35,
+          memory_usage: 0.46,
         }
     : {
         // Baseline PRE metrics
