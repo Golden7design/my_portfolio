@@ -106,13 +106,7 @@ jobs:
           else
             RESULT="failed"
           fi
-
           POST_ENDPOINT="$SEQPULSE_METRICS_ENDPOINT"
-          if [[ "$POST_ENDPOINT" == *\?* ]]; then
-            POST_ENDPOINT="${POST_ENDPOINT}&mode=post&scenario=warning"
-          else
-            POST_ENDPOINT="${POST_ENDPOINT}?mode=post&scenario=warning"
-          fi
 
           PAYLOAD=$(printf '{"deployment_id":"%s","result":"%s","metrics_endpoint":"%s"}' \
             "$DEPLOY_ID" "$RESULT" "$POST_ENDPOINT")
