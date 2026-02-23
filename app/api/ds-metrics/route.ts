@@ -85,12 +85,15 @@ export async function GET(request: Request) {
   const metrics = isPost
     ? scenario === "warning"
       ? {
-          // Moderately degraded metrics to force a warning verdict in SeqPulse
-          requests_per_sec: 9.0,
-          latency_p95: 380,
-          error_rate: 0.05,
-          cpu_usage: 0.65,
-          memory_usage: 0.72,
+          // Targeted degradation to force a warning (single non-critical signal)
+          // Keep critical signals healthy:
+          // - error_rate <= secured threshold (0.009)
+          // - requests_per_sec drop <= 20% vs pre baseline
+          requests_per_sec: 11.2,
+          latency_p95: 360,
+          error_rate: 0.004,
+          cpu_usage: 0.55,
+          memory_usage: 0.62,
         }
       : {
           // Default POST degradation (mild)
