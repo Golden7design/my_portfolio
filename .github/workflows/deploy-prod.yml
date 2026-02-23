@@ -35,24 +35,46 @@ jobs:
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Trigger SeqPulse (pre-deploy)
+      - name: Trigger SeqPulse (pre-deploy, non-blocking)
         run: |
           set -euo pipefail
+
           if [ -z "${SEQPULSE_BASE_URL:-}" ] || [ -z "${SEQPULSE_API_KEY:-}" ] || [ -z "${SEQPULSE_METRICS_ENDPOINT:-}" ]; then
-            echo "Missing SeqPulse secrets (SEQPULSE_BASE_URL / SEQPULSE_API_KEY / SEQPULSE_METRICS_ENDPOINT)."
-            exit 1
+            echo "::warning::SeqPulse disabled for this run (missing SEQPULSE_BASE_URL / SEQPULSE_API_KEY / SEQPULSE_METRICS_ENDPOINT)."
+            exit 0
           fi
 
-          RESP=$(curl -sS -X POST "$SEQPULSE_BASE_URL/deployments/trigger" \
+          PAYLOAD=$(printf '{"env":"prod","metrics_endpoint":"%s","idempotency_key":"gha-%s-%s","branch":"%s"}' \
+            "$SEQPULSE_METRICS_ENDPOINT" \
+            "${{ github.run_id }}" \
+            "${{ github.run_attempt }}" \
+            "${{ github.ref_name }}")
+
+          TMP_FILE=$(mktemp)
+          HTTP_STATUS=$(curl -sS -o "$TMP_FILE" -w "%{http_code}" -X POST "$SEQPULSE_BASE_URL/deployments/trigger" \
             -H "X-API-Key: $SEQPULSE_API_KEY" \
             -H "Content-Type: application/json" \
-            -d "{\"env\":\"prod\",\"metrics_endpoint\":\"$SEQPULSE_METRICS_ENDPOINT\",\"idempotency_key\":\"gha-${{ github.run_id }}-${{ github.run_attempt }}\",\"branch\":\"${{ github.ref_name }}\"}")
+            -d "$PAYLOAD" || echo "000")
 
-          DEPLOY_ID=$(python -c 'import json,sys; print(json.loads(sys.stdin.read()).get("deployment_id",""))' <<< "$RESP")
+          RESP=$(cat "$TMP_FILE")
+          rm -f "$TMP_FILE"
+
+          if [ "$HTTP_STATUS" = "000" ]; then
+            echo "::warning::SeqPulse trigger unreachable. Continuing deployment without SeqPulse."
+            exit 0
+          fi
+
+          if [ "$HTTP_STATUS" -ge 400 ]; then
+            echo "::warning::SeqPulse trigger returned HTTP $HTTP_STATUS. Continuing deployment without SeqPulse."
+            echo "SeqPulse response: $RESP"
+            exit 0
+          fi
+
+          DEPLOY_ID=$(python -c 'import json,sys; print(json.loads(sys.stdin.read()).get("deployment_id", ""))' <<< "$RESP" 2>/dev/null || true)
           if [ -z "$DEPLOY_ID" ]; then
-            echo "Failed to parse deployment_id from SeqPulse response"
-            echo "$RESP"
-            exit 1
+            echo "::warning::SeqPulse trigger did not return deployment_id. Continuing deployment without SeqPulse."
+            echo "SeqPulse response: $RESP"
+            exit 0
           fi
 
           echo "DEPLOY_ID=$DEPLOY_ID" >> "$GITHUB_ENV"
@@ -64,12 +86,18 @@ jobs:
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Finish SeqPulse (post-deploy)
+      - name: Finish SeqPulse (post-deploy, non-blocking)
         if: always()
         run: |
           set -euo pipefail
+
           if [ -z "${DEPLOY_ID:-}" ]; then
             echo "No DEPLOY_ID found, skipping finish"
+            exit 0
+          fi
+
+          if [ -z "${SEQPULSE_BASE_URL:-}" ] || [ -z "${SEQPULSE_API_KEY:-}" ] || [ -z "${SEQPULSE_METRICS_ENDPOINT:-}" ]; then
+            echo "::warning::SeqPulse finish skipped (missing secrets)."
             exit 0
           fi
 
@@ -80,14 +108,32 @@ jobs:
           fi
 
           POST_ENDPOINT="$SEQPULSE_METRICS_ENDPOINT"
-          # Force a warning scenario to validate warning behavior in SeqPulse
           if [[ "$POST_ENDPOINT" == *\?* ]]; then
             POST_ENDPOINT="${POST_ENDPOINT}&mode=post&scenario=warning"
           else
             POST_ENDPOINT="${POST_ENDPOINT}?mode=post&scenario=warning"
           fi
 
-          curl -sS -X POST "$SEQPULSE_BASE_URL/deployments/finish" \
+          PAYLOAD=$(printf '{"deployment_id":"%s","result":"%s","metrics_endpoint":"%s"}' \
+            "$DEPLOY_ID" "$RESULT" "$POST_ENDPOINT")
+
+          TMP_FILE=$(mktemp)
+          HTTP_STATUS=$(curl -sS -o "$TMP_FILE" -w "%{http_code}" -X POST "$SEQPULSE_BASE_URL/deployments/finish" \
             -H "X-API-Key: $SEQPULSE_API_KEY" \
             -H "Content-Type: application/json" \
-            -d "{\"deployment_id\":\"$DEPLOY_ID\",\"result\":\"$RESULT\",\"metrics_endpoint\":\"$POST_ENDPOINT\"}"
+            -d "$PAYLOAD" || echo "000")
+          RESP=$(cat "$TMP_FILE")
+          rm -f "$TMP_FILE"
+
+          if [ "$HTTP_STATUS" = "000" ]; then
+            echo "::warning::SeqPulse finish unreachable. Deployment stays successful."
+            exit 0
+          fi
+
+          if [ "$HTTP_STATUS" -ge 400 ]; then
+            echo "::warning::SeqPulse finish returned HTTP $HTTP_STATUS. Deployment stays successful."
+            echo "SeqPulse response: $RESP"
+            exit 0
+          fi
+
+          echo "SeqPulse finish accepted."
