@@ -80,11 +80,11 @@ jobs:
           fi
 
           POST_ENDPOINT="$SEQPULSE_METRICS_ENDPOINT"
-          # Force a rollback scenario to exercise critical verdict alerts (email/slack)
+          # Force a warning scenario to validate warning behavior in SeqPulse
           if [[ "$POST_ENDPOINT" == *\?* ]]; then
-            POST_ENDPOINT="${POST_ENDPOINT}&mode=post&scenario=rollback"
+            POST_ENDPOINT="${POST_ENDPOINT}&mode=post&scenario=warning"
           else
-            POST_ENDPOINT="${POST_ENDPOINT}?mode=post&scenario=rollback"
+            POST_ENDPOINT="${POST_ENDPOINT}?mode=post&scenario=warning"
           fi
 
           curl -sS -X POST "$SEQPULSE_BASE_URL/deployments/finish" \

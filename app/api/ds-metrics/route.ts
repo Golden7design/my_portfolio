@@ -83,14 +83,14 @@ export async function GET(request: Request) {
   const isPost = mode === "post"
 
   const metrics = isPost
-    ? scenario === "rollback"
+    ? scenario === "warning"
       ? {
-          // Degraded metrics to force a rollback-recommended verdict in SeqPulse
-          requests_per_sec: 3.2, // strong drop vs pre
-          latency_p95: 980,      // far above industrial threshold
-          error_rate: 0.18,      // 18% errors -> critical
-          cpu_usage: 0.94,
-          memory_usage: 0.92,
+          // Moderately degraded metrics to force a warning verdict in SeqPulse
+          requests_per_sec: 9.0,
+          latency_p95: 380,
+          error_rate: 0.05,
+          cpu_usage: 0.65,
+          memory_usage: 0.72,
         }
       : {
           // Default POST degradation (mild)
