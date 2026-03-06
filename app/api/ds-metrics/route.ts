@@ -79,27 +79,17 @@ export async function GET(request: Request) {
 
   const url = new URL(request.url)
   const mode = url.searchParams.get("mode")
-  const scenario = url.searchParams.get("scenario")
   const isPost = mode === "post"
 
   const metrics = isPost
-    ? scenario === "warning"
-      ? {
-          // Keep post-deploy profile healthy to produce an OK verdict.
-          requests_per_sec: 12.1,
-          latency_p95: 230,
-          error_rate: 0.004,
-          cpu_usage: 0.36,
-          memory_usage: 0.47,
-        }
-      : {
-          // Default POST profile (healthy)
-          requests_per_sec: 12.0,
-          latency_p95: 225,
-          error_rate: 0.0045,
-          cpu_usage: 0.35,
-          memory_usage: 0.46,
-        }
+    ? {
+        // Keep post-deploy profile clearly healthy to produce an OK verdict.
+        requests_per_sec: 12.6,
+        latency_p95: 205,
+        error_rate: 0.002,
+        cpu_usage: 0.29,
+        memory_usage: 0.42,
+      }
     : {
         // Baseline PRE metrics
         requests_per_sec: 12.3,

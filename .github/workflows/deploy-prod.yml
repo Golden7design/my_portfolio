@@ -44,7 +44,7 @@ jobs:
             exit 0
           fi
 
-          PAYLOAD=$(printf '{"env":"preview","metrics_endpoint":"%s","idempotency_key":"gha-%s-%s","branch":"%s"}' \
+          PAYLOAD=$(printf '{"env":"prod","metrics_endpoint":"%s","idempotency_key":"gha-%s-%s","branch":"%s"}' \
             "$SEQPULSE_METRICS_ENDPOINT" \
             "${{ github.run_id }}" \
             "${{ github.run_attempt }}" \
