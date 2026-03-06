@@ -44,20 +44,8 @@ jobs:
             exit 0
           fi
 
-          PRE_ENDPOINT=$(python - <<'PY'
-import os
-from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
-
-raw = os.environ.get("SEQPULSE_METRICS_ENDPOINT", "")
-parts = urlsplit(raw)
-params = [(k, v) for (k, v) in parse_qsl(parts.query, keep_blank_values=True) if k not in {"mode", "scenario"}]
-params.append(("mode", "pre"))
-print(urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(params), parts.fragment)))
-PY
-)
-
           PAYLOAD=$(printf '{"env":"prod","metrics_endpoint":"%s","idempotency_key":"gha-%s-%s","branch":"%s"}' \
-            "$PRE_ENDPOINT" \
+            "$SEQPULSE_METRICS_ENDPOINT" \
             "${{ github.run_id }}" \
             "${{ github.run_attempt }}" \
             "${{ github.ref_name }}")
@@ -118,17 +106,12 @@ PY
           else
             RESULT="failed"
           fi
-          POST_ENDPOINT=$(python - <<'PY'
-import os
-from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
-
-raw = os.environ.get("SEQPULSE_METRICS_ENDPOINT", "")
-parts = urlsplit(raw)
-params = [(k, v) for (k, v) in parse_qsl(parts.query, keep_blank_values=True) if k not in {"mode", "scenario"}]
-params.append(("mode", "post"))
-print(urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(params), parts.fragment)))
-PY
-)
+          POST_ENDPOINT="$SEQPULSE_METRICS_ENDPOINT"
+          if [[ "$POST_ENDPOINT" == *\?* ]]; then
+            POST_ENDPOINT="${POST_ENDPOINT}&mode=post"
+          else
+            POST_ENDPOINT="${POST_ENDPOINT}?mode=post"
+          fi
 
           PAYLOAD=$(printf '{"deployment_id":"%s","result":"%s","metrics_endpoint":"%s"}' \
             "$DEPLOY_ID" "$RESULT" "$POST_ENDPOINT")

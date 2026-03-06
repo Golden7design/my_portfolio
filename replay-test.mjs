@@ -1,7 +1,7 @@
 import crypto from "crypto"
 
-const BASE_URL = "http://localhost:3000/api/ds-metrics"
-const SECRET = "TON_HMAC_SECRET_LOCAL"
+const BASE_URL = "http://localhost:3001/api/ds-metrics"
+const SECRET = "spm_71OazkehMINN9Qwz4pKRkhzlYA3tizTl5gQPmmSKC2U"
 
 const ts = new Date().toISOString().replace(/\.\d{3}Z$/, "Z")
 const nonce = "replay-test-123"

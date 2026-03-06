@@ -77,9 +77,15 @@ export async function GET(request: Request) {
     }
   }
 
+  // Check for phase header from SeqPulse collector
+  const phase = request.headers.get("X-SeqPulse-Phase") || "pre"
+  
+  // Also check URL query param for backwards compatibility with GitHub workflow
   const url = new URL(request.url)
-  const mode = url.searchParams.get("mode")
-  const isPost = mode === "post"
+  const urlMode = url.searchParams.get("mode")
+  
+  // Determine if this is a post-deploy request
+  const isPost = phase === "post" || urlMode === "post"
 
   const metrics = isPost
     ? {
