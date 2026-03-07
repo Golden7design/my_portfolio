@@ -6,48 +6,81 @@ env:
   SEQPULSE_BASE_URL: ${{ secrets.SEQPULSE_BASE_URL }}
   SEQPULSE_API_KEY: ${{ secrets.SEQPULSE_API_KEY }}
   SEQPULSE_METRICS_ENDPOINT: ${{ secrets.SEQPULSE_METRICS_ENDPOINT }}
-  SEQPULSE_HTTP_CONNECT_TIMEOUT_SECONDS: "1"
-  SEQPULSE_HTTP_MAX_TIME_SECONDS: "4"
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   deploy-production:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
+      - run: npm ci
 
-      - name: Install Vercel CLI
-        run: npm install -g vercel
+      - name: Lint (advisory)
+        continue-on-error: true
+        run: npm run -s lint
 
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
+      - run: npm run -s build
+      - run: npm install -g vercel
+      - run: npm i --no-save seqpulse@0.4.0
+      - run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
+      - run: vercel build --token=${{ secrets.VERCEL_TOKEN }} --prod
 
-      - name: Trigger SeqPulse (pre-deploy, non-blocking)
-        run: bash .github/scripts/seqpulse-trigger.sh
+      - name: SeqPulse trigger (SDK CLI)
+        id: seqpulse_trigger
+        run: |
+          npx seqpulse ci trigger \
+            --env prod \
+            --branch "$GITHUB_REF_NAME" \
+            --github-output "$GITHUB_OUTPUT"
 
-      - name: Build Project Artifact
-        run: vercel build --token=${{ secrets.VERCEL_TOKEN }} --prod
+      - name: Deploy to Vercel
+        id: vercel_deploy
+        run: |
+          set -euo pipefail
+          URL="$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})"
+          URL="${URL//$'\n'/}"
+          echo "VERCEL_DEPLOYMENT_URL=$URL" >> "$GITHUB_ENV"
+          echo "deployment_url=$URL" >> "$GITHUB_OUTPUT"
 
-      - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Finish SeqPulse (post-deploy, non-blocking)
+      - name: SeqPulse finish (SDK CLI)
         if: always()
-        env:
-          JOB_STATUS: ${{ job.status }}
-        run: bash .github/scripts/seqpulse-finish.sh
+        run: |
+          npx seqpulse ci finish \
+            --deployment-id "${{ steps.seqpulse_trigger.outputs.deployment_id }}" \
+            --job-status "${{ job.status }}"
+
+      - name: Verify deployment health
+        if: success()
+        run: |
+          set -euo pipefail
+          URL="${VERCEL_DEPLOYMENT_URL:-}"
+          [ -z "$URL" ] && echo "::warning::No deployment URL" && exit 0
+          [[ "$URL" != http* ]] && URL="https://$URL"
+          curl -fsS --max-time 10 "$URL" >/dev/null
+          curl -fsS --max-time 10 "$URL/api/ds-metrics" | node -e 'const fs=require("node:fs");const p=JSON.parse(fs.readFileSync(0,"utf8"));if(!p.metrics||typeof p.metrics.requests_per_sec!=="number")process.exit(1);console.log("Verify OK")'
+
+      - name: Report summary
+        if: always()
+        run: |
+          {
+            echo "## Production Deploy Report"
+            echo "- Status: **${{ job.status }}**"
+            echo "- SeqPulse deployment id: \`${{ steps.seqpulse_trigger.outputs.deployment_id || 'n/a' }}\`"
+            echo "- Vercel URL: \`${VERCEL_DEPLOYMENT_URL:-n/a}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
