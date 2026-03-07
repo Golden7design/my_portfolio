@@ -44,8 +44,7 @@ jobs:
       - name: SeqPulse trigger (SDK CLI)
         id: seqpulse_trigger
         run: |
-          SEQPULSE_CLI="$(node -e \"process.stdout.write(require.resolve('seqpulse/bin/seqpulse.js'))\")"
-          node "$SEQPULSE_CLI" ci trigger \
+          node ./node_modules/seqpulse/bin/seqpulse.js ci trigger \
             --env prod \
             --branch "$GITHUB_REF_NAME" \
             --github-output "$GITHUB_OUTPUT"
@@ -62,7 +61,6 @@ jobs:
       - name: SeqPulse finish (SDK CLI)
         if: always()
         run: |
-          SEQPULSE_CLI="$(node -e \"process.stdout.write(require.resolve('seqpulse/bin/seqpulse.js'))\")"
-          node "$SEQPULSE_CLI" ci finish \
+          node ./node_modules/seqpulse/bin/seqpulse.js ci finish \
             --deployment-id "${{ steps.seqpulse_trigger.outputs.deployment_id }}" \
             --job-status "${{ job.status }}"
