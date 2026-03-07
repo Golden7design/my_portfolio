@@ -9,7 +9,18 @@ const MAX_SKEW_PAST = Number(process.env.SEQPULSE_HMAC_MAX_SKEW_PAST || 300)
 const MAX_SKEW_FUTURE = Number(process.env.SEQPULSE_HMAC_MAX_SKEW_FUTURE || 30)
 const NONCE_TTL_MS = (MAX_SKEW_PAST + MAX_SKEW_FUTURE) * 1000
 
+const SIMULATION_MODE = (process.env.SEQPULSE_SIMULATION_MODE || "improving").toLowerCase()
+const SIMULATION_SWITCH_AFTER_CALLS = Math.max(
+  1,
+  Number(process.env.SEQPULSE_SIMULATION_SWITCH_AFTER_CALLS || 1),
+)
+const SIMULATION_SESSION_TTL_MS = Math.max(
+  60_000,
+  Number(process.env.SEQPULSE_SIMULATION_SESSION_TTL_MS || 15 * 60 * 1000),
+)
+
 const nonceCache = new Map<string, number>()
+const simulationSessions = new Map<string, { calls: number; lastSeen: number }>()
 
 function cleanupNonceCache(now: number) {
   for (const [nonce, ts] of nonceCache.entries()) {
@@ -22,6 +33,32 @@ function isNonceReused(nonce: string, now: number) {
   if (nonceCache.has(nonce)) return true
   nonceCache.set(nonce, now)
   return false
+}
+
+function cleanupSimulationSessions(now: number) {
+  for (const [sessionKey, state] of simulationSessions.entries()) {
+    if (now - state.lastSeen > SIMULATION_SESSION_TTL_MS) simulationSessions.delete(sessionKey)
+  }
+}
+
+function nextSimulationCall(sessionKey: string, now: number) {
+  cleanupSimulationSessions(now)
+  const state = simulationSessions.get(sessionKey)
+  if (!state) {
+    simulationSessions.set(sessionKey, { calls: 1, lastSeen: now })
+    return 1
+  }
+
+  state.calls += 1
+  state.lastSeen = now
+  simulationSessions.set(sessionKey, state)
+  return state.calls
+}
+
+function resolveSimulationSessionKey(request: Request) {
+  const projectId = request.headers.get("X-SeqPulse-Project-Id")
+  if (projectId) return `seqpulse:${projectId}`
+  return "default"
 }
 
 function canonicalizePath(path: string) {
@@ -45,6 +82,67 @@ function buildSignature(secret: string, ts: string, method: string, path: string
   return `sha256=${digest}`
 }
 
+function getBaselineMetrics() {
+  return {
+    requests_per_sec: 12.3,
+    latency_p95: 220,
+    error_rate: 0.006,
+    cpu_usage: 0.32,
+    memory_usage: 0.45,
+  }
+}
+
+function getImprovedMetrics() {
+  return {
+    requests_per_sec: 12.6,
+    latency_p95: 205,
+    error_rate: 0.002,
+    cpu_usage: 0.29,
+    memory_usage: 0.42,
+  }
+}
+
+function getDegradedMetrics() {
+  return {
+    requests_per_sec: 10.2,
+    latency_p95: 340,
+    error_rate: 0.03,
+    cpu_usage: 0.58,
+    memory_usage: 0.66,
+  }
+}
+
+function getWarningMetrics() {
+  return {
+    requests_per_sec: 12.1,
+    latency_p95: 320,
+    error_rate: 0.004,
+    cpu_usage: 0.34,
+    memory_usage: 0.48,
+  }
+}
+
+function pickSimulatedMetrics(callCount: number) {
+  const switched = callCount > SIMULATION_SWITCH_AFTER_CALLS
+
+  switch (SIMULATION_MODE) {
+    case "ok":
+      return getImprovedMetrics()
+    case "warning":
+      return getWarningMetrics()
+    case "stable":
+      return getBaselineMetrics()
+    case "degrading":
+      return switched ? getDegradedMetrics() : getBaselineMetrics()
+    case "oscillating":
+      if (!switched) return getBaselineMetrics()
+      return callCount % 2 === 0 ? getDegradedMetrics() : getImprovedMetrics()
+    case "improving":
+    default:
+      return switched ? getImprovedMetrics() : getBaselineMetrics()
+  }
+}
+
 export async function GET(request: Request) {
   if (HMAC_ENABLED) {
     const headers = request.headers
@@ -52,8 +150,10 @@ export async function GET(request: Request) {
     const nonce = headers.get("X-SeqPulse-Nonce") || ""
     const sig = headers.get("X-SeqPulse-Signature") || ""
     const ver = headers.get("X-SeqPulse-Signature-Version") || ""
-    const method = request.method.toUpperCase()
-    const canonicalPath = canonicalizePath(new URL(request.url).pathname)
+    const method = (headers.get("X-SeqPulse-Method") || request.method || "GET").toUpperCase()
+    const canonicalPath = canonicalizePath(
+      headers.get("X-SeqPulse-Canonical-Path") || new URL(request.url).pathname,
+    )
 
     if (!ts || !nonce || !sig || ver !== "v2") {
       return NextResponse.json({ error: "Missing or invalid HMAC headers" }, { status: 401 })
@@ -77,36 +177,16 @@ export async function GET(request: Request) {
     }
   }
 
-  // Check for phase header from SeqPulse collector
-  const phase = request.headers.get("X-SeqPulse-Phase") || "pre"
-  
-  // Also check URL query param for backwards compatibility with GitHub workflow
-  const url = new URL(request.url)
-  const urlMode = url.searchParams.get("mode")
-  
-  // Determine if this is a post-deploy request
-  const isPost = phase === "post" || urlMode === "post"
-
-  const metrics = isPost
-    ? {
-        // Keep post-deploy profile clearly healthy to produce an OK verdict.
-        requests_per_sec: 12.6,
-        latency_p95: 205,
-        error_rate: 0.002,
-        cpu_usage: 0.29,
-        memory_usage: 0.42,
-      }
-    : {
-        // Baseline PRE metrics
-        requests_per_sec: 12.3,
-        latency_p95: 220,
-        error_rate: 0.01,
-        cpu_usage: 0.32,
-        memory_usage: 0.45,
-      }
+  const callCount = nextSimulationCall(resolveSimulationSessionKey(request), Date.now())
+  const metrics = pickSimulatedMetrics(callCount)
 
   return NextResponse.json({
     metrics,
     ...metrics,
+    simulation: {
+      mode: SIMULATION_MODE,
+      call_count: callCount,
+      switch_after_calls: SIMULATION_SWITCH_AFTER_CALLS,
+    },
   })
 }
