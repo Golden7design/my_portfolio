@@ -33,7 +33,7 @@ jobs:
         run: npm install -g vercel
 
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Trigger SeqPulse (pre-deploy, non-blocking)
         run: |
