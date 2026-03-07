@@ -22,6 +22,16 @@ const SIMULATION_SESSION_TTL_MS = Math.max(
 const nonceCache = new Map<string, number>()
 const simulationSessions = new Map<string, { calls: number; lastSeen: number }>()
 
+type SimulationPhase = "pre" | "post"
+
+type MetricSet = {
+  requests_per_sec: number
+  latency_p95: number
+  error_rate: number
+  cpu_usage: number
+  memory_usage: number
+}
+
 function cleanupNonceCache(now: number) {
   for (const [nonce, ts] of nonceCache.entries()) {
     if (now - ts > NONCE_TTL_MS) nonceCache.delete(nonce)
@@ -82,7 +92,16 @@ function buildSignature(secret: string, ts: string, method: string, path: string
   return `sha256=${digest}`
 }
 
-function getBaselineMetrics() {
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value))
+}
+
+function round(value: number, decimals: number) {
+  const factor = 10 ** decimals
+  return Math.round(value * factor) / factor
+}
+
+function getBaselineMetrics(): MetricSet {
   return {
     requests_per_sec: 12.3,
     latency_p95: 220,
@@ -92,7 +111,7 @@ function getBaselineMetrics() {
   }
 }
 
-function getImprovedMetrics() {
+function getImprovedMetrics(): MetricSet {
   return {
     requests_per_sec: 12.6,
     latency_p95: 205,
@@ -102,7 +121,7 @@ function getImprovedMetrics() {
   }
 }
 
-function getDegradedMetrics() {
+function getDegradedMetrics(): MetricSet {
   return {
     requests_per_sec: 10.2,
     latency_p95: 340,
@@ -112,7 +131,7 @@ function getDegradedMetrics() {
   }
 }
 
-function getWarningMetrics() {
+function getWarningMetrics(): MetricSet {
   return {
     requests_per_sec: 12.1,
     latency_p95: 320,
@@ -122,24 +141,97 @@ function getWarningMetrics() {
   }
 }
 
-function pickSimulatedMetrics(callCount: number) {
-  const switched = callCount > SIMULATION_SWITCH_AFTER_CALLS
+function applyCurve(
+  base: MetricSet,
+  callCount: number,
+  phase: SimulationPhase,
+  now: number,
+  mode: string,
+): MetricSet {
+  const minuteBucket = Math.floor(now / 60_000)
+  const x = callCount + (minuteBucket % 997) / 3
+  const waveSlow = Math.sin(x * 0.9)
+  const waveMid = Math.sin(x * 0.37 + 1.4)
+  const waveFast = Math.cos(x * 1.7 + 0.8)
+
+  const phaseAmp = phase === "post" ? 1 : 0.8
+  const modeAmp =
+    mode === "stable"
+      ? 0.55
+      : mode === "oscillating"
+        ? 1.2
+        : mode === "ok"
+          ? 0.85
+          : 1
+  const amp = phaseAmp * modeAmp
+
+  const postIndex = Math.max(0, callCount - SIMULATION_SWITCH_AFTER_CALLS)
+  const trendStrength = Math.min(postIndex, 8) / 8
+  let postTrend = 0
+  if (phase === "post") {
+    if (mode === "improving" || mode === "ok") postTrend = trendStrength
+    if (mode === "degrading") postTrend = -trendStrength
+    if (mode === "warning") postTrend = -0.3 * trendStrength
+    if (mode === "oscillating") postTrend = (postIndex % 2 === 0 ? 0.4 : -0.4) * trendStrength
+  }
+
+  const requestsPerSec =
+    base.requests_per_sec + amp * (0.34 * waveSlow + 0.16 * waveMid) + postTrend * 0.35
+  const latencyP95 = base.latency_p95 + amp * (11 * waveSlow + 5 * waveFast) - postTrend * 14
+  const errorRate = base.error_rate + amp * (0.00065 * waveMid + 0.00025 * waveFast) - postTrend * 0.0013
+  const cpuUsage = base.cpu_usage + amp * (0.017 * waveSlow + 0.009 * waveMid) - postTrend * 0.02
+  const memoryUsage = base.memory_usage + amp * (0.018 * waveMid + 0.008 * waveFast) - postTrend * 0.018
+
+  return {
+    requests_per_sec: round(Math.max(0.05, requestsPerSec), 3),
+    latency_p95: round(Math.max(10, latencyP95), 2),
+    error_rate: round(clamp(errorRate, 0.0001, 0.95), 5),
+    cpu_usage: round(clamp(cpuUsage, 0.05, 0.95), 4),
+    memory_usage: round(clamp(memoryUsage, 0.05, 0.95), 4),
+  }
+}
+
+function pickSimulatedMetrics(callCount: number, now: number) {
+  const isPost = callCount > SIMULATION_SWITCH_AFTER_CALLS
+  const phase: SimulationPhase = isPost ? "post" : "pre"
+  let profile = SIMULATION_MODE
+  let base: MetricSet
 
   switch (SIMULATION_MODE) {
     case "ok":
-      return getImprovedMetrics()
+      base = isPost ? getImprovedMetrics() : getBaselineMetrics()
+      break
     case "warning":
-      return getWarningMetrics()
+      base = isPost ? getWarningMetrics() : getBaselineMetrics()
+      break
     case "stable":
-      return getBaselineMetrics()
+      base = getBaselineMetrics()
+      break
     case "degrading":
-      return switched ? getDegradedMetrics() : getBaselineMetrics()
+      base = isPost ? getDegradedMetrics() : getBaselineMetrics()
+      break
     case "oscillating":
-      if (!switched) return getBaselineMetrics()
-      return callCount % 2 === 0 ? getDegradedMetrics() : getImprovedMetrics()
+      if (!isPost) {
+        base = getBaselineMetrics()
+        profile = "baseline"
+      } else if (callCount % 2 === 0) {
+        base = getDegradedMetrics()
+        profile = "degraded"
+      } else {
+        base = getImprovedMetrics()
+        profile = "improved"
+      }
+      break
     case "improving":
     default:
-      return switched ? getImprovedMetrics() : getBaselineMetrics()
+      base = isPost ? getImprovedMetrics() : getBaselineMetrics()
+      break
+  }
+
+  return {
+    phase,
+    profile,
+    metrics: applyCurve(base, callCount, phase, now, SIMULATION_MODE),
   }
 }
 
@@ -177,14 +269,18 @@ export async function GET(request: Request) {
     }
   }
 
-  const callCount = nextSimulationCall(resolveSimulationSessionKey(request), Date.now())
-  const metrics = pickSimulatedMetrics(callCount)
+  const now = Date.now()
+  const callCount = nextSimulationCall(resolveSimulationSessionKey(request), now)
+  const simulationResult = pickSimulatedMetrics(callCount, now)
+  const metrics = simulationResult.metrics
 
   return NextResponse.json({
     metrics,
     ...metrics,
     simulation: {
       mode: SIMULATION_MODE,
+      profile: simulationResult.profile,
+      phase: simulationResult.phase,
       call_count: callCount,
       switch_after_calls: SIMULATION_SWITCH_AFTER_CALLS,
     },
