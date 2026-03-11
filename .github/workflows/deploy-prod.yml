@@ -40,12 +40,10 @@ jobs:
       - run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
       - run: vercel build --token=${{ secrets.VERCEL_TOKEN }} --prod
 
-      - run: npm i --no-save seqpulse@0.4.0
-
       - name: SeqPulse trigger (SDK CLI)
         id: seqpulse_trigger
         run: |
-          node ./node_modules/seqpulse/bin/seqpulse.js ci trigger \
+          npx -y seqpulse@0.5.2 ci trigger \
             --env prod \
             --branch "$GITHUB_REF_NAME" \
             --github-output "$GITHUB_OUTPUT"
@@ -62,6 +60,6 @@ jobs:
       - name: SeqPulse finish (SDK CLI)
         if: always()
         run: |
-          node ./node_modules/seqpulse/bin/seqpulse.js ci finish \
+          npx -y seqpulse@0.5.2 ci finish \
             --deployment-id "${{ steps.seqpulse_trigger.outputs.deployment_id }}" \
             --job-status "${{ job.status }}"
