@@ -22,24 +22,37 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-      - run: npm run -s build
-      - run: npm install -g vercel
-      - run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
-      - run: vercel build --token=${{ secrets.VERCEL_TOKEN }} --prod
+      - name: Install Vercel CLI
+        run: npm install -g vercel
 
-      - name: SeqPulse trigger (SDK CLI)
+      - name: Install SeqPulse CLI
+        run: npm install -g seqpulse@0.5.2
+
+      - name: Build project
+        run: npm run -s build
+
+      - name: Pull Vercel environment
+        run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Vercel output
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }} --prod
+
+      - name: SeqPulse trigger
         id: seqpulse_trigger
         run: |
-          npx -y seqpulse@0.5.2 ci trigger \
+          seqpulse ci trigger \
             --env prod \
             --branch "$GITHUB_REF_NAME" \
             --github-output "$GITHUB_OUTPUT"
@@ -53,10 +66,9 @@ jobs:
           echo "VERCEL_DEPLOYMENT_URL=$URL" >> "$GITHUB_ENV"
           echo "deployment_url=$URL" >> "$GITHUB_OUTPUT"
 
-      - name: SeqPulse finish (SDK CLI)
+      - name: SeqPulse finish
         if: always()
         run: |
-          npx -y seqpulse@0.5.2 ci finish \
+          seqpulse ci finish \
             --deployment-id "${{ steps.seqpulse_trigger.outputs.deployment_id }}" \
             --job-status "${{ job.status }}"
-            
