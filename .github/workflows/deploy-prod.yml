@@ -31,10 +31,6 @@ jobs:
 
       - run: npm ci
 
-      - name: Lint (advisory)
-        continue-on-error: true
-        run: npm run -s lint
-
       - run: npm run -s build
       - run: npm install -g vercel
       - run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
