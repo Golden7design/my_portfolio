@@ -174,6 +174,7 @@ function applyCurve(
     if (mode === "warning") postTrend = -0.3 * trendStrength
     if (mode === "oscillating") postTrend = (postIndex % 2 === 0 ? 0.4 : -0.4) * trendStrength
   }
+  
 
   const requestsPerSec =
     base.requests_per_sec + amp * (0.34 * waveSlow + 0.16 * waveMid) + postTrend * 0.35
