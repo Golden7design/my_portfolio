@@ -59,3 +59,4 @@ jobs:
           npx -y seqpulse@0.5.2 ci finish \
             --deployment-id "${{ steps.seqpulse_trigger.outputs.deployment_id }}" \
             --job-status "${{ job.status }}"
+            
