@@ -197,6 +197,78 @@ body.works-active {
     width: 80%;
   }
 }
+@media (max-width: 770px) {
+  .services {
+    gap: 1rem;
+  }
+
+  .card-head {
+    margin-bottom: 1rem;
+    padding: 0rem 0.8rem;
+  }
+
+  .card-svg svg{
+    width: 80px;
+    height: 70px;
+  }
+  .card-svg{
+    margin: 0rem;
+  }
+
+  .cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 0.2rem;
+    width: 100vw;
+    min-height: 100%;
+    margin-bottom: 5rem;
+  }
+
+  .card-head .card-number {
+    font-size: 1rem;
+  }
+
+  .cards-container .card {
+    padding: 0.6rem;
+    width: 90%;
+    height: 335px;
+    margin: auto;
+  }
+
+  .card hr {
+    margin-bottom: 0.8rem;
+  }
+
+  .card-body {
+    margin: 0 auto;
+    padding-top: 0.2rem;
+    width: 95%;
+    font-family: var(--font-aeonik);
+    opacity: 0.5;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+  }
+
+  .card2,
+  .card3,
+  .card4,
+  .card5 {
+    border-left: 1px solid rgba(128, 128, 128, 0.63);
+  }
+
+  .cards-pin {
+    height: 100%;
+    width: 100vw;
+    position: relative;
+  }
+
+  .services .services-desc {
+    font-family: var(--font-generale-sans);
+    font-size: clamp(1.1rem, 2.2vw, 2rem);
+    width: 70%;
+    margin-left: 2.2rem;
+  }
+}
 
 @media (max-width: 450px) {
   .services {
