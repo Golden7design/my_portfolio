@@ -231,7 +231,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="name-mask" id="say-hello!">
+        <div className="name-mask" translate="no" id="say-hello!">
           <h1>
             NAS
             <svg
